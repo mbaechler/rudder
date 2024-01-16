@@ -37,7 +37,7 @@
 
 package com.normation.rudder.rest
 
-import com.normation.box._
+import com.normation.box.*
 import com.normation.cfclerk.domain.TechniqueName
 import com.normation.cfclerk.domain.VariableSpec
 import com.normation.cfclerk.services.TechniqueRepository
@@ -52,12 +52,12 @@ import com.normation.eventlog.ModificationId
 import com.normation.inventory.domain.FullInventory
 import com.normation.inventory.domain.NodeId
 import com.normation.inventory.domain.NodeInventory
-import com.normation.rudder._
-import com.normation.rudder.api.{ApiAuthorization => ApiAuthz}
+import com.normation.rudder.*
+import com.normation.rudder.api.ApiAuthorization as ApiAuthz
 import com.normation.rudder.api.ApiVersion
 import com.normation.rudder.apidata.RestDataSerializerImpl
 import com.normation.rudder.apidata.ZioJsonExtractor
-import com.normation.rudder.batch._
+import com.normation.rudder.batch.*
 import com.normation.rudder.batch.PolicyGenerationTrigger.AllGeneration
 import com.normation.rudder.campaigns.CampaignSerializer
 import com.normation.rudder.domain.appconfig.FeatureSwitch
@@ -94,11 +94,11 @@ import com.normation.rudder.reports.GlobalComplianceMode
 import com.normation.rudder.reports.execution.AgentRunWithNodeConfig
 import com.normation.rudder.reports.execution.AgentRunWithoutCompliance
 import com.normation.rudder.reports.execution.RoReportsExecutionRepository
-import com.normation.rudder.repository._
+import com.normation.rudder.repository.*
 import com.normation.rudder.rest.data.Creation
 import com.normation.rudder.rest.data.Creation.CreationError
 import com.normation.rudder.rest.data.NodeSetup
-import com.normation.rudder.rest.lift._
+import com.normation.rudder.rest.lift.*
 import com.normation.rudder.rest.v1.RestStatus
 import com.normation.rudder.rule.category.RuleCategoryService
 import com.normation.rudder.services.ClearCacheService
@@ -139,8 +139,8 @@ import com.normation.rudder.web.services.Section2FieldService
 import com.normation.rudder.web.services.StatelessUserPropertyService
 import com.normation.rudder.web.services.Translator
 import com.normation.utils.StringUuidGeneratorImpl
-import com.normation.zio._
-import doobie._
+import com.normation.zio.*
+import doobie.*
 import java.nio.charset.StandardCharsets
 import net.liftweb.common.Box
 import net.liftweb.common.EmptyBox
@@ -169,8 +169,8 @@ import scala.concurrent.duration.Duration
 import scala.concurrent.duration.FiniteDuration
 import scala.xml.Elem
 import scala.xml.NodeSeq
-import zio._
-import zio.syntax._
+import zio.*
+import zio.syntax.*
 
 /*
  * This file provides all the necessary plumbing to allow test REST API.
@@ -807,7 +807,7 @@ class RestTestSetUp {
           nodes.get(id) match {
             case None    => CreationError.OnSaveNode(s"Can not merge node: missing").fail
             case Some(n) =>
-              import com.softwaremill.quicklens._
+              import com.softwaremill.quicklens.*
               val res = n.modify(_.info.node).using(x => mergeNodeSetup(x, setup))
 
               (nodes + ((id, res))).succeed
@@ -898,11 +898,11 @@ class RestTestSetUp {
 
     val translator = new CampaignSerializer()
     translator.addJsonTranslater(mockCampaign.dumbCampaignTranslator)
-    import mockCampaign._
+    import mockCampaign.*
     val api        = new CampaignApi(repo, translator, dumbCampaignEventRepository, mainCampaignService, restExtractorService, uuidGen)
   }
 
-  val apiModules: List[LiftApiModuleProvider[_ <: EndpointSchema with SortIndex]] = List(
+  val apiModules: List[LiftApiModuleProvider[? <: EndpointSchema with SortIndex]] = List(
     systemApi,
     new ParameterApi(restExtractorService, zioJsonExtractor, parameterApiService2, parameterApiService14),
     new TechniqueApi(

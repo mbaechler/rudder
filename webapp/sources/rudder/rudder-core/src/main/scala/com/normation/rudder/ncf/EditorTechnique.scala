@@ -332,7 +332,7 @@ object Constraint {
 
 object CheckConstraint {
   def check(constraint: List[Constraint.Constraint], value: String): CheckResult = {
-    import Constraint._
+    import Constraint.*
 
     constraint.map(_.check(value)).foldRight(OK: CheckResult) {
       case (OK, OK)           => OK
@@ -345,7 +345,7 @@ object CheckConstraint {
 
 class TechniqueSerializer(parameterTypeService: ParameterTypeService) {
 
-  import net.liftweb.json.JsonDSL._
+  import net.liftweb.json.JsonDSL.*
 
   def serializeTechniqueMetadata(technique: ncf.EditorTechnique, methods: Map[BundleName, GenericMethod]): JValue = {
 
@@ -364,7 +364,7 @@ class TechniqueSerializer(parameterTypeService: ParameterTypeService) {
     }
 
     def serializeCompositionRule(reportingLogic: ReportingLogic): JValue = {
-      import ReportingLogic._
+      import ReportingLogic.*
 
       reportingLogic match {
         case FocusReport(component) => ("type" -> FocusReport.key) ~ ("value" -> component)
@@ -495,8 +495,8 @@ class ResourceFileService(gitReposProvider: GitRepositoryProvider) {
       }
     }
 
-    import scala.jdk.CollectionConverters._
-    import ResourceFileState._
+    import scala.jdk.CollectionConverters.*
+    import ResourceFileState.*
 
     def toResource(resourcesPath: String)(fullPath: String, state: ResourceFileState): Option[ResourceFile] = {
       // workaround https://issues.rudder.io/issues/17977 - if the fullPath does not start by resourcePath,

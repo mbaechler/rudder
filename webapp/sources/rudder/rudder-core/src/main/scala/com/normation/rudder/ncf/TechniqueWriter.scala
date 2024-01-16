@@ -38,8 +38,8 @@
 package com.normation.rudder.ncf
 
 import better.files.File
-import cats.implicits._
-import com.normation.box._
+import cats.implicits.*
+import com.normation.box.*
 import com.normation.cfclerk.domain
 import com.normation.cfclerk.domain.SectionSpec
 import com.normation.cfclerk.domain.TechniqueId
@@ -47,7 +47,7 @@ import com.normation.cfclerk.domain.TechniqueName
 import com.normation.cfclerk.domain.TechniqueVersion
 import com.normation.cfclerk.services.TechniqueRepository
 import com.normation.cfclerk.services.UpdateTechniqueLibrary
-import com.normation.errors._
+import com.normation.errors.*
 import com.normation.errors.IOResult
 import com.normation.errors.RudderError
 import com.normation.eventlog.EventActor
@@ -75,10 +75,10 @@ import java.nio.file.Paths
 import net.liftweb.common.Box
 import net.liftweb.common.EmptyBox
 import net.liftweb.common.Full
-import scala.xml.{Node => XmlNode}
+import scala.xml.Node as XmlNode
 import scala.xml.NodeSeq
-import zio._
-import zio.syntax._
+import zio.*
+import zio.syntax.*
 
 sealed trait NcfError extends RudderError {
   def message:   String
@@ -708,8 +708,8 @@ class ClassicTechniqueWriter(basePath: String, parameterTypeService: ParameterTy
     val methodsCalls  = bundleAndMethodCallsList.map(_._2).mkString("")
 
     val content = {
-      import net.liftweb.json.JsonDSL._
-      import net.liftweb.json._
+      import net.liftweb.json.JsonDSL.*
+      import net.liftweb.json.*
 
       s"""# @name ${technique.name}
          |# @description ${technique.description.replaceAll("\\R", "\n# ")}

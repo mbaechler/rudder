@@ -58,9 +58,9 @@ import net.liftweb.common.Box
 import net.liftweb.common.Full
 import org.joda.time.DateTime
 import org.junit.runner.RunWith
-import org.specs2.mutable._
+import org.specs2.mutable.*
 import org.specs2.runner.JUnitRunner
-import zio.syntax._
+import zio.syntax.*
 
 /*
  * Test the cache behaviour

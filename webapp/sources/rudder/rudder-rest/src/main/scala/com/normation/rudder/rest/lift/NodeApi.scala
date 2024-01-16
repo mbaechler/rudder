@@ -40,11 +40,11 @@ package com.normation.rudder.rest.lift
 import cats.data.Validated.Invalid
 import cats.data.Validated.Valid
 import cats.data.ValidatedNel
-import com.normation.box._
-import com.normation.errors._
+import com.normation.box.*
+import com.normation.errors.*
 import com.normation.eventlog.EventActor
 import com.normation.eventlog.ModificationId
-import com.normation.inventory.domain._
+import com.normation.inventory.domain.*
 import com.normation.inventory.domain.NodeId
 import com.normation.inventory.ldap.core.InventoryDit
 import com.normation.inventory.ldap.core.LDAPFullInventoryRepository
@@ -83,10 +83,10 @@ import com.normation.rudder.repository.WoNodeRepository
 import com.normation.rudder.repository.json.DataExtractor.CompleteJson
 import com.normation.rudder.repository.json.DataExtractor.OptionnalJson
 import com.normation.rudder.repository.ldap.LDAPEntityMapper
-import com.normation.rudder.rest.{NodeApi => API}
 import com.normation.rudder.rest.ApiModuleProvider
 import com.normation.rudder.rest.ApiPath
 import com.normation.rudder.rest.AuthzToken
+import com.normation.rudder.rest.NodeApi as API
 import com.normation.rudder.rest.NotFoundError
 import com.normation.rudder.rest.OneParam
 import com.normation.rudder.rest.RestExtractorService
@@ -94,7 +94,7 @@ import com.normation.rudder.rest.RestUtils
 import com.normation.rudder.rest.RestUtils.effectiveResponse
 import com.normation.rudder.rest.RestUtils.toJsonError
 import com.normation.rudder.rest.RestUtils.toJsonResponse
-import com.normation.rudder.rest.data._
+import com.normation.rudder.rest.data.*
 import com.normation.rudder.rest.data.Creation.CreationError
 import com.normation.rudder.rest.data.NodeSetup
 import com.normation.rudder.rest.data.NodeTemplate
@@ -106,15 +106,15 @@ import com.normation.rudder.rest.data.Validation
 import com.normation.rudder.rest.data.Validation.NodeValidationError
 import com.normation.rudder.services.nodes.MergeNodeProperties
 import com.normation.rudder.services.nodes.NodeInfoService
-import com.normation.rudder.services.queries._
+import com.normation.rudder.services.queries.*
 import com.normation.rudder.services.reports.ReportingService
 import com.normation.rudder.services.servers.DeleteMode
 import com.normation.rudder.services.servers.NewNodeManager
 import com.normation.rudder.services.servers.RemoveNodeService
-import com.normation.utils.Control._
+import com.normation.utils.Control.*
 import com.normation.utils.DateFormaterService
 import com.normation.utils.StringUuidGenerator
-import com.normation.zio._
+import com.normation.zio.*
 import java.io.ByteArrayInputStream
 import java.io.InputStream
 import java.io.IOException
@@ -140,7 +140,7 @@ import net.liftweb.json.JsonAST.JField
 import net.liftweb.json.JsonAST.JInt
 import net.liftweb.json.JsonAST.JObject
 import net.liftweb.json.JsonAST.JString
-import net.liftweb.json.JsonDSL._
+import net.liftweb.json.JsonDSL.*
 import net.liftweb.json.JsonDSL.pair2jvalue
 import net.liftweb.json.JsonDSL.string2jvalue
 import net.liftweb.json.JValue
@@ -148,8 +148,8 @@ import org.joda.time.DateTime
 import scalaj.http.Http
 import scalaj.http.HttpOptions
 import scalaj.http.HttpRequest
-import zio.{System => _, _}
-import zio.syntax._
+import zio.{System as _, *}
+import zio.syntax.*
 
 /*
  * NodeApi implementation.
@@ -206,12 +206,12 @@ class NodeApi(
     val schema: API.CreateNodes.type = API.CreateNodes
     val restExtractor = restExtractorService
 
-    import ResultHolder._
-    import com.normation.rudder.rest.data.Rest.JsonCodecNodeDetails._
-    import zio.json._
+    import ResultHolder.*
+    import com.normation.rudder.rest.data.Rest.JsonCodecNodeDetails.*
+    import zio.json.*
 
     def process0(version: ApiVersion, path: ApiPath, req: Req, params: DefaultParams, authzToken: AuthzToken): LiftResponse = {
-      import com.softwaremill.quicklens._
+      import com.softwaremill.quicklens.*
       (for {
         json  <- (if (req.json_?) req.body else Failure("This API only Accept JSON request")).toIO
         nodes <- new String(json, StandardCharsets.UTF_8).fromJson[List[NodeDetails]].toIO
@@ -673,7 +673,7 @@ class NodeApiInheritedProperties(
       params     <- paramRepo.getAllGlobalParameters()
       properties <- MergeNodeProperties.forNode(nodeInfo, nodeTargets, params.map(p => (p.name, p)).toMap).toIO
     } yield {
-      import com.normation.rudder.domain.properties.JsonPropertySerialisation._
+      import com.normation.rudder.domain.properties.JsonPropertySerialisation.*
       val rendered = renderInHtml match {
         case RenderInheritedProperties.HTML => properties.toApiJsonRenderParents
         case RenderInheritedProperties.JSON => properties.toApiJson
@@ -815,7 +815,7 @@ class NodeApiService15(
   }
 
   def mergeNodeSetup(node: Node, changes: NodeSetup): Node = {
-    import com.softwaremill.quicklens._
+    import com.softwaremill.quicklens.*
 
     // for properties, we don't want to modify any of the existing one because
     // we were put during acceptation (or since node is live).
@@ -847,7 +847,7 @@ class NodeApiService15(
     (for {
       ldap    <- ldapConnection
       // try t get node
-      entry   <- ldap.get(nodeDit.NODES.NODE.dn(id.value), NodeInfoService.nodeInfoAttributes: _*)
+      entry   <- ldap.get(nodeDit.NODES.NODE.dn(id.value), NodeInfoService.nodeInfoAttributes*)
       current <- entry match {
                    case Some(x) => ldapEntityMapper.entryToNode(x).toIO
                    case None    => default().succeed
@@ -921,7 +921,7 @@ class NodeApiService13(
 
     def escapeHTML(s: String): String = JsExp.strToJsExp(xml.Utility.escape(s)).str
 
-    import net.liftweb.json.JsonDSL._
+    import net.liftweb.json.JsonDSL.*
     def toComplianceArray(comp: ComplianceLevel): JArray = {
       val pc = comp.computePercent()
       JArray(
@@ -954,7 +954,7 @@ class NodeApiService13(
       }
     }
 
-    import com.normation.rudder.domain.properties.JsonPropertySerialisation._
+    import com.normation.rudder.domain.properties.JsonPropertySerialisation.*
     (("name"                -> escapeHTML(nodeInfo.hostname))
     ~ ("policyServerId"     -> escapeHTML(nodeInfo.policyServerId.value))
     ~ ("policyMode"         -> escapeHTML(policyMode.name))
@@ -981,7 +981,7 @@ class NodeApiService13(
   }
 
   def listNodes(req: Req): Box[JArray] = {
-    import com.normation.box._
+    import com.normation.box.*
     val n1 = System.currentTimeMillis
 
     case class PropertyInfo(value: String, inherited: Boolean)
@@ -1077,7 +1077,7 @@ class NodeApiService13(
   }
 
   def software(req: Req, software: String): Box[LiftResponse] = {
-    import com.normation.box._
+    import com.normation.box.*
 
     for {
 
@@ -1111,7 +1111,7 @@ class NodeApiService13(
             inheritedProp <- getNodesPropertiesTree(nodes.values, List(property)).toBox
           } yield {
 
-            import com.normation.rudder.domain.properties.JsonPropertySerialisation._
+            import com.normation.rudder.domain.properties.JsonPropertySerialisation.*
             inheritedProp.map { case (k, v) => (k, v.map(_.toApiJsonRenderParents)) }
           }
         } else {
@@ -1133,7 +1133,7 @@ class NodeApiService2(
     restSerializer:      RestDataSerializer
 ) extends Loggable {
 
-  import restSerializer._
+  import restSerializer.*
   def listAcceptedNodes(req: Req): LiftResponse = {
     implicit val prettify = restExtractor.extractPrettify(req.params)
     implicit val action   = "listAcceptedNodes"
@@ -1275,7 +1275,7 @@ class NodeApiService4(
     roAgentRunsRepository: RoReportsExecutionRepository
 ) extends Loggable {
 
-  import restSerializer._
+  import restSerializer.*
 
   def getNodeDetails(
       nodeId:      NodeId,
@@ -1399,7 +1399,7 @@ class NodeApiService6(
     roAgentRunsRepository:      RoReportsExecutionRepository
 ) extends Loggable {
 
-  import restSerializer._
+  import restSerializer.*
   def listNodes(state: InventoryStatus, detailLevel: NodeDetailLevel, nodeFilter: Option[Seq[NodeId]], version: ApiVersion)(
       implicit prettify: Boolean
   ): LiftResponse = {
@@ -1526,7 +1526,7 @@ class NodeApiService8(
     }
 
     def updateNode(node: Node, restNode: RestNode, newProperties: List[NodeProperty]): Node = {
-      import com.softwaremill.quicklens._
+      import com.softwaremill.quicklens.*
 
       (node
         .modify(_.properties)

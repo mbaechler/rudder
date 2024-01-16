@@ -41,7 +41,7 @@ import bootstrap.liftweb.BootstrapChecks
 import com.normation.cfclerk.domain.TechniqueName
 import com.normation.cfclerk.services.TechniqueRepository
 import com.normation.cfclerk.services.UpdateTechniqueLibrary
-import com.normation.errors._
+import com.normation.errors.*
 import com.normation.eventlog.ModificationId
 import com.normation.inventory.domain.NodeId
 import com.normation.ldap.sdk.BuildFilter
@@ -65,13 +65,13 @@ import com.normation.rudder.services.servers.PolicyServerConfigurationObjects
 import com.normation.rudder.services.servers.PolicyServerManagementService
 import com.normation.rudder.services.servers.PolicyServers
 import com.normation.utils.StringUuidGenerator
-import com.normation.zio._
-import com.softwaremill.quicklens._
+import com.normation.zio.*
+import com.softwaremill.quicklens.*
 import com.unboundid.ldap.sdk.DN
 import java.nio.charset.StandardCharsets
 import org.eclipse.jgit.lib.PersonIdent
-import zio._
-import zio.syntax._
+import zio.*
+import zio.syntax.*
 
 /*
  * This migration check looks if we need to migrate a 6.x Rudder to a 7.x set of
@@ -403,7 +403,7 @@ class MigrateTechniques6_x_7_0(
         case None    => e // should not happen
         case Some(a) =>
           val values = a.getValues.map(_.replaceAll(from, to))
-          e.resetValuesTo(attr, values.toIndexedSeq: _*)
+          e.resetValuesTo(attr, values.toIndexedSeq*)
           e
       }
     }

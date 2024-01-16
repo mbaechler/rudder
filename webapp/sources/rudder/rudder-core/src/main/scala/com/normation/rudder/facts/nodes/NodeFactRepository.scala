@@ -38,20 +38,20 @@
 package com.normation.rudder.facts.nodes
 
 import better.files.File
-import com.normation.errors._
+import com.normation.errors.*
 import com.normation.errors.IOResult
-import com.normation.inventory.domain._
+import com.normation.inventory.domain.*
 import com.normation.rudder.apidata.FullDetailLevel
 import com.normation.rudder.domain.logger.NodeLogger
 import com.normation.rudder.domain.nodes.NodeInfo
 import com.normation.rudder.git.GitItemRepository
 import com.normation.rudder.git.GitRepositoryProvider
-import com.softwaremill.quicklens._
-import net.liftweb.json.JsonDSL._
+import com.softwaremill.quicklens.*
+import net.liftweb.json.JsonDSL.*
 import net.liftweb.json.prettyRender
 import org.eclipse.jgit.lib.PersonIdent
-import zio._
-import zio.syntax._
+import zio.*
+import zio.syntax.*
 
 /*
  * This file contains the base to persist facts into a git repository. There is a lot of question

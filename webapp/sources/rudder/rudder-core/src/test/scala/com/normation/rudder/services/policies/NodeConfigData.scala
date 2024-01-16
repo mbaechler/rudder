@@ -115,7 +115,7 @@ import com.normation.rudder.domain.reports.NodeModeConfig
 import com.normation.rudder.git.GitRepositoryProviderImpl
 import com.normation.rudder.git.GitRevisionProvider
 import com.normation.rudder.git.SimpleGitRevisionProvider
-import com.normation.rudder.reports._
+import com.normation.rudder.reports.*
 import com.normation.rudder.repository.FullActiveTechnique
 import com.normation.rudder.repository.FullActiveTechniqueCategory
 import com.normation.rudder.repository.FullNodeGroupCategory
@@ -127,7 +127,7 @@ import com.normation.rudder.services.servers.PolicyServers
 import com.normation.rudder.services.servers.PolicyServersUpdateCommand
 import com.normation.rudder.services.servers.RelaySynchronizationMethod.Classic
 import com.normation.utils.StringUuidGeneratorImpl
-import com.normation.zio._
+import com.normation.zio.*
 import java.io.File
 import java.nio.file.Files
 import java.nio.file.FileSystemNotFoundException
@@ -142,7 +142,7 @@ import net.liftweb.common.Full
 import org.apache.commons.io.FileUtils
 import org.joda.time.DateTime
 import scala.collection.SortedMap
-import zio.syntax._
+import zio.syntax.*
 
 /*
  * This file is a container for testing data that are a little boring to
@@ -188,7 +188,7 @@ object NodeConfigData {
     val uri  = this.getClass.getClassLoader.getResource(name).toURI
     val path = uri.getScheme match {
       case "jar"  =>
-        import scala.jdk.CollectionConverters._
+        import scala.jdk.CollectionConverters.*
         // yes, pur side effecting
         try {
           FileSystems.getFileSystem(uri)
