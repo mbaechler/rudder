@@ -72,6 +72,7 @@ import net.liftweb.http.js.JsCmd
 import net.liftweb.http.js.JsCmds._
 import net.liftweb.json._
 import net.liftweb.util.ClearClearable
+import net.liftweb.util.FieldError
 import net.liftweb.util.Helpers._
 import scala.xml.NodeSeq
 import scala.xml.Text
@@ -573,7 +574,7 @@ class RuleEditForm(
       override def subContainerClassName = "col-xs-12"
       override def setFilter             = notNull _ :: trim _ :: Nil
       override val maxLen                = 255
-      override def validations           = Nil
+      override def validations: List[String => List[FieldError]] = Nil
     }
   }
 

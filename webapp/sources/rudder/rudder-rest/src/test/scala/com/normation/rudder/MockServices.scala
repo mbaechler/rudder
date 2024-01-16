@@ -2339,7 +2339,7 @@ class MockNodeGroups(nodesRepo: MockNodes) {
 
   object groupsRepo extends RoNodeGroupRepository with WoNodeGroupRepository {
 
-    implicit val ordering = com.normation.rudder.repository.NodeGroupCategoryOrdering
+    implicit val ordering: NodeGroupCategoryOrdering.type = com.normation.rudder.repository.NodeGroupCategoryOrdering
 
     val categories: Ref.Synchronized[FullNodeGroupCategory] = Ref.Synchronized
       .make(FullNodeGroupCategory(NodeGroupCategoryId("GroupRoot"), "GroupRoot", "root of group categories", Nil, Nil, true))
@@ -3019,8 +3019,8 @@ sealed trait DumbCampaignTrait extends Campaign
 
 @jsonHint(DumbCampaignType.value)
 final case class DumbCampaign(info: CampaignInfo, details: DumbCampaignDetails) extends DumbCampaignTrait {
-  val campaignType = DumbCampaignType
-  val version      = 1
+  val campaignType: DumbCampaignType.type = DumbCampaignType
+  val version = 1
   def copyWithId(newId: CampaignId): Campaign = this.copy(info = info.copy(id = newId))
 
 }

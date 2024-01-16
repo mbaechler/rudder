@@ -67,10 +67,10 @@ import scala.annotation.nowarn
 @nowarn("msg=a type was inferred to be `\\w+`; this may indicate a programming error.")
 @RunWith(classOf[JUnitRunner])
 class ExecutionBatchTest extends Specification {
-  implicit private def str2directiveId(s: String) = DirectiveId(DirectiveUid(s))
-  implicit private def str2ruleId(s: String)      = RuleId(RuleUid(s))
-  implicit private def str2nodeId(s: String)      = NodeId(s)
-  implicit private def str2ruleUid(s: String)     = RuleUid(s)
+  implicit private def str2directiveId(s: String): DirectiveId = DirectiveId(DirectiveUid(s))
+  implicit private def str2ruleId(s: String):      RuleId      = RuleId(RuleUid(s))
+  implicit private def str2nodeId(s: String):      NodeId      = NodeId(s)
+  implicit private def str2ruleUid(s: String):     RuleUid     = RuleUid(s)
 
   // a logger for timing information
   val logger: Logger = org.slf4j.LoggerFactory.getLogger("timing-test").asInstanceOf[ch.qos.logback.classic.Logger]
@@ -3058,11 +3058,11 @@ class ExecutionBatchTest extends Specification {
   "Compliance for cfengine vars and reports" should {
 
     sealed trait Kind { def tpe: ReportType }
-    case object Success    extends Kind { val tpe = EnforceSuccess        }
-    case object Repaired   extends Kind { val tpe = EnforceRepaired       }
-    case object Error      extends Kind { val tpe = EnforceError          }
-    case object Missing    extends Kind { val tpe = ReportType.Missing    }
-    case object Unexpected extends Kind { val tpe = ReportType.Unexpected }
+    case object Success    extends Kind { val tpe: ReportType = EnforceSuccess        }
+    case object Repaired   extends Kind { val tpe: ReportType = EnforceRepaired       }
+    case object Error      extends Kind { val tpe: ReportType = EnforceError          }
+    case object Missing    extends Kind { val tpe: ReportType = ReportType.Missing    }
+    case object Unexpected extends Kind { val tpe: ReportType = ReportType.Unexpected }
 
     /*
      * Values are expected values with the corresponding status list

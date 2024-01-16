@@ -58,7 +58,7 @@ class AsyncDeployment extends CometActor with CometListener with Loggable {
   // current states of the deployment
   private[this] var deploymentStatus = DeploymentStatus(NoStatus, IdleDeployer)
 
-  override def registerWith = asyncDeploymentAgent
+  override def registerWith: AsyncDeploymentActor = asyncDeploymentAgent
 
   override val defaultHtml = NodeSeq.Empty
 

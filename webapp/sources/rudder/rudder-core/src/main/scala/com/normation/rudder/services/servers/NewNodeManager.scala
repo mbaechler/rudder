@@ -686,9 +686,9 @@ class AcceptInventory(
     sms
   ) // nothing to do
 
-  override val fromInventoryStatus = PendingInventory
+  override val fromInventoryStatus: InventoryStatus = PendingInventory
 
-  override val toInventoryStatus = AcceptedInventory
+  override val toInventoryStatus: InventoryStatus = AcceptedInventory
 
   def acceptOne(sm: FullInventory, modId: ModificationId, actor: EventActor): Box[FullInventory] = {
     smRepo.move(sm.node.main.id, fromInventoryStatus, toInventoryStatus).toBox.map(_ => sm)

@@ -104,7 +104,7 @@ final case class Modified[T](
 
 class DiffDisplayer(linkUtil: LinkUtil) extends Loggable {
 
-  implicit private[this] def displayDirective(directiveId: DirectiveId) = {
+  implicit private[this] def displayDirective(directiveId: DirectiveId): Elem = {
     <span> Directive {linkUtil.createDirectiveLink(directiveId.uid)}</span>
   }
   def displayDirectiveChangeList(

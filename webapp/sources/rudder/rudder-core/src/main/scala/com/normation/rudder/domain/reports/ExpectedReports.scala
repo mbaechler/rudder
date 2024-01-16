@@ -389,7 +389,7 @@ object ExpectedReportsSerialisation {
         extends JsonComponentExpectedReport7_0                                  {
       def toJsonValueExpectedReport7_0: JsonValueExpectedReport7_0 =
         JsonValueExpectedReport7_0(componentName, values.zip(unexpanded).map { case (a, b) => JsonExpectedValueMatch7_0(a, b) })
-      def transform = toJsonValueExpectedReport7_0.transform
+      def transform:                    ValueExpectedReport        = toJsonValueExpectedReport7_0.transform
     }
 
     final case class JsonDirectiveExpecteReports7_0(

@@ -100,10 +100,10 @@ class TechniqueTree(
         val msg = "Can not build tree of dependencies for Technique %s".format(techniqueId)
         logger.error(msg, e)
         (new JsTreeNode {
-          override def body     = <span class="error">Can not find dependencies. <span class="errorDetails">{
+          override def body:     NodeSeq          = <span class="error">Can not find dependencies. <span class="errorDetails">{
             (e ?~! msg).messageChain
           }</span></span>
-          override def children = Nil
+          override def children: List[JsTreeNode] = Nil
         }).toXml
     }
   }
@@ -169,26 +169,26 @@ class TechniqueTree(
     ruleRepository.get(id).toBox match {
       case Full(rule) =>
         new JsTreeNode {
-          override val attrs    = {
+          override val attrs = {
             ("data-jstree" -> """{ "type" : "rule" }""") :: Nil ::: (if (!rule.isEnabled) ("class" -> "disableTreeNode") :: Nil
                                                                      else Nil)
           }
-          override def body     = {
+          override def body  = {
             <a href="#"><span class="treeRuleName tooltipable" tooltipid={id.serialize} title={rule.shortDescription}>{
               rule.name
             }</span></a><div class="tooltipContent" id={id.serialize}><h3>{rule.name}</h3><div>{rule.shortDescription}</div></div>
           }
-          override def children = Nil
+          override def children: List[JsTreeNode] = Nil
         }
       case e: EmptyBox =>
         val msg = "Can not build tree of dependencies for Technique %s".format(techniqueId)
         logger.error(msg, e)
 
         new JsTreeNode {
-          override def body     = <span class="error">Can not find Rule details for id {id}. <span class="errorDetails">{
+          override def body:     NodeSeq          = <span class="error">Can not find Rule details for id {id}. <span class="errorDetails">{
             (e ?~! msg)
           }</span></span>
-          override def children = Nil
+          override def children: List[JsTreeNode] = Nil
         }
     }
   }

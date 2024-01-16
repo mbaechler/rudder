@@ -53,6 +53,7 @@ import com.normation.rudder.domain.nodes.NodeState
 import com.normation.rudder.domain.policies.PolicyMode
 import com.normation.rudder.reports._
 import com.normation.rudder.rest.{SettingsApi => API}
+import com.normation.rudder.rest.ApiModuleProvider
 import com.normation.rudder.rest.ApiPath
 import com.normation.rudder.rest.AuthzToken
 import com.normation.rudder.rest.OneParam
@@ -146,7 +147,7 @@ class SettingsApi(
 
   val kind = "settings"
 
-  def schemas = API
+  def schemas: ApiModuleProvider[API] = API
 
   def getLiftEndpoints(): List[LiftApiModule] = {
     API.endpoints.map(e => {
@@ -164,7 +165,7 @@ class SettingsApi(
   }
 
   object GetAllSettings extends LiftApiModule0 {
-    val schema        = API.GetAllSettings
+    val schema: API.GetAllSettings.type = API.GetAllSettings
     val restExtractor = restExtractorService
     def process0(version: ApiVersion, path: ApiPath, req: Req, params: DefaultParams, authzToken: AuthzToken): LiftResponse = {
       val settings = for {
@@ -199,7 +200,7 @@ class SettingsApi(
   }
 
   object ModifySettings extends LiftApiModule0 {
-    val schema        = API.ModifySettings
+    val schema: API.ModifySettings.type = API.ModifySettings
     val restExtractor = restExtractorService
     def process0(version: ApiVersion, path: ApiPath, req: Req, params: DefaultParams, authzToken: AuthzToken): LiftResponse = {
       var generate = false
@@ -729,7 +730,7 @@ class SettingsApi(
   case object RestChangeRequestUnexpectedUnboundVarValues extends RestChangeUnexpectedReportInterpretation {
     val startPolicyGeneration = false
     val key                   = "unexpected_unbound_var_values"
-    val prop                  = UnexpectedReportBehavior.UnboundVarValues
+    val prop: UnexpectedReportBehavior = UnexpectedReportBehavior.UnboundVarValues
   }
 
   case object RestRudderVerifyCertificates extends RestBooleanSetting {
@@ -887,8 +888,8 @@ class SettingsApi(
       }
     }
 
-    override val schema = API.GetAllAllowedNetworks
-    val restExtractor   = restExtractorService
+    override val schema: API.GetAllAllowedNetworks.type = API.GetAllAllowedNetworks
+    val restExtractor = restExtractorService
     def process0(version: ApiVersion, path: ApiPath, req: Req, params: DefaultParams, authzToken: AuthzToken): LiftResponse = {
       implicit val action = "getAllAllowedNetworks"
       RestUtils.response(restExtractorService, "settings", None)(

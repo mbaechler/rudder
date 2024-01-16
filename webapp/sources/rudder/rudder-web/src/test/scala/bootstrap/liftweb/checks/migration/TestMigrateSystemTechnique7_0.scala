@@ -78,6 +78,7 @@ import com.normation.rudder.domain.policies.DirectiveUid
 import com.normation.rudder.domain.policies.ModifyRuleDiff
 import com.normation.rudder.domain.policies.Rule
 import com.normation.rudder.domain.policies.RuleId
+import com.normation.rudder.domain.queries.ObjectCriterion
 import com.normation.rudder.domain.workflows.ChangeRequestId
 import com.normation.rudder.git.GitArchiveId
 import com.normation.rudder.git.GitPath
@@ -260,7 +261,7 @@ class TestMigrateSystemTechniques7_0 extends Specification {
   private[this] lazy val LDAP_INVENTORIES_BASEDN          = DN("ou=Inventories", LDAP_BASEDN)
   private[this] lazy val LDAP_INVENTORIES_SOFTWARE_BASEDN = LDAP_INVENTORIES_BASEDN
   private[this] lazy val queryParser                      = new CmdbQueryParser with DefaultStringQueryParser with JsonQueryLexer {
-    override val criterionObjects = Map()
+    override val criterionObjects: Map[String, ObjectCriterion] = Map()
   }
 
   private[this] lazy val pendingNodesDitImpl: InventoryDit = new InventoryDit(
