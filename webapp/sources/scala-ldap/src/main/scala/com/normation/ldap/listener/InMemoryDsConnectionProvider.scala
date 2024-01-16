@@ -53,9 +53,9 @@ class InMemoryDsConnectionProvider[CON <: RoLDAPConnection](
   bootstrapLDIFPaths foreach { path => server.importFromLDIF(false, path) }
   server.startListening
 
-  override def toConnectionString: String = "in-memory-ldap-connection"
-  override def semaphore: Semaphore  = ZioRuntime.unsafeRun(Semaphore.make(1))
-  override val connection: Ref[Option[CON]] = ZioRuntime.unsafeRun(Ref.make(Option.empty[CON]))
+  override def toConnectionString: String           = "in-memory-ldap-connection"
+  override def semaphore:          Semaphore        = ZioRuntime.unsafeRun(Semaphore.make(1))
+  override val connection:         Ref[Option[CON]] = ZioRuntime.unsafeRun(Ref.make(Option.empty[CON]))
 
   override def newUnboundidConnection: UnboundidLDAPConnection = server.getConnection
 

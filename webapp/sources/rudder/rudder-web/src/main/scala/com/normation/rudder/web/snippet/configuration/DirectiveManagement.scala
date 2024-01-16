@@ -45,12 +45,14 @@ import com.normation.cfclerk.domain.Technique
 import com.normation.cfclerk.domain.TechniqueGenerationMode._
 import com.normation.cfclerk.domain.TechniqueId
 import com.normation.cfclerk.domain.TechniqueVersion
+import com.normation.errors
 import com.normation.eventlog.ModificationId
 import com.normation.rudder.domain.policies.ActiveTechnique
 import com.normation.rudder.domain.policies.Directive
 import com.normation.rudder.domain.policies.DirectiveId
 import com.normation.rudder.domain.policies.DirectiveUid
 import com.normation.rudder.domain.policies.GlobalPolicyMode
+import com.normation.rudder.domain.policies.Rule
 import com.normation.rudder.domain.workflows.ChangeRequestId
 import com.normation.rudder.repository.FullActiveTechnique
 import com.normation.rudder.repository.FullActiveTechniqueCategory
@@ -72,8 +74,6 @@ import net.liftweb.util.Helpers._
 import net.liftweb.util.Helpers.TimeSpan
 import org.joda.time.DateTime
 import scala.xml._
-import com.normation.errors
-import com.normation.rudder.domain.policies.Rule
 
 final case class JsonDirectiveRId(directiveId: String, rev: Option[String])
 
@@ -98,7 +98,7 @@ class DirectiveManagement extends DispatchSnippet with Loggable {
   private[this] val configService       = RudderConfig.configService
   private[this] val configRepo          = RudderConfig.configurationRepository
 
-  def dispatch: PartialFunction[String,NodeSeq => NodeSeq] = {
+  def dispatch: PartialFunction[String, NodeSeq => NodeSeq] = {
     case "head"                 => { _ => head() }
     case "userLibrary"          => { _ => displayDirectiveLibrary() }
     case "showDirectiveDetails" => { _ => initDirectiveDetails() }
@@ -122,7 +122,7 @@ class DirectiveManagement extends DispatchSnippet with Loggable {
   // must be reloaded "updateDirectiveLibrary()"
   // when information change (directive added/removed/modified, etc)
   var directiveLibrary: errors.IOResult[FullActiveTechniqueCategory] = getDirectiveLib()
-  var rules: errors.IOResult[Seq[Rule]]            = getRules()
+  var rules:            errors.IOResult[Seq[Rule]]                   = getRules()
 
   private[this] val directiveId: Box[String] = S.param("directiveId")
 

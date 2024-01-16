@@ -248,7 +248,7 @@ final case class ReportLine(
       case Nil          => (severity, severity)
     }
   }
-  override val json: JsObj = {
+  override val json:  JsObj            = {
 
     JsObj(
       ("executionDate", DateFormaterService.getDisplayDate(executionDate)),

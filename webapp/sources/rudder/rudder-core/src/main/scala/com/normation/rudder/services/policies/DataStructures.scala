@@ -50,6 +50,7 @@ import com.normation.cfclerk.domain.TechniqueVersion
 import com.normation.cfclerk.domain.TrackerVariable
 import com.normation.cfclerk.domain.TrackerVariableSpec
 import com.normation.cfclerk.domain.Variable
+import com.normation.cfclerk.domain.VariableSpec
 import com.normation.errors._
 import com.normation.inventory.domain.AgentType
 import com.normation.inventory.domain.NodeId
@@ -64,7 +65,6 @@ import com.normation.rudder.domain.reports.NodeModeConfig
 import com.typesafe.config.ConfigValue
 import org.joda.time.DateTime
 import scala.collection.immutable.TreeMap
-import com.normation.cfclerk.domain.VariableSpec
 
 /*
  * This file contains all the specific data structures used during policy generation.
@@ -334,7 +334,8 @@ final case class PolicyTechnique(
 
   val templatesIds: Set[TechniqueResourceId] = agentConfig.templates.map(_.id).toSet
 
-  val getAllVariableSpecs: Seq[VariableSpec] = this.rootSection.getAllVariables ++ this.systemVariableSpecs :+ this.trackerVariableSpec
+  val getAllVariableSpecs: Seq[VariableSpec] =
+    this.rootSection.getAllVariables ++ this.systemVariableSpecs :+ this.trackerVariableSpec
 }
 
 object PolicyTechnique {
@@ -413,8 +414,8 @@ final case class Policy(
   // == map .values (keep order) ==> Iterator[List[Variable]]
   // == .toList (keep order)     ==> List[List[Variable]]
   // == flatten (keep order)     ==> List[Variable]
-  def expandedVars: Map[String,Variable]    = Policy.mergeVars(policyVars.map(_.expandedVars.values).toList.flatten)
-  val trackerVariable: TrackerVariable =
+  def expandedVars:    Map[String, Variable] = Policy.mergeVars(policyVars.map(_.expandedVars.values).toList.flatten)
+  val trackerVariable: TrackerVariable       =
     policyVars.head.trackerVariable.spec.cloneSetMultivalued.toVariable(policyVars.map(_.trackerVariable.values).toList.flatten)
 }
 

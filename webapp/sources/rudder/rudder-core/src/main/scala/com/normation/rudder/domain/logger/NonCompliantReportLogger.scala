@@ -39,8 +39,8 @@ package com.normation.rudder.domain.logger
 
 import com.normation.rudder.domain.reports._
 import net.liftweb.common.Logger
-import org.slf4j.LoggerFactory
 import org.slf4j
+import org.slf4j.LoggerFactory
 
 /**
  * This logger is used to write non compliant reports in /var/log/rudder/compliance/non-compliant-reports.log

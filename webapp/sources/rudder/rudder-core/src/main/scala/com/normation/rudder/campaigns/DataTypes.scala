@@ -59,7 +59,11 @@ trait Campaign {
 }
 
 object Campaign {
-  def filter(campaigns: List[Campaign], typeFilter: List[CampaignType], statusFilter: List[CampaignStatusValue]): List[Campaign] = {
+  def filter(
+      campaigns:    List[Campaign],
+      typeFilter:   List[CampaignType],
+      statusFilter: List[CampaignStatusValue]
+  ): List[Campaign] = {
     (typeFilter, statusFilter) match {
       case (Nil, Nil) => campaigns
       case (t, Nil)   => campaigns.filter(c => t.contains(c.campaignType))
@@ -114,7 +118,7 @@ object CampaignStatusValue {
     val value = "archived"
   }
   val allValues: Set[CampaignStatusValue] = ca.mrvisser.sealerate.values
-  def getValue(s: String): Either[String,CampaignStatusValue] = allValues.find(_.value == s.toLowerCase()) match {
+  def getValue(s: String): Either[String, CampaignStatusValue] = allValues.find(_.value == s.toLowerCase()) match {
     case None    => Left(s"${s} is not valid status value, accepted values are ${allValues.map(_.value).mkString(", ")}")
     case Some(v) => Right(v)
   }
@@ -175,7 +179,7 @@ case class DayTime(
     hour:   Int,
     minute: Int
 ) {
-  val realHour: Int   = hour   % 24
+  val realHour:   Int = hour   % 24
   val realMinute: Int = minute % 60
 }
 

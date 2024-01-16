@@ -45,8 +45,8 @@ import net.liftweb.common._
 import net.liftweb.json._
 import net.liftweb.json.JsonDSL._
 import scala.collection.MapView
-import zio.Chunk
 import scala.util.matching.Regex
+import zio.Chunk
 
 /**
  * A target is either
@@ -81,19 +81,19 @@ final case class PolicyServerTarget(nodeId: NodeId) extends NonGroupRuleTarget {
 
 case object AllTarget extends NonGroupRuleTarget {
   override def target = "special:all"
-  def r: Regex               = "special:all".r
+  def r: Regex = "special:all".r
 }
 
 case object AllTargetExceptPolicyServers extends NonGroupRuleTarget {
   override def target = "special:all_exceptPolicyServers"
   // for compat reason in event logs < Rudder 7.0, we must be able to parse also old format: `special:all_nodes_without_role`
-  def r: Regex               = "(?:special:all_exceptPolicyServers|special:all_nodes_without_role)".r
+  def r: Regex = "(?:special:all_exceptPolicyServers|special:all_nodes_without_role)".r
 }
 
 case object AllPolicyServers extends NonGroupRuleTarget {
   override def target = "special:all_policyServers"
   // for compat reason in event logs < Rudder 7.0, we must be able to parse also old format: `special:all_servers_with_role`
-  def r: Regex               = "(?:special:all_policyServers|special:all_servers_with_role)".r
+  def r: Regex = "(?:special:all_policyServers|special:all_servers_with_role)".r
 }
 
 /**

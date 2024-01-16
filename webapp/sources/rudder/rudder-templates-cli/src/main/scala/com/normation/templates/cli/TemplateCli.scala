@@ -258,7 +258,12 @@ object TemplateCli {
     }
   }
 
-  def filledAndWriteToStdout(variables: Seq[STVariable], content: String, templateName: String, timer: FillTemplateTimer): ZIO[Any,RudderError,String] = {
+  def filledAndWriteToStdout(
+      variables:    Seq[STVariable],
+      content:      String,
+      templateName: String,
+      timer:        FillTemplateTimer
+  ): ZIO[Any, RudderError, String] = {
     for {
       filled <- fillerService.fill(templateName, content, variables, timer)
       writed <- IOResult.attempt(s"Error when writting filled template to stdout")(IOUtils.write(filled, System.out, "UTF-8"))

@@ -214,7 +214,7 @@ class ModificationValidationPopup(
   // fonction to read state of things
   private[this] val getGroupLib = RudderConfig.roNodeGroupRepository.getFullGroupLibrary _
 
-  def dispatch: PartialFunction[String,NodeSeq => NodeSeq] = { case "popupContent" => { _ => popupContent() } }
+  def dispatch: PartialFunction[String, NodeSeq => NodeSeq] = { case "popupContent" => { _ => popupContent() } }
 
   private[this] val disabled = item match {
     case Left(item)  => !item.newDirective.isEnabled

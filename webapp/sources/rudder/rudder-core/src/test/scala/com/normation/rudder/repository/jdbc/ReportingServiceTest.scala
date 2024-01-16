@@ -123,7 +123,7 @@ class ReportingServiceTest extends DBCommon with BoxSpecMatcher {
     CoreNodeFactRepository.make(NoopFactStorage, NoopGetNodesbySofwareName, Map(), accepted, Chunk.empty).runNow
   }
 
-  val directivesLib   = NodeConfigData.directives
+  val directivesLib = NodeConfigData.directives
   val directivesRepos: RoDirectiveRepository = new RoDirectiveRepository() {
     def getFullDirectiveLibrary():                                                           IOResult[FullActiveTechniqueCategory]                     = directivesLib.succeed
     def getDirective(directiveId: DirectiveUid):                                             IOResult[Option[Directive]]                               = ???
@@ -201,9 +201,11 @@ class ReportingServiceTest extends DBCommon with BoxSpecMatcher {
   lazy val woAgentRun = new WoReportsExecutionRepositoryImpl(doobie)
   lazy val roAgentRun = new RoReportsExecutionRepositoryImpl(doobie, woAgentRun, nodeConfigService, pgIn, 200)
 
-  lazy val dummyChangesCache: CachedNodeChangesServiceImpl = new CachedNodeChangesServiceImpl(new NodeChangesServiceImpl(reportsRepo), () => Full(true)) {
-    override def update(lowestId: Long, highestId: Long): Box[Unit] = Full(())
-    override def countChangesByRuleByInterval() = Empty
+  lazy val dummyChangesCache: CachedNodeChangesServiceImpl = {
+    new CachedNodeChangesServiceImpl(new NodeChangesServiceImpl(reportsRepo), () => Full(true)) {
+      override def update(lowestId: Long, highestId: Long): Box[Unit] = Full(())
+      override def countChangesByRuleByInterval() = Empty
+    }
   }
 
   lazy val dummyComplianceRepos: ComplianceRepository = new ComplianceRepository() {
@@ -260,12 +262,12 @@ class ReportingServiceTest extends DBCommon with BoxSpecMatcher {
   // BE CAREFUL: we don't compare on expiration dates!
   val EXPIRATION_DATE = new DateTime(0)
 
-  val allNodes_t1: Map[NodeId,NodeConfigIdInfo] =
+  val allNodes_t1: Map[NodeId, NodeConfigIdInfo] =
     Seq("n0", "n1", "n2", "n3", "n4").map(n => (NodeId(n), NodeConfigIdInfo(NodeConfigId(n + "_t1"), gen1, Some(gen2)))).toMap
-  val allNodes_t2: Map[NodeId,NodeConfigIdInfo] =
+  val allNodes_t2: Map[NodeId, NodeConfigIdInfo] =
     Seq("n0", "n1", "n2", "n3", "n4").map(n => (NodeId(n), NodeConfigIdInfo(NodeConfigId(n + "_t2"), gen2, None))).toMap
 
-  val allConfigs: Map[NodeId,Seq[NodeConfigIdInfo]] = (allNodes_t1.toSeq ++ allNodes_t2).groupMap(_._1)(_._2)
+  val allConfigs: Map[NodeId, Seq[NodeConfigIdInfo]] = (allNodes_t1.toSeq ++ allNodes_t2).groupMap(_._1)(_._2)
 
   // this need to be NodeConfiguration (ex in NodeConfigData)
 
@@ -287,7 +289,7 @@ class ReportingServiceTest extends DBCommon with BoxSpecMatcher {
 //    )
 //  )
 
-  val reports: Map[String,Seq[Reports]] = (
+  val reports: Map[String, Seq[Reports]] = (
     Map[String, Seq[Reports]]()
       + node("n0")(
         // no run

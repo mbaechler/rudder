@@ -89,12 +89,12 @@ class RuleCategoryTree(
     }
   }
 
-  def getRoot: RuleCategory       = {
+  def getRoot:       RuleCategory = {
     root
   }
-  def resetSelected: Unit = selectedCategoryId = rootCategory.id
+  def resetSelected: Unit         = selectedCategoryId = rootCategory.id
 
-  def dispatch: PartialFunction[String,NodeSeq => NodeSeq] = { case "tree" => { _ => tree() } }
+  def dispatch: PartialFunction[String, NodeSeq => NodeSeq] = { case "tree" => { _ => tree() } }
 
   def refreshTree(newRoot: Box[RuleCategory]): JsCmd = {
     val html = newRoot match {
@@ -125,7 +125,7 @@ class RuleCategoryTree(
   }
 
   // Perform category selection, filter in the dataTable and display the name of the category
-  def selectCategory(): JsCmd                     = {
+  def selectCategory(): JsCmd = {
     (for {
       rootCategory <- roRuleCategoryRepository.getRootCategory().toBox
       fqdn         <- ruleCategoryService.bothFqdn(rootCategory, selectedCategoryId, true)

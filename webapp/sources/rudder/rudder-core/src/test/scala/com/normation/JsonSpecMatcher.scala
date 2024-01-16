@@ -78,7 +78,7 @@ private object JsonSpecMatcher {
   def prettyPrint(json: String): String = {
     json.fromJson[Json].map(_.toJsonPretty).getOrElse(json)
   }
-  def prettyPrint(json: Json): String   = {
+  def prettyPrint(json: Json):   String = {
     json.toJsonPretty
   }
 }

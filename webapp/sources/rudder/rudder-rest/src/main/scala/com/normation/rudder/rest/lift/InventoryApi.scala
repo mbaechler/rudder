@@ -83,9 +83,9 @@ class InventoryApi(
     val tooManyRequestError: RestError = new RestError {
       override def code: Int = 429 // too many requests
     }
-    val schema              = API.QueueInformation
-    val restExtractor       = restExtractorService
-    val actionName          = "queueInformation"
+    val schema = API.QueueInformation
+    val restExtractor = restExtractorService
+    val actionName    = "queueInformation"
     def process0(version: ApiVersion, path: ApiPath, req: Req, params: DefaultParams, authzToken: AuthzToken): LiftResponse = {
       val json = (
         ("queueMaxSize"       -> Int.MaxValue)

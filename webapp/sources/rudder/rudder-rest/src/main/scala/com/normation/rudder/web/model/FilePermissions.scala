@@ -107,41 +107,41 @@ trait Perm {
     case None    => this
   }
 
-  def read: Boolean  = bits(2)
+  def read:  Boolean = bits(2)
   def write: Boolean = bits(1)
-  def exec: Boolean  = bits(0)
+  def exec:  Boolean = bits(0)
 }
 
 case object none extends Perm {
-  val bits: BitSet                = BitSet()
+  val bits: BitSet = BitSet()
   override def toString() = "---"
 }
 case object r    extends Perm {
-  val bits: BitSet                = BitSet(2)
+  val bits: BitSet = BitSet(2)
   override def toString() = "r--"
 }
 case object w    extends Perm {
-  val bits: BitSet                = BitSet(1)
+  val bits: BitSet = BitSet(1)
   override def toString() = "-w-"
 }
 case object x    extends Perm {
-  val bits: BitSet                = BitSet(0)
+  val bits: BitSet = BitSet(0)
   override def toString() = "--x"
 }
 case object rw   extends Perm {
-  val bits: BitSet                = BitSet(2, 1)
+  val bits: BitSet = BitSet(2, 1)
   override def toString() = "rw-"
 }
 case object rx   extends Perm {
-  val bits: BitSet                = BitSet(2, 0)
+  val bits: BitSet = BitSet(2, 0)
   override def toString() = "r-x"
 }
 case object wx   extends Perm {
-  val bits: BitSet                = BitSet(1, 0)
+  val bits: BitSet = BitSet(1, 0)
   override def toString() = "-wx"
 }
 case object rwx  extends Perm {
-  val bits: BitSet                = BitSet(2, 1, 0)
+  val bits: BitSet = BitSet(2, 1, 0)
   override def toString() = "rwx"
 }
 
@@ -234,25 +234,28 @@ final case class PermSet(file: FilePerms, perms: (Perm => Unit, () => Perm)*) {
   def octal: String = perms.foldLeft("")((s, p) => s + p._2().octal.toString)
 
   // simule erad/write/exec vars
-  def read: Boolean = perms.foldLeft(true)((b, p) => b & p._2().read)
-  def read_=(b: Boolean): Unit = { if (b) this + (r) else this - (r) }
-  def write: Boolean = perms.foldLeft(true)((b, p) => b & p._2().write)
-  def write_=(b: Boolean): Unit = { if (b) this + (w) else this - (w) }
-  def exec: Boolean = perms.foldLeft(true)((b, p) => b & p._2().exec)
-  def exec_=(b: Boolean): Unit = { if (b) this + (x) else this - (x) }
+  def read:                Boolean = perms.foldLeft(true)((b, p) => b & p._2().read)
+  def read_=(b: Boolean):  Unit    = { if (b) this + (r) else this - (r) }
+  def write:               Boolean = perms.foldLeft(true)((b, p) => b & p._2().write)
+  def write_=(b: Boolean): Unit    = { if (b) this + (w) else this - (w) }
+  def exec:                Boolean = perms.foldLeft(true)((b, p) => b & p._2().exec)
+  def exec_=(b: Boolean):  Unit    = { if (b) this + (x) else this - (x) }
 
 }
 
 object PermSet {
-  val u: FilePerms => PermSet   = (file: FilePerms) => new PermSet(file, (file._u_= _, () => file._u))
-  val g: FilePerms => PermSet   = (file: FilePerms) => new PermSet(file, (file._g_= _, () => file._g))
-  val o: FilePerms => PermSet   = (file: FilePerms) => new PermSet(file, (file._o_= _, () => file._o))
-  val ug: FilePerms => PermSet  = (file: FilePerms) => new PermSet(file, (file._u_= _, () => file._u), (file._g_= _, () => file._g))
-  val uo: FilePerms => PermSet  = (file: FilePerms) => new PermSet(file, (file._u_= _, () => file._u), (file._o_= _, () => file._o))
-  val go: FilePerms => PermSet  = (file: FilePerms) => new PermSet(file, (file._g_= _, () => file._g), (file._o_= _, () => file._o))
+  val u:   FilePerms => PermSet = (file: FilePerms) => new PermSet(file, (file._u_= _, () => file._u))
+  val g:   FilePerms => PermSet = (file: FilePerms) => new PermSet(file, (file._g_= _, () => file._g))
+  val o:   FilePerms => PermSet = (file: FilePerms) => new PermSet(file, (file._o_= _, () => file._o))
+  val ug:  FilePerms => PermSet = (file: FilePerms) =>
+    new PermSet(file, (file._u_= _, () => file._u), (file._g_= _, () => file._g))
+  val uo:  FilePerms => PermSet = (file: FilePerms) =>
+    new PermSet(file, (file._u_= _, () => file._u), (file._o_= _, () => file._o))
+  val go:  FilePerms => PermSet = (file: FilePerms) =>
+    new PermSet(file, (file._g_= _, () => file._g), (file._o_= _, () => file._o))
   val ugo: FilePerms => PermSet = (file: FilePerms) =>
     new PermSet(file, (file._u_= _, () => file._u), (file._g_= _, () => file._g), (file._o_= _, () => file._o))
-  val a: FilePerms => PermSet   = (file: FilePerms) =>
+  val a:   FilePerms => PermSet = (file: FilePerms) =>
     new PermSet(file, (file._u_= _, () => file._u), (file._g_= _, () => file._g), (file._o_= _, () => file._o))
 }
 
@@ -262,14 +265,14 @@ class FilePerms( // special bits have to be explicitly set
     var _o: Perm = none
 ) {
 
-  val u: PermSet   = PermSet.u(this)
-  val g: PermSet   = PermSet.g(this)
-  val o: PermSet   = PermSet.o(this)
-  val ug: PermSet  = PermSet.ug(this)
-  val uo: PermSet  = PermSet.uo(this)
-  val go: PermSet  = PermSet.go(this)
+  val u:   PermSet = PermSet.u(this)
+  val g:   PermSet = PermSet.g(this)
+  val o:   PermSet = PermSet.o(this)
+  val ug:  PermSet = PermSet.ug(this)
+  val uo:  PermSet = PermSet.uo(this)
+  val go:  PermSet = PermSet.go(this)
   val ugo: PermSet = PermSet.ugo(this)
-  val a: PermSet   = PermSet.a(this)
+  val a:   PermSet = PermSet.a(this)
 
   def octal: String = "%s%s%s".format(_u.octal.toString, _g.octal.toString, _o.octal.toString)
 

@@ -84,7 +84,7 @@ class TestMigrateJsonTechniquesToYaml extends Specification with ContentMatchers
   val gitMock = new MockGitConfigRepo("", "configuration-repository-migrate-json-8_0")
 
   // a place to keep the metadata.xml of the migrated technique
-  val technique_with_blocks_metadata_save: File     = gitMock.abstractRoot / "technique_with_blocks_metadata_save"
+  val technique_with_blocks_metadata_save:     File = gitMock.abstractRoot / "technique_with_blocks_metadata_save"
   val technique_with_parameters_metadata_save: File = gitMock.abstractRoot / "technique_with_parameters_metadata_save"
 
   val techMock: MockTechniques = MockTechniques(gitMock)

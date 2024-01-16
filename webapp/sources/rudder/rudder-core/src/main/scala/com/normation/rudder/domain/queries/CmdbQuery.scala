@@ -65,8 +65,8 @@ import net.liftweb.json._
 import net.liftweb.json.JsonDSL._
 import org.joda.time.DateTime
 import org.joda.time.format.DateTimeFormat
-import scala.xml._
 import org.joda.time.format.DateTimeFormatter
+import scala.xml._
 
 sealed trait CriterionComparator {
   val id: String
@@ -266,9 +266,9 @@ case object NodeStateComparator extends NodeCriterionType {
 }
 
 case object NodeOstypeComparator extends NodeCriterionType {
-  val osTypes: List[String]                                                                        = List("AIX", "BSD", "Linux", "Solaris", "Windows")
-  override def comparators: Seq[BaseComparator]                                                           = Seq(Equals, NotEquals)
-  override protected def validateSubCase(v: String, comparator: CriterionComparator): PureResult[String] = {
+  val osTypes:                                                                        List[String]        = List("AIX", "BSD", "Linux", "Solaris", "Windows")
+  override def comparators:                                                           Seq[BaseComparator] = Seq(Equals, NotEquals)
+  override protected def validateSubCase(v: String, comparator: CriterionComparator): PureResult[String]  = {
     if (null == v || v.isEmpty) Left(Inconsistency("Empty string not allowed")) else Right(v)
   }
 
@@ -301,8 +301,8 @@ case object NodeOsNameComparator extends NodeCriterionType {
     (SolarisOS :: Nil) :::
     WindowsType.allKnownTypes
 
-  override def comparators: Seq[BaseComparator]                                                           = Seq(Equals, NotEquals)
-  override protected def validateSubCase(v: String, comparator: CriterionComparator): PureResult[String] = {
+  override def comparators:                                                           Seq[BaseComparator] = Seq(Equals, NotEquals)
+  override protected def validateSubCase(v: String, comparator: CriterionComparator): PureResult[String]  = {
     if (null == v || v.isEmpty) Left(Inconsistency("Empty string not allowed")) else Right(v)
   }
 
@@ -512,7 +512,7 @@ sealed trait LDAPCriterionType extends CriterionType {
 //a comparator type with undefined comparators
 final case class BareComparator(override val comparators: CriterionComparator*) extends LDAPCriterionType {
   override protected def validateSubCase(v: String, comparator: CriterionComparator): PureResult[String] = Right(v)
-  override def toLDAP(value: String): PureResult[String]                                                 = Right(value)
+  override def toLDAP(value: String):                                                 PureResult[String] = Right(value)
 }
 
 sealed trait TStringComparator extends LDAPCriterionType {
@@ -526,7 +526,7 @@ sealed trait TStringComparator extends LDAPCriterionType {
       }
     }
   }
-  override def toLDAP(value: String): PureResult[String]                                                 = Right(value)
+  override def toLDAP(value: String):                                                 PureResult[String] = Right(value)
 
   protected def escapedFilter(attributeName: String, value: String): Filter = {
     BuildFilter(attributeName + "=" + Filter.encodeValue(value))
@@ -576,27 +576,27 @@ case object OrderedStringComparator extends TStringComparator {
 }
 
 case object DateComparator extends LDAPCriterionType {
-  override val comparators: Seq[CriterionComparator]               = OrderedComparators.comparators.filterNot(c => c == Regex || c == NotRegex)
-  val fmt                                = "dd/MM/yyyy"
-  val frenchFmt: DateTimeFormatter                          = DateTimeFormat.forPattern(fmt).withLocale(Locale.FRANCE)
-  def error(value: String, e: Exception): Inconsistency = Inconsistency(
+  override val comparators: Seq[CriterionComparator] = OrderedComparators.comparators.filterNot(c => c == Regex || c == NotRegex)
+  val fmt = "dd/MM/yyyy"
+  val frenchFmt:                          DateTimeFormatter = DateTimeFormat.forPattern(fmt).withLocale(Locale.FRANCE)
+  def error(value: String, e: Exception): Inconsistency     = Inconsistency(
     s"Invalid date: '${value}', expected format is: '${fmt}'. Error was: ${e.getMessage}"
   )
 
-  override protected def validateSubCase(v: String, comparator: CriterionComparator): PureResult[String] = try {
+  override protected def validateSubCase(v: String, comparator: CriterionComparator): PureResult[String]          = try {
     Right(frenchFmt.parseDateTime(v).toString)
   } catch {
     case e: Exception =>
       Left(error(v, e))
   }
   // init a jquery datepicker
-  override def initForm(formId: String): JsCmd = OnLoad(JsRaw("""var init = $.datepicker.regional['en'];
+  override def initForm(formId: String):                                              JsCmd                       = OnLoad(JsRaw("""var init = $.datepicker.regional['en'];
        init['showOn'] = 'focus';
        init['dateFormat'] = 'dd/mm/yy';
        $('#%s').datepicker(init);
        """.format(formId)))
-  override def destroyForm(formId: String): JsCmd = OnLoad(JsRaw("""$('#%s').datepicker( "destroy" );""".format(formId)))
-  override def toLDAP(value: String): Either[RudderError,String] = parseDate(value).map(GeneralizedTime(_).toString)
+  override def destroyForm(formId: String):                                           JsCmd                       = OnLoad(JsRaw("""$('#%s').datepicker( "destroy" );""".format(formId)))
+  override def toLDAP(value: String):                                                 Either[RudderError, String] = parseDate(value).map(GeneralizedTime(_).toString)
 
   private[this] def parseDate(value: String): PureResult[DateTime] = try {
     val date = frenchFmt.parseDateTime(value)
@@ -637,25 +637,25 @@ case object DateComparator extends LDAPCriterionType {
 }
 
 case object BooleanComparator extends LDAPCriterionType {
-  override val comparators                                                           = BaseComparators.comparators
+  override val comparators = BaseComparators.comparators
   override protected def validateSubCase(v: String, comparator: CriterionComparator): PureResult[String] = v.toLowerCase match {
     case "t" | "f" | "true" | "false" => Right(v)
     case _                            => Left(Inconsistency(s"Bad input: boolean expected, '${v}' found"))
   }
-  override def toLDAP(v: String): PureResult[String]                                                     = v.toLowerCase match {
+  override def toLDAP(v: String):                                                     PureResult[String] = v.toLowerCase match {
     case "t" | "f" | "true" | "false" => Right(v)
     case _                            => Left(Inconsistency(s"Bad input: boolean expected, '${v}' found"))
   }
 }
 
 case object LongComparator extends LDAPCriterionType {
-  override val comparators                                                           = OrderedComparators.comparators
+  override val comparators = OrderedComparators.comparators
   override protected def validateSubCase(v: String, comparator: CriterionComparator): PureResult[String] = try {
     Right((v.toLong).toString)
   } catch {
     case e: Exception => Left(Inconsistency(s"Invalid long : '${v}'"))
   }
-  override def toLDAP(v: String): PureResult[String]                                                     = try {
+  override def toLDAP(v: String):                                                     PureResult[String] = try {
     Right((v.toLong).toString)
   } catch {
     case e: Exception => Left(Inconsistency(s"Invalid long : '${v}'"))
@@ -663,7 +663,7 @@ case object LongComparator extends LDAPCriterionType {
 }
 
 case object MemoryComparator extends LDAPCriterionType {
-  override val comparators                                                           = OrderedComparators.comparators
+  override val comparators = OrderedComparators.comparators
   override protected def validateSubCase(v: String, comparator: CriterionComparator): PureResult[String] = {
     comparator match {
       case Regex | NotRegex => validateRegex(v)
@@ -683,8 +683,8 @@ case object MachineComparator extends LDAPCriterionType {
 
   val machineTypes: List[String] = "Virtual" :: "Physical" :: Nil
 
-  override def comparators: Seq[BaseComparator]                                                           = Seq(Equals, NotEquals)
-  override protected def validateSubCase(v: String, comparator: CriterionComparator): PureResult[String] = {
+  override def comparators:                                                           Seq[BaseComparator] = Seq(Equals, NotEquals)
+  override protected def validateSubCase(v: String, comparator: CriterionComparator): PureResult[String]  = {
     if (null == v || v.isEmpty) Left(Inconsistency("Empty string not allowed")) else Right(v)
   }
 
@@ -728,8 +728,8 @@ final case object VmTypeComparator extends LDAPCriterionType {
     (OC_VM_XEN, "XEN")
   )
 
-  override def comparators: Seq[BaseComparator]                                                           = Seq(Equals, NotEquals)
-  override protected def validateSubCase(v: String, comparator: CriterionComparator): PureResult[String] = {
+  override def comparators:                                                           Seq[BaseComparator] = Seq(Equals, NotEquals)
+  override protected def validateSubCase(v: String, comparator: CriterionComparator): PureResult[String]  = {
     if (null == v || v.isEmpty) Left(Inconsistency("Empty string not allowed")) else Right(v)
   }
 
@@ -770,14 +770,14 @@ case object AgentComparator extends LDAPCriterionType {
     ((ANY_CFENGINE, "Any CFEngine based agent"), (ANY_CFENGINE, AgentType.CfeCommunity :: AgentType.CfeEnterprise :: Nil))
   val allAgents             = AgentType.allValues.toList
 
-  val agentTypes: List[(String, String)] = (cfeTypes :: allAgents.map(a => (a.oldShortName, (a.displayName)))).sortBy(_._2)
-  val agentMap: Map[String,List[AgentType]]   = (cfeAgents :: allAgents.map(a => (a.oldShortName, a :: Nil))).toMap
+  val agentTypes: List[(String, String)]       = (cfeTypes :: allAgents.map(a => (a.oldShortName, (a.displayName)))).sortBy(_._2)
+  val agentMap:   Map[String, List[AgentType]] = (cfeAgents :: allAgents.map(a => (a.oldShortName, a :: Nil))).toMap
 
-  override def comparators: Seq[BaseComparator]                                                           = Seq(Equals, NotEquals)
-  override protected def validateSubCase(v: String, comparator: CriterionComparator): PureResult[String] = {
+  override def comparators:                                                           Seq[BaseComparator] = Seq(Equals, NotEquals)
+  override protected def validateSubCase(v: String, comparator: CriterionComparator): PureResult[String]  = {
     if (null == v || v.isEmpty) Left(Inconsistency("Empty string not allowed")) else Right(v)
   }
-  override def toLDAP(value: String): PureResult[String]                                                 = Right(value)
+  override def toLDAP(value: String):                                                 PureResult[String]  = Right(value)
 
   /*
    * We need compatibility for < 4.2 inventory
@@ -821,11 +821,11 @@ case object AgentComparator extends LDAPCriterionType {
 }
 
 case object EditorComparator extends LDAPCriterionType {
-  val editors: List[String]                                                                        = List("Microsoft", "RedHat", "Debian", "Adobe", "Macromedia")
-  override val comparators                                                           = BaseComparators.comparators
+  val editors: List[String] = List("Microsoft", "RedHat", "Debian", "Adobe", "Macromedia")
+  override val comparators = BaseComparators.comparators
   override protected def validateSubCase(v: String, comparator: CriterionComparator): PureResult[String] =
     if (editors.contains(v)) Right(v) else Left(Inconsistency(s"Invalide editor : '${v}'"))
-  override def toForm(value: String, func: String => Any, attrs: (String, String)*): Elem = {
+  override def toForm(value: String, func: String => Any, attrs: (String, String)*):  Elem               = {
     SHtml.select(
       (editors map (e => (e, e))).toSeq,
       if (editors.contains(value)) Full(value) else Empty,
@@ -833,7 +833,7 @@ case object EditorComparator extends LDAPCriterionType {
       attrs: _*
     )
   }
-  override def toLDAP(value: String): PureResult[String] = Right(value)
+  override def toLDAP(value: String):                                                 PureResult[String] = Right(value)
 }
 
 /*
@@ -851,11 +851,11 @@ case object EditorComparator extends LDAPCriterionType {
 final case class JsonFixedKeyComparator(ldapAttr: String, jsonKey: String, quoteValue: Boolean) extends TStringComparator {
   override val comparators = BaseComparators.comparators
 
-  def format(attribute: String, value: String): String = {
+  def format(attribute: String, value: String):              String                  = {
     val v = if (quoteValue) s""""$value"""" else value
     s""""${attribute}":${v}"""
   }
-  def regex(attribute: String, value: String): String  = {
+  def regex(attribute: String, value: String):               String                  = {
     s".*${format(attribute, value)}.*"
   }
   override def buildRegex(attribute: String, value: String): PureResult[RegexFilter] = {
@@ -1055,7 +1055,7 @@ sealed trait QueryReturnType {
 }
 
 case object QueryReturnType {
-  def apply(value: String): Either[Inconsistency,QueryReturnType] = {
+  def apply(value: String): Either[Inconsistency, QueryReturnType] = {
     value match {
       case NodeReturnType.value              => Right(NodeReturnType)
       case NodeAndRootServerReturnType.value => Right(NodeAndRootServerReturnType)

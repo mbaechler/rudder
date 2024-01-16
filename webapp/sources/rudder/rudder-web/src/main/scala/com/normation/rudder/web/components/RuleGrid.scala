@@ -169,7 +169,9 @@ class RuleGrid(
     "reports-report"
   )
 
-  def dispatch: PartialFunction[String,NodeSeq => NodeSeq] = { case "rulesGrid" => { (_: NodeSeq) => rulesGridWithUpdatedInfo(None, true, false) } }
+  def dispatch: PartialFunction[String, NodeSeq => NodeSeq] = {
+    case "rulesGrid" => { (_: NodeSeq) => rulesGridWithUpdatedInfo(None, true, false) }
+  }
 
   /**
    * Display all the rules. All data are charged asynchronously.

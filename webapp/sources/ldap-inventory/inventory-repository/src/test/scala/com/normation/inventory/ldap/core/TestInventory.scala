@@ -69,7 +69,7 @@ final case class SystemError(cause: Throwable) extends RudderError {
 class TestInventory extends Specification {
 
   implicit class RunThing[E, T](thing: ZIO[Any, E, T])      {
-    def testRun: Either[E,T] = ZioRuntime.unsafeRun(thing.either)
+    def testRun: Either[E, T] = ZioRuntime.unsafeRun(thing.either)
   }
   implicit class RunOptThing[A](thing: IOResult[Option[A]]) {
     def testRunGet: A = ZioRuntime.unsafeRun(thing.either) match {
@@ -80,7 +80,7 @@ class TestInventory extends Specification {
   }
 
   implicit class TestIsOK[E, T](thing: ZIO[Any, E, T]) {
-    def isOK: MatchResult[Either[E,T]] = thing.testRun must beRight
+    def isOK: MatchResult[Either[E, T]] = thing.testRun must beRight
   }
 
   implicit class ForceGetE[E, A](opt: Either[E, A]) {
@@ -163,7 +163,7 @@ class TestInventory extends Specification {
   val allStatus: Seq[InventoryStatus] = Seq(RemovedInventory, PendingInventory, AcceptedInventory)
 
   // shortcut to create a machine with the name has ID in the given status
-  def machine(name: String, status: InventoryStatus): MachineInventory                                         = MachineInventory(
+  def machine(name: String, status: InventoryStatus):                                         MachineInventory = MachineInventory(
     MachineUuid(name),
     status,
     PhysicalMachineType,
@@ -185,7 +185,7 @@ class TestInventory extends Specification {
   )
   // shortcut to create a node with the name has ID and the given machine, in the
   // given status, has container.
-  def node(name: String, status: InventoryStatus, container: (MachineUuid, InventoryStatus)): NodeInventory = NodeInventory(
+  def node(name: String, status: InventoryStatus, container: (MachineUuid, InventoryStatus)): NodeInventory    = NodeInventory(
     NodeSummary(
       NodeId(name),
       status,

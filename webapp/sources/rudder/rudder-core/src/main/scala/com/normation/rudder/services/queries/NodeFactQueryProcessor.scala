@@ -97,8 +97,9 @@ object GroupAnd extends Group {
       case _           => NodeFactMatcher(s"(${a.debugString}) && (${b.debugString})", (n: CoreNodeFact) => (a.matches(n) && b.matches(n)))
     }
   }
-  def inverse(a: NodeFactMatcher): NodeFactMatcher                     = NodeFactMatcher(s"!(${a.debugString})", (n: CoreNodeFact) => a.matches(n).map(!_))
-  val zero: NodeFactMatcher                                            = NodeFactMatcher("true", _ => true.succeed)
+  def inverse(a: NodeFactMatcher):                     NodeFactMatcher =
+    NodeFactMatcher(s"!(${a.debugString})", (n: CoreNodeFact) => a.matches(n).map(!_))
+  val zero:                                            NodeFactMatcher = NodeFactMatcher("true", _ => true.succeed)
 }
 
 object GroupOr extends Group {
@@ -109,8 +110,9 @@ object GroupOr extends Group {
       case _           => NodeFactMatcher(s"(${a.debugString}) || (${b.debugString})", (n: CoreNodeFact) => (a.matches(n) || b.matches(n)))
     }
   }
-  def inverse(a: NodeFactMatcher): NodeFactMatcher                     = NodeFactMatcher(s"!(${a.debugString})", (n: CoreNodeFact) => a.matches(n).map(!_))
-  val zero: NodeFactMatcher                                            = NodeFactMatcher("false", _ => false.succeed)
+  def inverse(a: NodeFactMatcher):                     NodeFactMatcher =
+    NodeFactMatcher(s"!(${a.debugString})", (n: CoreNodeFact) => a.matches(n).map(!_))
+  val zero:                                            NodeFactMatcher = NodeFactMatcher("false", _ => false.succeed)
 }
 
 class NodeFactQueryProcessor(

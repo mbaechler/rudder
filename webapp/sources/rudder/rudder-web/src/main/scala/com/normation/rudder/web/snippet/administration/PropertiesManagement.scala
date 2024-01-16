@@ -55,6 +55,7 @@ import com.normation.rudder.web.components.AgentPolicyModeEditForm
 import com.normation.rudder.web.components.AgentScheduleEditForm
 import com.normation.rudder.web.components.ComplianceModeEditForm
 import java.nio.charset.StandardCharsets
+import java.nio.file.attribute.PosixFilePermission
 import net.liftweb.common._
 import net.liftweb.http._
 import net.liftweb.http.SHtml._
@@ -65,7 +66,6 @@ import net.liftweb.util._
 import net.liftweb.util.Helpers._
 import scala.xml.NodeSeq
 import scala.xml.Text
-import java.nio.file.attribute.PosixFilePermission
 
 /**
  * This class manage the displaying of user configured properties.
@@ -95,7 +95,7 @@ class PropertiesManagement extends DispatchSnippet with Loggable {
     NodeSeq.Empty
   }
 
-  def dispatch: PartialFunction[String,NodeSeq => NodeSeq] = {
+  def dispatch: PartialFunction[String, NodeSeq => NodeSeq] = {
     case "changeMessage"                      => changeMessageConfiguration
     case "denyBadClocks"                      => cfserverNetworkConfiguration
     case "relaySynchronizationMethod"         => relaySynchronizationMethodManagement
@@ -480,7 +480,7 @@ class PropertiesManagement extends DispatchSnippet with Loggable {
     () => startNewPolicyGeneration()
   )
 
-  val complianceModeEditForm: ComplianceModeEditForm[GlobalComplianceMode]  = {
+  val complianceModeEditForm:  ComplianceModeEditForm[GlobalComplianceMode] = {
     val globalMode = configService.rudder_compliance_mode().toBox
     new ComplianceModeEditForm[GlobalComplianceMode](
       globalMode,
@@ -491,10 +491,10 @@ class PropertiesManagement extends DispatchSnippet with Loggable {
       globalMode
     )
   }
-  val agentPolicyModeEditForm: AgentPolicyModeEditForm = {
+  val agentPolicyModeEditForm: AgentPolicyModeEditForm                      = {
     new AgentPolicyModeEditForm()
   }
-  def getSchedule(): Box[AgentRunInterval] = {
+  def getSchedule():           Box[AgentRunInterval]                        = {
     for {
       starthour <- configService.agent_run_start_hour()
       startmin  <- configService.agent_run_start_minute()
@@ -528,7 +528,7 @@ class PropertiesManagement extends DispatchSnippet with Loggable {
 
   def cfagentScheduleConfiguration = agentScheduleEditForm.cfagentScheduleConfiguration
   def agentPolicyModeConfiguration: NodeSeq = agentPolicyModeEditForm.cfagentPolicyModeConfiguration(None)
-  def complianceModeConfiguration  = complianceModeEditForm.complianceModeConfiguration
+  def complianceModeConfiguration = complianceModeEditForm.complianceModeConfiguration
 
   def cfengineGlobalProps: NodeSeq => NodeSeq = { (xml: NodeSeq) =>
     //  initial values, updated on successful submit

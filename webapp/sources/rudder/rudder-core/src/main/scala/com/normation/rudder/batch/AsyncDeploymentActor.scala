@@ -227,7 +227,7 @@ final class AsyncDeploymentActor(
     }
   }
 
-  override protected def lowPriority: PartialFunction[Any,Unit] = {
+  override protected def lowPriority: PartialFunction[Any, Unit] = {
 
     //
     // Start a new deployment. Some triggers can be inhibited with
@@ -490,7 +490,7 @@ final class AsyncDeploymentActor(
       bootSemaphore.await *> managedErr
     }
 
-    override protected def messageHandler: PartialFunction[Any,Unit] = {
+    override protected def messageHandler: PartialFunction[Any, Unit] = {
       //
       // Start a new deployment. Wait for the guard to be released (in `Boot.boot`).
       // Each generation can be delayed by a given duration with the `rudder_generation_delay` setting.

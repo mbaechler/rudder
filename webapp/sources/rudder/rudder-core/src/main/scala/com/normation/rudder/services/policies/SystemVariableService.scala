@@ -159,15 +159,16 @@ class SystemVariableServiceImpl(
         )
       )
   }
-  val reportsDbUrl: String  = reportsDbUri.replace(s"""jdbc:postgresql://""", s"""postgresql://${reportsDbUser}@""")
+  val reportsDbUrl:  String = reportsDbUri.replace(s"""jdbc:postgresql://""", s"""postgresql://${reportsDbUser}@""")
 
-  val varToolsFolder: SystemVariable                = systemVariableSpecService.get("TOOLS_FOLDER").toVariable(Seq(toolsFolder))
-  val varWebdavUser: SystemVariable                 = systemVariableSpecService.get("DAVUSER").toVariable(Seq(webdavUser))
-  val varWebdavPassword: SystemVariable             = systemVariableSpecService.get("DAVPASSWORD").toVariable(Seq(webdavPassword))
-  val varSharedFilesFolder: SystemVariable          = systemVariableSpecService.get("SHARED_FILES_FOLDER").toVariable(Seq(sharedFilesFolder))
-  val varPolicyDistribCfenginePort: SystemVariable  =
+  val varToolsFolder:                SystemVariable = systemVariableSpecService.get("TOOLS_FOLDER").toVariable(Seq(toolsFolder))
+  val varWebdavUser:                 SystemVariable = systemVariableSpecService.get("DAVUSER").toVariable(Seq(webdavUser))
+  val varWebdavPassword:             SystemVariable = systemVariableSpecService.get("DAVPASSWORD").toVariable(Seq(webdavPassword))
+  val varSharedFilesFolder:          SystemVariable =
+    systemVariableSpecService.get("SHARED_FILES_FOLDER").toVariable(Seq(sharedFilesFolder))
+  val varPolicyDistribCfenginePort:  SystemVariable =
     systemVariableSpecService.get("COMMUNITYPORT").toVariable(Seq(policyDistribCfenginePort.toString))
-  val varPolicyDistribHttpsPort: SystemVariable     =
+  val varPolicyDistribHttpsPort:     SystemVariable =
     systemVariableSpecService.get("HTTPS_POLICY_DISTRIBUTION_PORT").toVariable(Seq(policyDistribHttpsPort.toString))
   val configurationRepositoryFolder: SystemVariable =
     systemVariableSpecService.get("CONFIGURATION_REPOSITORY_FOLDER").toVariable(Seq(configurationRepository))

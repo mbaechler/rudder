@@ -53,6 +53,6 @@ class EventLogsViewer extends DispatchSnippet with Loggable {
     repos.getEventLogByCriteria(None, Some(1000), List(Fragment.const("id DESC"))).toBox
   }
 
-  def dispatch: PartialFunction[String,NodeSeq => NodeSeq] = { case "display" => _ => eventList.display(() => getLastEvents) }
+  def dispatch: PartialFunction[String, NodeSeq => NodeSeq] = { case "display" => _ => eventList.display(() => getLastEvents) }
 
 }

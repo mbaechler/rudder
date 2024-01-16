@@ -33,7 +33,7 @@ import org.joda.time.format.ISODateTimeFormat
 object Utils {
 
   implicit class DateToIsoString(private val dateTime: DateTime) {
-    def toIsoString: String         = dateTime.toString(ISODateTimeFormat.basicDateTime())
+    def toIsoString:         String = dateTime.toString(ISODateTimeFormat.basicDateTime())
     def toIsoStringNoMillis: String = dateTime.toString(ISODateTimeFormat.basicDateTimeNoMillis())
   }
 

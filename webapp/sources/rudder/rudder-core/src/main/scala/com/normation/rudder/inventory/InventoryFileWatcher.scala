@@ -98,7 +98,7 @@ object InventoryProcessingUtils {
   def makeManagedStream(file: File, kind: String = "inventory"): IOManaged[InputStream] = IOManaged.makeM[InputStream] {
     IOResult.attempt(s"Error when trying to read ${kind} file '${file.name}'")(file.newInputStream)
   }(_.close())
-  def makeFileExists(file: File): IOManaged[Boolean]                                = IOManaged.make[Boolean](file.exists)(_ => ())
+  def makeFileExists(file: File):                                IOManaged[Boolean]     = IOManaged.make[Boolean](file.exists)(_ => ())
 }
 
 /**
@@ -113,12 +113,12 @@ class InventoryFileWatcher(
     collectOldInventoriesFrequency: Duration // how often you check for old inventories
 ) {
 
-  val takeCareOfUnprocessedFileAfter: Duration = 3.minutes
-  val semaphore: Semaphore                      = Semaphore.make(1).runNow
+  val takeCareOfUnprocessedFileAfter: Duration  = 3.minutes
+  val semaphore:                      Semaphore = Semaphore.make(1).runNow
 
   val incoming: File = File(incomingInventoryPath)
   InventoryProcessingUtils.logDirPerm(incoming, "Incoming")
-  val updated: File  = File(updatedInventoryPath)
+  val updated:  File = File(updatedInventoryPath)
   InventoryProcessingUtils.logDirPerm(updated, "Accepted nodes updates")
 
   // service for cleaning
@@ -146,7 +146,7 @@ class InventoryFileWatcher(
   // That reference holds watcher instance to be able to stop them if asked
   val ref: Ref.Synchronized[Option[Watchers]] = Ref.Synchronized.make(Option.empty[Watchers]).runNow
 
-  def startWatcher(): Either[RudderError,Unit] = semaphore
+  def startWatcher(): Either[RudderError, Unit] = semaphore
     .withPermit(
       ref.updateZIO(opt => {
         opt match {
@@ -172,7 +172,7 @@ class InventoryFileWatcher(
     .either
     .runNow
 
-  def stopWatcher(): Either[RudderError,Unit] = semaphore
+  def stopWatcher(): Either[RudderError, Unit] = semaphore
     .withPermit(
       ref.updateZIO(opt => {
         opt match {
@@ -509,7 +509,7 @@ class SchedulerMissedNotify(
     checker: CheckExistingInventoryFiles,
     period:  Duration
 ) {
-  val schedule: URIO[Any,Fiber.Runtime[Nothing,Nothing]] = {
+  val schedule: URIO[Any, Fiber.Runtime[Nothing, Nothing]] = {
     def loop(d: Duration) = for {
       _ <- checker.checkFilesOlderThan(d)
       _ <- ZIO.clockWith(_.sleep(period))
@@ -538,8 +538,8 @@ class ProcessFile(
     prioIncomingDirPath: String
 ) extends HandleIncomingInventoryFile {
 
-  val prioIncomingDir: File = File(prioIncomingDirPath)
-  val sign: String            = if (InventoryProcessingUtils.signExtension.charAt(0) == '.') {
+  val prioIncomingDir: File   = File(prioIncomingDirPath)
+  val sign:            String = if (InventoryProcessingUtils.signExtension.charAt(0) == '.') {
     InventoryProcessingUtils.signExtension
   } else {
     "." + InventoryProcessingUtils.signExtension
@@ -568,7 +568,8 @@ class ProcessFile(
    * The task is configured to be processed after some delay.
    * We only modify that map as a result of a dequeue event.
    */
-  val toBeProcessed: Ref.Synchronized[Map[File,Fiber[RudderError,Unit]]] = ZioRuntime.unsafeRun(zio.Ref.Synchronized.make(Map.empty[File, Fiber[RudderError, Unit]]))
+  val toBeProcessed: Ref.Synchronized[Map[File, Fiber[RudderError, Unit]]] =
+    ZioRuntime.unsafeRun(zio.Ref.Synchronized.make(Map.empty[File, Fiber[RudderError, Unit]]))
 
   /*
    * We need a queue of add file / file written even to delimit when a file should be
@@ -710,7 +711,7 @@ class ProcessFile(
    * It likely means that we add several "watch event: add" for that file (either copied several time,
    * touched, or inotify event emission not what we thought)
    */
-  val saveInventoryBufferProcessing: ZIO[Any,Nothing,Unit] = {
+  val saveInventoryBufferProcessing: ZIO[Any, Nothing, Unit] = {
     import com.normation.rudder.inventory.StatusLog._
     for {
       fst  <- saveInventoryBuffer.take

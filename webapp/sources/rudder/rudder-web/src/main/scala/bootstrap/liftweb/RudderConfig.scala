@@ -204,6 +204,7 @@ import com.typesafe.config.ConfigException
 import com.typesafe.config.ConfigFactory
 import com.unboundid.ldap.sdk.DN
 import com.unboundid.ldap.sdk.RDN
+import cron4s.CronExpr
 import java.io.File
 import java.nio.file.attribute.PosixFilePermission
 import java.security.Security
@@ -214,12 +215,11 @@ import org.apache.commons.io.FileUtils
 import org.bouncycastle.jce.provider.BouncyCastleProvider
 import org.joda.time.DateTimeZone
 import scala.collection.mutable.Buffer
+import scala.concurrent.duration
 import scala.concurrent.duration.FiniteDuration
 import scala.util.Try
 import zio.{Scheduler => _, System => _, _}
 import zio.syntax._
-import cron4s.CronExpr
-import scala.concurrent.duration
 
 object RUDDER_CHARSET {
   import java.nio.charset.StandardCharsets
@@ -447,12 +447,12 @@ object RudderParsedProperties {
   }
   // other values
 
-  val LDAP_HOST: String                         = config.getString("ldap.host")
-  val LDAP_PORT: Int                         = config.getInt("ldap.port")
-  val LDAP_AUTHDN: String                       = config.getString("ldap.authdn")
-  val LDAP_AUTHPW: String                       = config.getString("ldap.authpw");
+  val LDAP_HOST:                         String         = config.getString("ldap.host")
+  val LDAP_PORT:                         Int            = config.getInt("ldap.port")
+  val LDAP_AUTHDN:                       String         = config.getString("ldap.authdn")
+  val LDAP_AUTHPW:                       String         = config.getString("ldap.authpw");
   filteredPasswords += "ldap.authpw"
-  val LDAP_MAX_POOL_SIZE: Int                = {
+  val LDAP_MAX_POOL_SIZE:                Int            = {
     try {
       config.getInt("ldap.maxPoolSize")
     } catch {
@@ -463,7 +463,7 @@ object RudderParsedProperties {
         2
     }
   }
-  val LDAP_CACHE_NODE_INFO_MIN_INTERVAL: Duration = {
+  val LDAP_CACHE_NODE_INFO_MIN_INTERVAL: Duration       = {
     val x = {
       try {
         config.getInt("ldap.nodeinfo.cache.min.interval")
@@ -481,7 +481,7 @@ object RudderParsedProperties {
       x.millis
     }
   }
-  val RUDDER_DIR_BACKUP: Option[String]                 = {
+  val RUDDER_DIR_BACKUP:                 Option[String] = {
     try {
       config.getString("rudder.dir.backup").trim match {
         case "" => None
@@ -491,13 +491,13 @@ object RudderParsedProperties {
       case ex: ConfigException => None
     }
   }
-  val RUDDER_DIR_DEPENDENCIES: String           = config.getString("rudder.dir.dependencies")
-  val RUDDER_DIR_LOCK: String                   = config.getString("rudder.dir.lock") // TODO no more used ?
-  val RUDDER_DIR_SHARED_FILES_FOLDER: String    = config.getString("rudder.dir.shared.files.folder")
-  val RUDDER_WEBDAV_USER: String                = config.getString("rudder.webdav.user")
-  val RUDDER_WEBDAV_PASSWORD: String            = config.getString("rudder.webdav.password");
+  val RUDDER_DIR_DEPENDENCIES:           String         = config.getString("rudder.dir.dependencies")
+  val RUDDER_DIR_LOCK:                   String         = config.getString("rudder.dir.lock") // TODO no more used ?
+  val RUDDER_DIR_SHARED_FILES_FOLDER:    String         = config.getString("rudder.dir.shared.files.folder")
+  val RUDDER_WEBDAV_USER:                String         = config.getString("rudder.webdav.user")
+  val RUDDER_WEBDAV_PASSWORD:            String         = config.getString("rudder.webdav.password");
   filteredPasswords += "rudder.webdav.password"
-  val CFENGINE_POLICY_DISTRIBUTION_PORT: Int = {
+  val CFENGINE_POLICY_DISTRIBUTION_PORT: Int            = {
     try {
       config.getInt("rudder.policy.distribution.port.cfengine")
     } catch {
@@ -513,7 +513,7 @@ object RudderParsedProperties {
         }
     }
   }
-  val HTTPS_POLICY_DISTRIBUTION_PORT: Int    = {
+  val HTTPS_POLICY_DISTRIBUTION_PORT:    Int            = {
     try {
       config.getInt("rudder.policy.distribution.port.https")
     } catch {
@@ -533,12 +533,12 @@ object RudderParsedProperties {
     }
   }
 
-  val RUDDER_JDBC_DRIVER: String        = config.getString("rudder.jdbc.driver")
-  val RUDDER_JDBC_URL: String           = config.getString("rudder.jdbc.url")
-  val RUDDER_JDBC_USERNAME: String      = config.getString("rudder.jdbc.username")
-  val RUDDER_JDBC_PASSWORD: String      = config.getString("rudder.jdbc.password");
+  val RUDDER_JDBC_DRIVER:        String = config.getString("rudder.jdbc.driver")
+  val RUDDER_JDBC_URL:           String = config.getString("rudder.jdbc.url")
+  val RUDDER_JDBC_USERNAME:      String = config.getString("rudder.jdbc.username")
+  val RUDDER_JDBC_PASSWORD:      String = config.getString("rudder.jdbc.password");
   filteredPasswords += "rudder.jdbc.password"
-  val RUDDER_JDBC_MAX_POOL_SIZE: Int = config.getInt("rudder.jdbc.maxPoolSize")
+  val RUDDER_JDBC_MAX_POOL_SIZE: Int    = config.getInt("rudder.jdbc.maxPoolSize")
 
   val RUDDER_JDBC_BATCH_MAX_SIZE: Int = {
     val x = {
@@ -611,7 +611,7 @@ object RudderParsedProperties {
    * We should homogeneize naming here, ie s/rudder.dir.gitRoot/rudder.dir.gitRootConfigRepo/
    */
   val RUDDER_GIT_ROOT_CONFIG_REPO: String = config.getString("rudder.dir.gitRoot")
-  val RUDDER_GIT_ROOT_FACT_REPO: String   = {
+  val RUDDER_GIT_ROOT_FACT_REPO:   String = {
     try {
       config.getString("rudder.dir.gitRootFactRepo")
     } catch {
@@ -619,7 +619,7 @@ object RudderParsedProperties {
     }
   }
 
-  val RUDDER_GIT_FACT_WRITE_NODES: Boolean  = {
+  val RUDDER_GIT_FACT_WRITE_NODES:  Boolean = {
     try {
       config.getBoolean("rudder.facts.repo.writeNodeState")
     } catch {
@@ -634,9 +634,9 @@ object RudderParsedProperties {
     }
   }
 
-  val RUDDER_DIR_TECHNIQUES: String                        = RUDDER_GIT_ROOT_CONFIG_REPO + "/techniques"
-  val RUDDER_BATCH_DYNGROUP_UPDATEINTERVAL: Int         = config.getInt("rudder.batch.dyngroup.updateInterval") // 60 //one hour
-  val RUDDER_BATCH_TECHNIQUELIBRARY_UPDATEINTERVAL: Int =
+  val RUDDER_DIR_TECHNIQUES:                        String = RUDDER_GIT_ROOT_CONFIG_REPO + "/techniques"
+  val RUDDER_BATCH_DYNGROUP_UPDATEINTERVAL:         Int    = config.getInt("rudder.batch.dyngroup.updateInterval") // 60 //one hour
+  val RUDDER_BATCH_TECHNIQUELIBRARY_UPDATEINTERVAL: Int    =
     config.getInt("rudder.batch.techniqueLibrary.updateInterval") // 60 * 5 //five minutes
   val RUDDER_BATCH_REPORTSCLEANER_ARCHIVE_TTL: Int =
     config.getInt("rudder.batch.reportscleaner.archive.TTL") // AutomaticReportsCleaning.defaultArchiveTTL
@@ -656,19 +656,19 @@ object RudderParsedProperties {
       res
     }).getOrElse("2x")
   }
-  val RUDDER_BATCH_REPORTSCLEANER_FREQUENCY: String      =
+  val RUDDER_BATCH_REPORTSCLEANER_FREQUENCY:      String =
     config.getString("rudder.batch.reportscleaner.frequency") // AutomaticReportsCleaning.defaultDay
   val RUDDER_BATCH_DATABASECLEANER_RUNTIME_HOUR: Int =
     config.getInt("rudder.batch.databasecleaner.runtime.hour") // AutomaticReportsCleaning.defaultHour
   val RUDDER_BATCH_DATABASECLEANER_RUNTIME_MINUTE: Int =
     config.getInt("rudder.batch.databasecleaner.runtime.minute") // AutomaticReportsCleaning.defaultMinute
   val RUDDER_BATCH_DATABASECLEANER_RUNTIME_DAY: String = config.getString("rudder.batch.databasecleaner.runtime.day") // "sunday"
-  val RUDDER_BATCH_REPORTS_LOGINTERVAL: Int         = config.getInt("rudder.batch.reports.logInterval")            // 1 //one minute
-  val RUDDER_TECHNIQUELIBRARY_GIT_REFS_PATH    = "refs/heads/master"
+  val RUDDER_BATCH_REPORTS_LOGINTERVAL:         Int    = config.getInt("rudder.batch.reports.logInterval")            // 1 //one minute
+  val RUDDER_TECHNIQUELIBRARY_GIT_REFS_PATH = "refs/heads/master"
   // THIS ONE IS STILL USED FOR USERS USING GIT REPLICATION
-  val RUDDER_AUTOARCHIVEITEMS: Boolean                  = config.getBoolean("rudder.autoArchiveItems")                 // true
-  val RUDDER_REPORTS_EXECUTION_MAX_DAYS: Int        = config.getInt("rudder.batch.storeAgentRunTimes.maxDays")     // In days : 0
-  val RUDDER_REPORTS_EXECUTION_MAX_MINUTES: Int     = {                                                            // Tis is handled at the object creation, days and minutes = 0 => 30 minutes
+  val RUDDER_AUTOARCHIVEITEMS:              Boolean = config.getBoolean("rudder.autoArchiveItems")             // true
+  val RUDDER_REPORTS_EXECUTION_MAX_DAYS:    Int     = config.getInt("rudder.batch.storeAgentRunTimes.maxDays") // In days : 0
+  val RUDDER_REPORTS_EXECUTION_MAX_MINUTES: Int     = {                                                        // Tis is handled at the object creation, days and minutes = 0 => 30 minutes
     try {
       config.getInt("rudder.batch.storeAgentRunTimes.maxMinutes")
     } catch {
@@ -679,7 +679,7 @@ object RudderParsedProperties {
         0
     }
   }
-  val RUDDER_REPORTS_EXECUTION_MAX_SIZE: Int        = {                                                            // In minutes: 5
+  val RUDDER_REPORTS_EXECUTION_MAX_SIZE:    Int     = {                                                        // In minutes: 5
     try {
       config.getInt("rudder.batch.storeAgentRunTimes.maxBatchSize")
     } catch {
@@ -691,7 +691,8 @@ object RudderParsedProperties {
     }
   }
 
-  val RUDDER_REPORTS_EXECUTION_INTERVAL: duration.Duration = config.getInt("rudder.batch.storeAgentRunTimes.updateInterval").seconds.asScala
+  val RUDDER_REPORTS_EXECUTION_INTERVAL: duration.Duration =
+    config.getInt("rudder.batch.storeAgentRunTimes.updateInterval").seconds.asScala
 
   val HISTORY_INVENTORIES_ROOTDIR: String = config.getString("history.inventories.rootdir")
 
@@ -756,7 +757,7 @@ object RudderParsedProperties {
         Duration(15, TimeUnit.SECONDS)
     }
   }
-  val RUDDER_GROUP_OWNER_CONFIG_REPO: String         = {
+  val RUDDER_GROUP_OWNER_CONFIG_REPO:         String   = {
     try {
       config.getString("rudder.config.repo.new.file.group.owner")
     } catch {
@@ -767,7 +768,7 @@ object RudderParsedProperties {
         "rudder"
     }
   }
-  val RUDDER_GROUP_OWNER_GENERATED_POLICIES: String  = {
+  val RUDDER_GROUP_OWNER_GENERATED_POLICIES:  String   = {
     try {
       config.getString("rudder.generated.policies.group.owner")
     } catch {
@@ -810,9 +811,9 @@ object RudderParsedProperties {
 
   // The base directory for hooks. I'm not sure it needs to be configurable
   // as we only use it in generation.
-  val HOOKS_D                      = "/opt/rudder/etc/hooks.d"
-  val UPDATED_NODE_IDS_PATH        = "/var/rudder/policy-generation-info/last-updated-nodeids"
-  val GENERATION_FAILURE_MSG_PATH  = "/var/rudder/policy-generation-info/last-failure-message"
+  val HOOKS_D                     = "/opt/rudder/etc/hooks.d"
+  val UPDATED_NODE_IDS_PATH       = "/var/rudder/policy-generation-info/last-updated-nodeids"
+  val GENERATION_FAILURE_MSG_PATH = "/var/rudder/policy-generation-info/last-failure-message"
   /*
    * This is a parameter for compatibility mode for Rudder 5.0.
    * It should be removed in 5.1 and up.
@@ -889,9 +890,9 @@ object RudderParsedProperties {
   }
 
   val INVENTORY_DIR_INCOMING: String = INVENTORY_ROOT_DIR + "/incoming"
-  val INVENTORY_DIR_FAILED: String   = INVENTORY_ROOT_DIR + "/failed"
+  val INVENTORY_DIR_FAILED:   String = INVENTORY_ROOT_DIR + "/failed"
   val INVENTORY_DIR_RECEIVED: String = INVENTORY_ROOT_DIR + "/received"
-  val INVENTORY_DIR_UPDATE: String   = INVENTORY_ROOT_DIR + "/accepted-nodes-updates"
+  val INVENTORY_DIR_UPDATE:   String = INVENTORY_ROOT_DIR + "/accepted-nodes-updates"
 
   val WATCHER_ENABLE: Boolean = {
     try {
@@ -1077,7 +1078,7 @@ object RudderParsedProperties {
   }
 
   // user clean-up
-  val RUDDER_USERS_CLEAN_CRON: Option[CronExpr]               = (
+  val RUDDER_USERS_CLEAN_CRON:               Option[CronExpr] = (
     try {
       config.getString("rudder.users.cleanup.cron")
     } catch {
@@ -1096,10 +1097,12 @@ object RudderParsedProperties {
       None
     case Right(opt) => opt
   }
-  val RUDDER_USERS_CLEAN_LAST_LOGIN_DISABLE: Duration = parseDuration("rudder.users.cleanup.account.disableAfterLastLogin", 60.days)
-  val RUDDER_USERS_CLEAN_LAST_LOGIN_DELETE: Duration  = parseDuration("rudder.users.cleanup.account.deleteAfterLastLogin", 120.days)
-  val RUDDER_USERS_CLEAN_DELETED_PURGE: Duration      = parseDuration("rudder.users.cleanup.purgeDeletedAfter", 30.days)
-  val RUDDER_USERS_CLEAN_SESSIONS_PURGE: Duration     = parseDuration("rudder.users.cleanup.sessions.purgeAfter", 30.days)
+  val RUDDER_USERS_CLEAN_LAST_LOGIN_DISABLE: Duration         =
+    parseDuration("rudder.users.cleanup.account.disableAfterLastLogin", 60.days)
+  val RUDDER_USERS_CLEAN_LAST_LOGIN_DELETE:  Duration         =
+    parseDuration("rudder.users.cleanup.account.deleteAfterLastLogin", 120.days)
+  val RUDDER_USERS_CLEAN_DELETED_PURGE:      Duration         = parseDuration("rudder.users.cleanup.purgeDeletedAfter", 30.days)
+  val RUDDER_USERS_CLEAN_SESSIONS_PURGE:     Duration         = parseDuration("rudder.users.cleanup.sessions.purgeAfter", 30.days)
 
   def parseDuration(propName: String, default: Duration): Duration = {
     try {

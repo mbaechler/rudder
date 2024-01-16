@@ -178,7 +178,7 @@ object WriteNodeCSV {
       directoryPath:  String,
       csvSeparator:   Char,
       fileDateFormat: String = "yyyy-MM"
-  ): ZIO[Any,SystemError,WriteNodeCSV] = {
+  ): ZIO[Any, SystemError, WriteNodeCSV] = {
     val base = File(directoryPath)
 
     // Check parent directory exists (or can be created) and is writable

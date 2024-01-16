@@ -60,7 +60,7 @@ import scala.xml._
 object CreateCloneDirectivePopup {
   val htmlId_popupContainer = "createCloneDirectiveContainer"
   val htmlId_popup          = "createCloneDirectivePopup"
-  val html: Elem                  = SHtml.ajaxForm(
+  val html: Elem = SHtml.ajaxForm(
     <div id="createCloneDirectiveContainer" class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -97,7 +97,7 @@ class CreateCloneDirectivePopup(
   private[this] val roDirectiveRepository = RudderConfig.roDirectiveRepository
   private[this] val woDirectiveRepository = RudderConfig.woDirectiveRepository
 
-  def dispatch: PartialFunction[String,NodeSeq => NodeSeq] = { case "popupContent" => { _ => popupContent() } }
+  def dispatch: PartialFunction[String, NodeSeq => NodeSeq] = { case "popupContent" => { _ => popupContent() } }
 
   def popupContent(): NodeSeq = {
     ("#techniqueName" #> techniqueName

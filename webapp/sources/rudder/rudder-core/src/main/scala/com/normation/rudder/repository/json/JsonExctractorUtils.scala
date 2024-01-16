@@ -88,10 +88,14 @@ trait JsonExtractorUtils[A[_]] {
     }
   }
 
-  def extractJsonString[T](json: JValue, key: String, convertTo: String => Box[T] = boxedIdentity[String]): Box[A[T]]                    = {
+  def extractJsonString[T](json: JValue, key: String, convertTo: String => Box[T] = boxedIdentity[String]): Box[A[T]] = {
     extractJson(json, key, convertTo, { case JString(value) => value })
   }
-  def extractJsonStringMultipleKeys[T](json: JValue, keys: List[String], convertTo: String => Box[T] = boxedIdentity[String]): Box[A[T]] = {
+  def extractJsonStringMultipleKeys[T](
+      json:      JValue,
+      keys:      List[String],
+      convertTo: String => Box[T] = boxedIdentity[String]
+  ): Box[A[T]] = {
     extractJson(json, keys, convertTo, { case JString(value) => value })
   }
 
@@ -107,7 +111,7 @@ trait JsonExtractorUtils[A[_]] {
     extractJson(json, key, convertTo, { case JInt(value) => value })
   }
 
-  def extractJsonObj[T](json: JValue, key: String, jsonValueFun: JObject => Box[T]): Box[A[T]] = {
+  def extractJsonObj[T](json: JValue, key: String, jsonValueFun: JObject => Box[T]):                    Box[A[T]] = {
     extractJson(json, key, jsonValueFun, { case obj: JObject => obj })
   }
   def extractJsonObjMultipleKeys[T](json: JValue, keys: List[String], jsonValueFun: JObject => Box[T]): Box[A[T]] = {
@@ -166,16 +170,16 @@ trait DataExtractor[T[_]] extends JsonTagExtractor[T]
 object DataExtractor {
 
   object OptionnalJson extends DataExtractor[Option] {
-    def monad                                      = implicitly
-    def emptyValue[T](id: String): Box[Option[T]]                  = Full(None)
-    def getOrElse[T](value: Option[T], default: T): T = value.getOrElse(default)
+    def monad = implicitly
+    def emptyValue[T](id: String):                  Box[Option[T]] = Full(None)
+    def getOrElse[T](value: Option[T], default: T): T              = value.getOrElse(default)
   }
 
   type Id[X] = X
 
   object CompleteJson extends DataExtractor[Id] {
-    def monad                              = implicitly
-    def emptyValue[T](id: String): Box[Id[T]]          = Failure(s"parameter '${id}' cannot be empty")
+    def monad = implicitly
+    def emptyValue[T](id: String): Box[Id[T]] = Failure(s"parameter '${id}' cannot be empty")
     def getOrElse[T](value: T, default: T) = value
   }
 }

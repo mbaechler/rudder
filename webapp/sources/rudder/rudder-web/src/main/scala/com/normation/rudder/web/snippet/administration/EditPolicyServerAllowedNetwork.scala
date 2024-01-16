@@ -56,9 +56,9 @@ import net.liftweb.http._
 import net.liftweb.http.js._
 import net.liftweb.http.js.JE._
 import net.liftweb.http.js.JsCmds._
+import net.liftweb.util.CssSel
 import scala.xml.NodeSeq
 import util.Helpers._
-import net.liftweb.util.CssSel
 
 class EditPolicyServerAllowedNetwork extends DispatchSnippet with Loggable {
 
@@ -75,7 +75,7 @@ class EditPolicyServerAllowedNetwork extends DispatchSnippet with Loggable {
    * these requests have to be considered and lead to the same result.
    */
   private[this] case class VH(id: Long = nextNum, var net: String = "") {
-    override def hashCode       = id.hashCode
+    override def hashCode = id.hashCode
     override def equals(x: Any): Boolean = x match {
       case VH(i, _) => id == i
       case _        => false
@@ -87,7 +87,7 @@ class EditPolicyServerAllowedNetwork extends DispatchSnippet with Loggable {
   // we need to store that out of the form, so that the changes are persisted at redraw
   private[this] val allowedNetworksMap = scala.collection.mutable.Map[NodeId, Buffer[VH]]()
 
-  def dispatch: PartialFunction[String,NodeSeq => NodeSeq] = {
+  def dispatch: PartialFunction[String, NodeSeq => NodeSeq] = {
     case "render" =>
       policyServers match {
         case e: EmptyBox => errorMessage("#allowedNetworksForm", e)

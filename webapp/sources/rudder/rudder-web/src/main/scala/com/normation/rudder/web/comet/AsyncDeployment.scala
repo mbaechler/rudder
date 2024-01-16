@@ -48,8 +48,8 @@ import net.liftweb.http.js._
 import net.liftweb.http.js.JE._
 import net.liftweb.http.js.JsCmds._
 import org.joda.time.DateTime
-import scala.xml._
 import scala.util.matching.Regex
+import scala.xml._
 
 class AsyncDeployment extends CometActor with CometListener with Loggable {
 
@@ -62,7 +62,7 @@ class AsyncDeployment extends CometActor with CometListener with Loggable {
 
   override val defaultHtml = NodeSeq.Empty
 
-  override def lowPriority: PartialFunction[Any,Unit] = { case d: DeploymentStatus => deploymentStatus = d; reRender() }
+  override def lowPriority: PartialFunction[Any, Unit] = { case d: DeploymentStatus => deploymentStatus = d; reRender() }
 
   private[this] def displayTime(label: String, time: DateTime): NodeSeq = {
     val t = time.toString("yyyy-MM-dd HH:mm:ssZ")

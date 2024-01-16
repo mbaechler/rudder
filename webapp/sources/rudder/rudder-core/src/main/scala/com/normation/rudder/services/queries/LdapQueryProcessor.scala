@@ -59,10 +59,10 @@ import com.normation.zio.currentTimeMillis
 import com.unboundid.ldap.sdk.{LDAPConnection => _, SearchScope => _, _}
 import com.unboundid.ldap.sdk.DereferencePolicy.NEVER
 import java.util.regex.Pattern
+import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import zio.{System => _, _}
 import zio.syntax._
-import org.slf4j.Logger
 
 /*
  * We have two type of filters:

@@ -350,7 +350,7 @@ class MockCompliance(mockDirectives: MockDirectives) {
     Rules R1 (applying to G1), R2 (applying to G1 but excluding G2), and R3 (applying to G2 and G3)
      */
 
-    val simpleStatusReports: Map[NodeId,NodeStatusReport] = Map(
+    val simpleStatusReports: Map[NodeId, NodeStatusReport] = Map(
       // R1, R2, R3 apply on N1
       nodeId(1) -> simpleNodeStatusReport(
         nodeId(1),
@@ -495,7 +495,7 @@ class MockCompliance(mockDirectives: MockDirectives) {
       Set(d4.id)
     )
 
-    val complexStatusReports: Map[NodeId,NodeStatusReport] = Map(
+    val complexStatusReports: Map[NodeId, NodeStatusReport] = Map(
       // R1, R2, R3 apply on N1
       nodeId(1) -> simpleNodeStatusReport(
         nodeId(1),

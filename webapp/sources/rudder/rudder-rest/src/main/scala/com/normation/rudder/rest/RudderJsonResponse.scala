@@ -44,9 +44,9 @@ import com.normation.zio._
 import net.liftweb.http.InMemoryResponse
 import net.liftweb.http.LiftResponse
 import scala.annotation.nowarn
+import scala.collection.immutable
 import zio.json._
 import zio.json.DeriveJsonEncoder
-import scala.collection.immutable
 
 /*
  * This class deals with everything serialisation related for API.
@@ -115,10 +115,14 @@ object RudderJsonResponse {
 
   object generic {
     // generic response, not in rudder normalized format - use it if you want an ad-hoc json response.
-    def success[A](json: A)(implicit prettify: Boolean, encoder: JsonEncoder[A]): LiftJsonResponse[A]        = LiftJsonResponse(json, prettify, 200)
-    def internalError[A](json: A)(implicit prettify: Boolean, encoder: JsonEncoder[A]): LiftJsonResponse[A]  = LiftJsonResponse(json, prettify, 500)
-    def notFoundError[A](json: A)(implicit prettify: Boolean, encoder: JsonEncoder[A]): LiftJsonResponse[A]  = LiftJsonResponse(json, prettify, 404)
-    def forbiddenError[A](json: A)(implicit prettify: Boolean, encoder: JsonEncoder[A]): LiftJsonResponse[A] = LiftJsonResponse(json, prettify, 404)
+    def success[A](json: A)(implicit prettify: Boolean, encoder: JsonEncoder[A]):        LiftJsonResponse[A] =
+      LiftJsonResponse(json, prettify, 200)
+    def internalError[A](json: A)(implicit prettify: Boolean, encoder: JsonEncoder[A]):  LiftJsonResponse[A] =
+      LiftJsonResponse(json, prettify, 500)
+    def notFoundError[A](json: A)(implicit prettify: Boolean, encoder: JsonEncoder[A]):  LiftJsonResponse[A] =
+      LiftJsonResponse(json, prettify, 404)
+    def forbiddenError[A](json: A)(implicit prettify: Boolean, encoder: JsonEncoder[A]): LiftJsonResponse[A] =
+      LiftJsonResponse(json, prettify, 404)
   }
 
   trait DataContainer[A] {
@@ -129,7 +133,10 @@ object RudderJsonResponse {
   // rudder response. The "A" parameter is the business object (or list of it) in the response.
   // Success
   @nowarn("msg=parameter encoder .* is never used") // used by magnolia macro
-  def successOne[A](schema: ResponseSchema, obj: A, id: Option[String])(implicit prettify: Boolean, encoder: JsonEncoder[A]): LiftJsonResponse[_ <: JsonRudderApiResponse[_]] = {
+  def successOne[A](schema: ResponseSchema, obj: A, id: Option[String])(implicit
+      prettify:             Boolean,
+      encoder:              JsonEncoder[A]
+  ): LiftJsonResponse[_ <: JsonRudderApiResponse[_]] = {
     schema.dataContainer match {
       case Some(key) =>
         implicit val enc: JsonEncoder[JsonRudderApiResponse[Map[String, List[A]]]] = DeriveJsonEncoder.gen
@@ -140,7 +147,12 @@ object RudderJsonResponse {
     }
   }
   @nowarn("msg=parameter encoder .* is never used") // used by magnolia macro
-  def successList[A](schema: ResponseSchema, objs: List[A])(implicit prettify: Boolean, encoder: JsonEncoder[A]): LiftJsonResponse[_ <: JsonRudderApiResponse[_ <: immutable.Iterable[Any] with PartialFunction[Int with String,Any] with Equals]]             = {
+  def successList[A](schema: ResponseSchema, objs: List[A])(implicit
+      prettify:              Boolean,
+      encoder:               JsonEncoder[A]
+  ): LiftJsonResponse[
+    _ <: JsonRudderApiResponse[_ <: immutable.Iterable[Any] with PartialFunction[Int with String, Any] with Equals]
+  ] = {
     schema.dataContainer match {
       case None      =>
         implicit val enc: JsonEncoder[JsonRudderApiResponse[List[A]]] = DeriveJsonEncoder.gen
@@ -150,24 +162,32 @@ object RudderJsonResponse {
         generic.success(JsonRudderApiResponse.success(schema, None, Map(key -> objs)))
     }
   }
-  def successZero(schema: ResponseSchema, msg: String)(implicit prettify: Boolean): LiftJsonResponse[JsonRudderApiResponse[String]]                                           = {
+  def successZero(schema: ResponseSchema, msg: String)(implicit
+      prettify:           Boolean
+  ): LiftJsonResponse[JsonRudderApiResponse[String]] = {
     implicit val enc = DeriveJsonEncoder.gen[JsonRudderApiResponse[String]]
     generic.success(JsonRudderApiResponse.success(schema, None, msg))
   }
   // errors
-  implicit val nothing: JsonEncoder[Option[Unit]] = new JsonEncoder[Option[Unit]] {
+  implicit val nothing:      JsonEncoder[Option[Unit]]                = new JsonEncoder[Option[Unit]] {
     def unsafeEncode(n: Option[Unit], indent: Option[Int], out: zio.json.internal.Write): Unit    = out.write("null")
     override def isNothing(a: Option[Unit]):                                              Boolean = true
   }
   implicit val errorEncoder: JsonEncoder[JsonRudderApiResponse[Unit]] = DeriveJsonEncoder.gen
 
-  def internalError(id: Option[String], schema: ResponseSchema, errorMsg: String)(implicit prettify: Boolean): LiftJsonResponse[JsonRudderApiResponse[Unit]]  = {
+  def internalError(id: Option[String], schema: ResponseSchema, errorMsg: String)(implicit
+      prettify:         Boolean
+  ): LiftJsonResponse[JsonRudderApiResponse[Unit]] = {
     generic.internalError(JsonRudderApiResponse.error(id, schema, errorMsg))
   }
-  def notFoundError(id: Option[String], schema: ResponseSchema, errorMsg: String)(implicit prettify: Boolean): LiftJsonResponse[JsonRudderApiResponse[Unit]]  = {
+  def notFoundError(id: Option[String], schema: ResponseSchema, errorMsg: String)(implicit
+      prettify:         Boolean
+  ): LiftJsonResponse[JsonRudderApiResponse[Unit]] = {
     generic.notFoundError(JsonRudderApiResponse.error(id, schema, errorMsg))
   }
-  def forbiddenError(id: Option[String], schema: ResponseSchema, errorMsg: String)(implicit prettify: Boolean): LiftJsonResponse[JsonRudderApiResponse[Unit]] = {
+  def forbiddenError(id: Option[String], schema: ResponseSchema, errorMsg: String)(implicit
+      prettify:          Boolean
+  ): LiftJsonResponse[JsonRudderApiResponse[Unit]] = {
     generic.forbiddenError(JsonRudderApiResponse.error(id, schema, errorMsg))
   }
 

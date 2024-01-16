@@ -103,6 +103,8 @@ import com.normation.rudder.rest.data.Rest
 import com.normation.rudder.rest.data.Rest.NodeDetails
 import com.normation.rudder.rest.data.Validation
 import com.normation.rudder.rest.data.Validation.NodeValidationError
+import com.normation.rudder.score.GlobalScore
+import com.normation.rudder.score.Score
 import com.normation.rudder.score.ScoreSerializer
 import com.normation.rudder.score.ScoreService
 import com.normation.rudder.services.nodes.MergeNodeProperties
@@ -147,11 +149,10 @@ import org.joda.time.DateTime
 import scala.collection.MapView
 import scalaj.http.Http
 import scalaj.http.HttpOptions
+import scalaj.http.HttpRequest
 import zio.{System => _, _}
 import zio.stream.ZSink
 import zio.syntax._
-import com.normation.rudder.score.{ GlobalScore, Score }
-import scalaj.http.HttpRequest
 
 /*
  * NodeApi implementation.
@@ -1047,7 +1048,7 @@ class NodeApiService(
     ~ ("inheritedProperties" -> JObject(inheritedProperties.map(s => JField(s.prop.name, s.toApiJsonRenderParents)))))
   }
 
-  def listNodes(req: Req)(implicit qc: QueryContext): ZIO[Any,RudderError,JArray] = {
+  def listNodes(req: Req)(implicit qc: QueryContext): ZIO[Any, RudderError, JArray] = {
     case class PropertyInfo(value: String, inherited: Boolean)
 
     def extractNodePropertyInfo(json: JValue) = {
@@ -1135,7 +1136,7 @@ class NodeApiService(
     }
   }
 
-  def software(req: Req, software: String)(implicit qc: QueryContext): ZIO[Any,RudderError,LiftResponse] = {
+  def software(req: Req, software: String)(implicit qc: QueryContext): ZIO[Any, RudderError, LiftResponse] = {
     import com.normation.box._
 
     for {
@@ -1153,7 +1154,9 @@ class NodeApiService(
     }
   }
 
-  def property(req: Req, property: String, inheritedValue: Boolean)(implicit qc: QueryContext): ZIO[Any,RudderError,LiftResponse] = {
+  def property(req: Req, property: String, inheritedValue: Boolean)(implicit
+      qc:           QueryContext
+  ): ZIO[Any, RudderError, LiftResponse] = {
     // import com.normation.rudder.facts.nodes.NodeFactSerialisation.SimpleCodec.codecNodeProperty
 
     for {
@@ -1297,7 +1300,10 @@ class NodeApiService(
     }
   }
 
-  def nodeDetailsGeneric(nodeId: NodeId, detailLevel: NodeDetailLevel)(implicit prettify: Boolean, qc: QueryContext): LiftResponse = {
+  def nodeDetailsGeneric(nodeId: NodeId, detailLevel: NodeDetailLevel)(implicit
+      prettify:                  Boolean,
+      qc:                        QueryContext
+  ): LiftResponse = {
     implicit val action = "nodeDetails"
     (for {
       accepted  <- getNodeDetails(nodeId, detailLevel, AcceptedInventory)

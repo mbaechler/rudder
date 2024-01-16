@@ -104,7 +104,7 @@ class RuleModificationValidationPopup(
 
   val validationNeeded: Boolean = workflowService.needExternalValidation()
 
-  def dispatch: PartialFunction[String,NodeSeq => NodeSeq] = { case "popupContent" => { _ => popupContent() } }
+  def dispatch: PartialFunction[String, NodeSeq => NodeSeq] = { case "popupContent" => { _ => popupContent() } }
 
   def popupContent(): NodeSeq = {
     import RuleModAction._

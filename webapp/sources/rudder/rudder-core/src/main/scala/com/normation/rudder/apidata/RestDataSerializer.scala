@@ -638,7 +638,7 @@ final case class RestDataSerializerImpl(
     (("name"      -> technique.techniqueName.value)
     ~ ("versions" -> technique.techniques.map(_._1.serialize)))
   }
-  def serializeTechnique(technique: Technique): Json = {
+  def serializeTechnique(technique: Technique):           Json   = {
     zio.json.ast.Json(
       ("name"    -> Str(technique.name)),
       ("id"      -> Str(technique.id.name.value)),

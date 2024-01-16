@@ -41,6 +41,7 @@ import com.normation.cfclerk.domain.AgentConfig
 import com.normation.cfclerk.domain.BundleName
 import com.normation.cfclerk.domain.SectionSpec
 import com.normation.cfclerk.domain.SectionVariableSpec
+import com.normation.cfclerk.domain.Technique
 import com.normation.cfclerk.domain.TechniqueId
 import com.normation.cfclerk.domain.TechniqueName
 import com.normation.cfclerk.domain.TechniqueVersionHelper
@@ -57,11 +58,10 @@ import com.normation.rudder.domain.reports.ExpectedReportsSerialisation.Version7
 import com.normation.rudder.domain.reports.RuleExpectedReports
 import org.joda.time.DateTime
 import org.junit.runner._
+import org.specs2.matcher.MatchResult
 import org.specs2.mutable._
 import org.specs2.runner.JUnitRunner
 import zio.json._
-import com.normation.cfclerk.domain.Technique
-import org.specs2.matcher.MatchResult
 
 /**
  * Test that a NodeConfiguration is correctly transformed to
@@ -81,13 +81,14 @@ class NodeExpectedReportTest extends Specification {
 
   // a technique with a var non multi-valued and a mutivalued section with 2 components
   // a non multivalued var
-  def tvar(x: String): SectionVariableSpec  = SectionVariableSpec(s"var_${x}", "", "INPUT", valueslabels = Nil, providedValues = Nil, id = None)
+  def tvar(x: String):  SectionVariableSpec =
+    SectionVariableSpec(s"var_${x}", "", "INPUT", valueslabels = Nil, providedValues = Nil, id = None)
   // a multivalued var
   def tmvar(x: String): SectionVariableSpec =
     SectionVariableSpec(s"m_var_${x}", "", "INPUT", multivalued = true, valueslabels = Nil, providedValues = Nil, id = None)
 
   // return the couple of (var name, var with value)
-  def v(x: String, values: String*): (ComponentId, SectionVariableSpec#V)  = {
+  def v(x: String, values: String*):  (ComponentId, SectionVariableSpec#V) = {
     val v = tvar(x).toVariable(values)
     (ComponentId(v.spec.name, v.spec.name :: "root" :: Nil, None), v)
   }
@@ -145,7 +146,7 @@ class NodeExpectedReportTest extends Specification {
       Set()
     )
   }
-  val tNoComponent: PolicyTechnique         = {
+  val tNoComponent:         PolicyTechnique = {
     val x = "noComponent"
     PolicyTechnique(
       TechniqueId(TechniqueName("t" + x), TechniqueVersionHelper("1.0")),
@@ -215,16 +216,16 @@ class NodeExpectedReportTest extends Specification {
     ncfTechniqueWithBlocks.useMethodReporting
   )
 
-  val r1: RuleId = RuleId(RuleUid("rule_1"))
-  val r2: RuleId = RuleId(RuleUid("rule_2"))
-  val r3: RuleId = RuleId(RuleUid("rule_3"))
+  val r1: RuleId      = RuleId(RuleUid("rule_1"))
+  val r2: RuleId      = RuleId(RuleUid("rule_2"))
+  val r3: RuleId      = RuleId(RuleUid("rule_3"))
   val d1: DirectiveId = DirectiveId(DirectiveUid("directive_1"))
   val d2: DirectiveId = DirectiveId(DirectiveUid("directive_2"))
   val d3: DirectiveId = DirectiveId(DirectiveUid("directive_3"))
   val d4: DirectiveId = DirectiveId(DirectiveUid("directive_4"))
 
   val p1_id: PolicyId = PolicyId(r1, d1, TechniqueVersionHelper("1.0"))
-  val p1: Policy    = Policy(
+  val p1:    Policy   = Policy(
     p1_id,
     "rule name",
     "directive name",
@@ -254,7 +255,7 @@ class NodeExpectedReportTest extends Specification {
   )
 
   val p2_id: PolicyId = PolicyId(r2, d3, TechniqueVersionHelper("1.0"))
-  val p2: Policy    = Policy(
+  val p2:    Policy   = Policy(
     p2_id,
     "rule name",
     "directive name",
@@ -277,7 +278,7 @@ class NodeExpectedReportTest extends Specification {
   )
 
   val p3_id: PolicyId = PolicyId(r2, d4, TechniqueVersionHelper("1.0"))
-  val p3: Policy    = Policy(
+  val p3:    Policy   = Policy(
     p3_id,
     "rule name",
     "directive name",
@@ -301,7 +302,10 @@ class NodeExpectedReportTest extends Specification {
 
   // compare and json of expected reports with the one produced by RuleExpectedReports.
   // things are sorted and Jnothing values are cleaned up to keep things understandable
-  def compareExpectedReportsJson(expected: List[RuleExpectedReports], policies: List[Policy]): MatchResult[List[RuleExpectedReports]] = {
+  def compareExpectedReportsJson(
+      expected: List[RuleExpectedReports],
+      policies: List[Policy]
+  ): MatchResult[List[RuleExpectedReports]] = {
     val rules = RuleExpectedReportBuilder(policies).sortBy(_.ruleId.serialize)
 
     expected === rules

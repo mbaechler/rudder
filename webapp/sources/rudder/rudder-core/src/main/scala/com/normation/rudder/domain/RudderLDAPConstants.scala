@@ -243,7 +243,7 @@ object RudderLDAPConstants extends Loggable {
   /**
    * Serialize and unserialize variables in A_DIRECTIVE_VARIABLES
    */
-  val VSEP                = ":"
+  val VSEP = ":"
   // '(?m)' => multiligne
   // '(?s)' => . matches \n
   val policyVariableRegex: Regex = """(?m)(?s)([^\[]+)\[(\d+)\]:(.+)""".r

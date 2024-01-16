@@ -44,16 +44,16 @@ import com.normation.inventory.domain.InventoryError
 import com.normation.inventory.services.provisioning._
 import com.normation.utils.NodeIdRegex
 import scala.xml.Elem
+import scala.xml.Node
 import scala.xml.NodeSeq
 import zio._
 import zio.syntax._
-import scala.xml.Node
 
 class PreInventoryParserCheckConsistency extends PreInventoryParser {
   override val name = "post_process_inventory:check_consistency"
 
   implicit class ToInconsistency(msg: String) {
-    def inconsistency: IO[InventoryError.Inconsistency,Nothing] = InventoryError.Inconsistency(msg).fail
+    def inconsistency: IO[InventoryError.Inconsistency, Nothing] = InventoryError.Inconsistency(msg).fail
   }
 
   /**

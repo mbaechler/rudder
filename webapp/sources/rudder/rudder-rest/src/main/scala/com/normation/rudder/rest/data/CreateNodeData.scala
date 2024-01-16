@@ -52,12 +52,12 @@ import com.normation.rudder.rest.data.Creation.CreationError
 import com.normation.rudder.rest.data.NodeTemplate.AcceptedNodeTemplate
 import com.normation.rudder.rest.data.NodeTemplate.PendingNodeTemplate
 import com.typesafe.config.ConfigValue
+import java.util.regex.Pattern
 import net.liftweb.json.JArray
 import net.liftweb.json.JField
 import net.liftweb.json.JObject
 import net.liftweb.json.JString
 import net.liftweb.json.JValue
-import java.util.regex.Pattern
 
 /**
  * Applicative log of interest for Rudder ops.
@@ -282,7 +282,7 @@ object Validation {
     }
   }
   object Machine       {
-    case object MPhysical      extends Machine { val tpe = PhysicalMachineType               }
+    case object MPhysical      extends Machine { val tpe = PhysicalMachineType                                   }
     case object MUnknownVmType extends Machine { val tpe: VirtualMachineType = VirtualMachineType(UnknownVmType) }
     case object MSolarisZone   extends Machine { val tpe: VirtualMachineType = VirtualMachineType(SolarisZone)   }
     case object MVirtualBox    extends Machine { val tpe: VirtualMachineType = VirtualMachineType(VirtualBox)    }
@@ -300,7 +300,8 @@ object Validation {
   object NodeValidationError       {
     def names[T](values: Iterable[T])(show: T => String): String = values.toSeq.map(show).sorted.mkString("'", ", ", "'")
     final case class UUID(x: String)          extends NodeValidationError {
-      val msg: String = s"Only ID matching the shape of an UUID (xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx) are authorized but '${x}' provided"
+      val msg: String =
+        s"Only ID matching the shape of an UUID (xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx) are authorized but '${x}' provided"
     }
     case object Hostname                      extends NodeValidationError { val msg = "Hostname can't be empty" }
     final case class Status(x: String)        extends NodeValidationError {
@@ -335,7 +336,7 @@ object Validation {
 
   // only check shape alike bd645dfe-b4ce-4475-8d52-b7cfa106e333
   // but with any chars in [a-z0-9]
-  val idregex: Pattern = """[a-z0-9]{8}-([a-z0-9]{4}-){3}[a-z0-9]{12}""".r.pattern
+  val idregex:             Pattern                                   = """[a-z0-9]{8}-([a-z0-9]{4}-){3}[a-z0-9]{12}""".r.pattern
   def checkId(id: String): ValidatedNel[NodeValidationError, NodeId] = {
     if (idregex.matcher(id).matches()) NodeId(id).validNel
     else NodeValidationError.UUID(id).invalidNel
@@ -408,7 +409,7 @@ object Validation {
   }
 
   // we only accept node in pending / accepted
-  val allStatus: Set[InventoryStatus] = Set(AcceptedInventory, PendingInventory)
+  val allStatus:                   Set[InventoryStatus]        = Set(AcceptedInventory, PendingInventory)
   def checkStatus(status: String): Validation[InventoryStatus] = checkFind(status, NodeValidationError.Status(status)) { x =>
     allStatus.find(_.name == x)
   }

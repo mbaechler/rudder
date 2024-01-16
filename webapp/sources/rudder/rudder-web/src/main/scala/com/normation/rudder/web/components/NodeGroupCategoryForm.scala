@@ -95,7 +95,7 @@ class NodeGroupCategoryForm(
     case _       => ""
   }
 
-  def dispatch: PartialFunction[String,NodeSeq => NodeSeq] = { case "showForm" => { _ => showForm() } }
+  def dispatch: PartialFunction[String, NodeSeq => NodeSeq] = { case "showForm" => { _ => showForm() } }
 
   def showForm(): NodeSeq = {
     val html = SHtml.ajaxForm(

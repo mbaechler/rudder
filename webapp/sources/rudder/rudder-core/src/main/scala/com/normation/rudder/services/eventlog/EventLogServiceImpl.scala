@@ -39,6 +39,7 @@ package com.normation.rudder.services.eventlog
 
 import cats.data._
 import com.normation.box._
+import com.normation.errors
 import com.normation.eventlog._
 import com.normation.rudder.batch.CurrentDeploymentStatus
 import com.normation.rudder.domain.eventlog._
@@ -47,7 +48,6 @@ import doobie._
 import doobie.implicits._
 import net.liftweb.common._
 import zio.syntax._
-import com.normation.errors
 
 class EventLogDeploymentService(
     val repository:             EventLogRepository,

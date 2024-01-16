@@ -44,7 +44,7 @@ object DATA_6 {
 
   def e(xml: Elem): Elem = <entry>{xml}</entry>
 
-  val data_6: Map[String,MigrationTestLog] = Map(
+  val data_6: Map[String, MigrationTestLog] = Map(
     "rule_add"       -> MigrationTestLog(
       eventType = "RuleAdded",
       data = e(rule_add_6)

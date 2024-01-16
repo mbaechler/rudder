@@ -63,7 +63,7 @@ class NodeStateForm(
     "node-state"
   )
 
-  def dispatch: PartialFunction[String,NodeSeq => NodeSeq] = { case "nodestate" => (xml) => nodeStateConfiguration }
+  def dispatch: PartialFunction[String, NodeSeq => NodeSeq] = { case "nodestate" => (xml) => nodeStateConfiguration }
 
   val states: List[SelectableOption[NodeState]] = NodeState.values.map { s =>
     s match {

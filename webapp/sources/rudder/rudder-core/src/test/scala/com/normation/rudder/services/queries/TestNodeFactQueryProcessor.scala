@@ -71,7 +71,7 @@ class TestNodeFactQueryProcessor {
   val logger: NamedZioLogger = NamedZioLogger(this.getClass.getPackageName + "." + this.getClass.getSimpleName)
 
   object subGroupComparatorRepo extends SubGroupComparatorRepository {
-    val groups: Map[SubGroupChoice,Chunk[NodeId]] = Map(
+    val groups: Map[SubGroupChoice, Chunk[NodeId]] = Map(
       (SubGroupChoice("test-group-node1", "Only contains node1"), Chunk[NodeId]("node1")),
       (SubGroupChoice("test-group-node2", "Only contains node2"), Chunk[NodeId]("node2")),
       (SubGroupChoice("test-group-node12", "Only contains node1 and node2"), Chunk[NodeId]("node1", "node2")),
@@ -131,7 +131,8 @@ class TestNodeFactQueryProcessor {
 
   val queryProcessor = new NodeFactQueryProcessor(nodeRepository, subGroupComparatorRepo, internalLDAPQueryProcessor)
 
-  val parser: CmdbQueryParser with DefaultStringQueryParser with JsonQueryLexer = new CmdbQueryParser with DefaultStringQueryParser with JsonQueryLexer {
+  val parser: CmdbQueryParser with DefaultStringQueryParser with JsonQueryLexer = new CmdbQueryParser
+    with DefaultStringQueryParser with JsonQueryLexer {
     override val criterionObjects = queryData.criteriaMap.toMap
   }
 
@@ -154,8 +155,8 @@ class TestNodeFactQueryProcessor {
     new NodeId("node7")
   )
 
-  val root: NodeId = NodeId("root")
-  val sr: Seq[NodeId]   = root +: s
+  val root: NodeId      = NodeId("root")
+  val sr:   Seq[NodeId] = root +: s
 
   @Test def basicQueriesOnId(): Unit = {
 

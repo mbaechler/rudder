@@ -60,6 +60,7 @@ import com.normation.rudder.services.policies.NodeConfigData
 import com.normation.rudder.services.policies.NodeConfigData.factRoot
 import com.normation.rudder.services.policies.NodeConfigData.root
 import com.normation.rudder.services.policies.NodeConfigData.rootNodeConfig
+import com.normation.rudder.services.policies.NodeConfiguration
 import com.normation.rudder.services.policies.ParameterForConfiguration
 import com.normation.rudder.services.policies.Policy
 import com.normation.rudder.services.policies.TestNodeConfiguration
@@ -68,6 +69,7 @@ import com.normation.templates.FillTemplatesService
 import com.normation.zio._
 import java.io.File
 import java.nio.charset.StandardCharsets
+import java.util.regex.Pattern
 import net.liftweb.common.Loggable
 import org.apache.commons.io.FileUtils
 import org.apache.commons.io.IOUtils
@@ -75,15 +77,13 @@ import org.joda.time.DateTime
 import org.junit.runner.RunWith
 import org.specs2.io.FileLinesContent
 import org.specs2.matcher.ContentMatchers
+import org.specs2.matcher.MatchResult
 import org.specs2.mutable.Specification
 import org.specs2.runner.JUnitRunner
 import org.specs2.specification.AfterAll
 import org.specs2.text.LinesContent
 import scala.collection.MapView
 import zio.syntax._
-import com.normation.rudder.services.policies.NodeConfiguration
-import java.util.regex.Pattern
-import org.specs2.matcher.MatchResult
 
 /**
  * Details of tests executed in each instances of
@@ -161,7 +161,11 @@ class TestSystemData {
   // actual tests
   /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-  def getSystemVars(nodeInfo: CoreNodeFact, allNodeInfos: MapView[NodeId, CoreNodeFact], allGroups: FullNodeGroupCategory): Map[String,Variable] = {
+  def getSystemVars(
+      nodeInfo:     CoreNodeFact,
+      allNodeInfos: MapView[NodeId, CoreNodeFact],
+      allGroups:    FullNodeGroupCategory
+  ): Map[String, Variable] = {
     systemVariableService
       .getSystemVariables(
         nodeInfo,
@@ -182,8 +186,8 @@ class TestSystemData {
 
   /// For root, we are using the same system variable and base root node config
   // the root node configuration
-  val baseRootDrafts: List[BoundPolicyDraft]     = List(common(root.id, allNodesInfo_rootOnly)) ++ allRootPolicies
-  val baseRootNodeConfig: NodeConfiguration = rootNodeConfig.copy(
+  val baseRootDrafts:     List[BoundPolicyDraft] = List(common(root.id, allNodesInfo_rootOnly)) ++ allRootPolicies
+  val baseRootNodeConfig: NodeConfiguration      = rootNodeConfig.copy(
     policies = policies(rootNodeConfig.nodeInfo, baseRootDrafts),
     nodeContext = getSystemVars(factRoot, allNodeFacts_rootOnly, groupLib),
     parameters = Set(ParameterForConfiguration("rudder_file_edit_header", "### Managed by Rudder, edit with care ###"))
@@ -638,8 +642,8 @@ class WriteSystemTechniqueWithRevisionTest extends TechniquesTest {
   import testSystemData._
   import testSystemData.data._
 
-  val parallelism: Int = Integer.max(1, java.lang.Runtime.getRuntime.availableProcessors() / 2)
-  val rnc: NodeConfiguration         = rootNodeConfig.copy(
+  val parallelism: Int               = Integer.max(1, java.lang.Runtime.getRuntime.availableProcessors() / 2)
+  val rnc:         NodeConfiguration = rootNodeConfig.copy(
     policies = policies(rootNodeConfig.nodeInfo, List(common(root.id, allNodesInfo_cfeNode)) ++ allRootPolicies),
     nodeContext = getSystemVars(factRoot, allNodeFacts_cfeNode, groupLib),
     parameters = Set(ParameterForConfiguration("rudder_file_edit_header", "### Managed by Rudder, edit with care ###"))

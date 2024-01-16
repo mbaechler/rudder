@@ -329,8 +329,9 @@ class TestEditorTechniqueWriter extends Specification with ContentMatchers with 
   val parameterTypeService: PlugableParameterTypeService = new PlugableParameterTypeService
 
   import ParameterType._
-  val defaultConstraint: List[Constraint.Constraint] = Constraint.AllowEmpty(false) :: Constraint.AllowWhiteSpace(false) :: Constraint.MaxLength(16384) :: Nil
-  val methods: Map[BundleName,GenericMethod]           = (GenericMethod(
+  val defaultConstraint: List[Constraint.Constraint]    =
+    Constraint.AllowEmpty(false) :: Constraint.AllowWhiteSpace(false) :: Constraint.MaxLength(16384) :: Nil
+  val methods:           Map[BundleName, GenericMethod] = (GenericMethod(
     BundleName("package_install_version"),
     "Package install version",
     MethodParameter(ParameterId("package_name"), "", defaultConstraint, StringParameter) ::
@@ -577,10 +578,10 @@ class TestEditorTechniqueWriter extends Specification with ContentMatchers with 
   val classicWriter  = new ClassicTechniqueWriter(basePath, new ParameterType.PlugableParameterTypeService, _.path)
 
   val expectedMetadataPath: String = s"techniques/ncf_techniques/${technique.id.value}/${technique.version.value}/metadata.xml"
-  val dscTechniquePath: String     = s"techniques/ncf_techniques/${technique.id.value}/${technique.version.value}/technique.ps1"
-  val techniquePath: String        = s"techniques/ncf_techniques/${technique.id.value}/${technique.version.value}/technique.cf"
-  val yamlPath: String             = s"techniques/ncf_techniques/${technique.id.value}/${technique.version.value}/technique.yml"
-  val reportingPath: String        = s"techniques/ncf_techniques/${technique.id.value}/${technique.version.value}/rudder_reporting.cf"
+  val dscTechniquePath:     String = s"techniques/ncf_techniques/${technique.id.value}/${technique.version.value}/technique.ps1"
+  val techniquePath:        String = s"techniques/ncf_techniques/${technique.id.value}/${technique.version.value}/technique.cf"
+  val yamlPath:             String = s"techniques/ncf_techniques/${technique.id.value}/${technique.version.value}/technique.yml"
+  val reportingPath:        String = s"techniques/ncf_techniques/${technique.id.value}/${technique.version.value}/rudder_reporting.cf"
 
   s"Preparing files for technique ${technique.name}" should {
 
@@ -671,13 +672,13 @@ class TestEditorTechniqueWriter extends Specification with ContentMatchers with 
 
   val expectedMetadataPath_any: String =
     s"techniques/ncf_techniques/${technique_any.id.value}/${technique_any.version.value}/metadata.xml"
-  val dscTechniquePath_any: String     =
+  val dscTechniquePath_any:     String =
     s"techniques/ncf_techniques/${technique_any.id.value}/${technique_any.version.value}/technique.ps1"
-  val techniquePath_any: String        =
+  val techniquePath_any:        String =
     s"techniques/ncf_techniques/${technique_any.id.value}/${technique_any.version.value}/technique.cf"
-  val techniquePath_yaml: String       =
+  val techniquePath_yaml:       String =
     s"techniques/ncf_techniques/${technique_any.id.value}/${technique_any.version.value}/technique.yml"
-  val reportingPath_any: String        =
+  val reportingPath_any:        String =
     s"techniques/ncf_techniques/${technique_any.id.value}/${technique_any.version.value}/rudder_reporting.cf"
 
   s"Preparing files for technique ${technique.id.value}" should {
@@ -762,16 +763,16 @@ class TestEditorTechniqueWriter extends Specification with ContentMatchers with 
 
   val expectedMetadataPath_var_cond: String =
     s"${technique_var_cond.id.value}/${technique_var_cond.version.value}/metadata.xml"
-  val dscTechniquePath_var_cond: String     =
+  val dscTechniquePath_var_cond:     String =
     s"${technique_var_cond.id.value}/${technique_var_cond.version.value}/technique.ps1"
-  val techniquePath_var_cond: String        =
+  val techniquePath_var_cond:        String =
     s"${technique_var_cond.id.value}/${technique_var_cond.version.value}/technique.cf"
-  val techniquePath_var_cond_yaml: String   =
+  val techniquePath_var_cond_yaml:   String =
     s"${technique_var_cond.id.value}/${technique_var_cond.version.value}/technique.yml"
-  val reportingPath_var_cond: String        =
+  val reportingPath_var_cond:        String =
     s"${technique_var_cond.id.value}/${technique_var_cond.version.value}/rudder_reporting.cf"
-  val expectedPathVarCond           = "src/test/resources/configuration-repository/expected-share"
-  val basePathVarCond: String               = s"${basePath}/techniques/ncf_techniques/"
+  val expectedPathVarCond = "src/test/resources/configuration-repository/expected-share"
+  val basePathVarCond: String = s"${basePath}/techniques/ncf_techniques/"
 
   s"Preparing files for technique ${technique.id.value}" should {
 

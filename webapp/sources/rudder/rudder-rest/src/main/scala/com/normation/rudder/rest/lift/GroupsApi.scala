@@ -75,8 +75,8 @@ import net.liftweb.http.LiftResponse
 import net.liftweb.http.Req
 import net.liftweb.json._
 import net.liftweb.json.JsonDSL._
-import zio.syntax._
 import zio.ZIO
+import zio.syntax._
 
 class GroupsApi(
     readGroup:            RoNodeGroupRepository,
@@ -1098,7 +1098,7 @@ class GroupApiService14(
       clone:       Option[NodeGroupId],
       params:      DefaultParams,
       actor:       EventActor
-  ): ZIO[Any,RudderError,JRGroup] = {
+  ): ZIO[Any, RudderError, JRGroup] = {
     def actualGroupCreation(change: NodeGroupChangeRequest, groupId: NodeGroupId) = {
       val modId = ModificationId(uuidGen.newUuid)
       (for {

@@ -57,10 +57,10 @@ class TagsTest extends Specification with Loggable {
   val tag2: Tag = createTag("tag2")
   val tag3: Tag = createTag("tag3")
 
-  val simpleTags: Tags           = Tags(Set[Tag](tag1, tag2, tag3))
-  val simpleSerialization  =
+  val simpleTags: Tags = Tags(Set[Tag](tag1, tag2, tag3))
+  val simpleSerialization =
     """[{"key":"tag1","value":"tag1-value"},{"key":"tag2","value":"tag2-value"},{"key":"tag3","value":"tag3-value"}]"""
-  val jsonSimple: JArray           = {
+  val jsonSimple: JArray = {
     JArray(
       JObject(JField("key", JString("tag1")), JField("value", JString("tag1-value"))) ::
       JObject(JField("key", JString("tag2")), JField("value", JString("tag2-value"))) ::

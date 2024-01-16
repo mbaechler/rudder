@@ -54,9 +54,9 @@ import com.normation.rudder.services.policies.NodeConfigData
 import com.normation.rudder.services.policies.PolicyId
 import org.joda.time.DateTime
 import org.junit.runner.RunWith
+import org.specs2.matcher.MatchResult
 import org.specs2.mutable.Specification
 import org.specs2.runner.JUnitRunner
-import org.specs2.matcher.MatchResult
 
 @RunWith(classOf[JUnitRunner])
 class PolicyAgregationTest extends Specification {
@@ -81,7 +81,7 @@ class PolicyAgregationTest extends Specification {
   val policyMode: GlobalPolicyMode = GlobalPolicyMode(PolicyMode.Enforce, PolicyModeOverrides.Always)
 
   val trackerVariableSpec: TrackerVariableSpec = TrackerVariableSpec(Some("card"), None)
-  val trackerVariable: TrackerVariable     = TrackerVariable(trackerVariableSpec, Seq())
+  val trackerVariable:     TrackerVariable     = TrackerVariable(trackerVariableSpec, Seq())
 
   val cfe: AgentConfig = AgentConfig(AgentType.CfeCommunity, Nil, Nil, Nil, Nil)
 

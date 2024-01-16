@@ -20,7 +20,7 @@ object WithNonce extends StatefulSnippet {
     */
   private object nonce extends RequestVar[String](defaultValue) {}
 
-  def dispatch: PartialFunction[String,NodeSeq => NodeSeq] = { case _ => render }
+  def dispatch: PartialFunction[String, NodeSeq => NodeSeq] = { case _ => render }
 
   def render(xhtml: NodeSeq): NodeSeq = {
     xhtml.map(scriptWithNonce(_))

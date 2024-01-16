@@ -6,7 +6,7 @@ import zio.IO
  */
 object syntax {
   implicit class ToZio[A](a: A) {
-    def fail: IO[A,Nothing]    = ZIO.fail(a)
-    def succeed: ZIO[Any,Nothing,A] = ZIO.succeed(a)
+    def fail:    IO[A, Nothing]       = ZIO.fail(a)
+    def succeed: ZIO[Any, Nothing, A] = ZIO.succeed(a)
   }
 }

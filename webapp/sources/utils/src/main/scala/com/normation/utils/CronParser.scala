@@ -1,5 +1,6 @@
 package com.normation.utils
 
+import com.normation.errors
 import com.normation.errors.PureResult
 import com.normation.errors.SystemError
 import cron4s.Cron
@@ -10,7 +11,6 @@ import java.time.OffsetDateTime
 import zio.Schedule
 import zio.Trace
 import zio.ZIO
-import com.normation.errors
 
 /**
  * An utility library that parses a cron expression and make it available as a ZIO Schedule
@@ -32,7 +32,7 @@ object CronParser {
      * A version of the parser that will interpret the special value
      * DISABLED as "do not parse"
      */
-    def toOptCron: Either[errors.RudderError,Option[CronExpr]] = {
+    def toOptCron: Either[errors.RudderError, Option[CronExpr]] = {
       s.toLowerCase() match {
         case DISABLED => Right(None)
         case cron     => cron.toCron.map(Some(_))
@@ -41,7 +41,7 @@ object CronParser {
   }
 
   implicit class CronConverter(c: CronExpr) {
-    def toSchedule: Schedule[Any,Any,Any] = {
+    def toSchedule: Schedule[Any, Any, Any] = {
       new Schedule[Any, Any, Any] {
         type State = Unit
         def initial: Unit = ()

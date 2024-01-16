@@ -550,7 +550,10 @@ final case class RestExtractorService(
     }
   }
 
-  def checkTechniqueVersion(techniqueName: TechniqueName, techniqueVersion: Option[TechniqueVersion]): Box[Option[TechniqueVersion]] = {
+  def checkTechniqueVersion(
+      techniqueName:    TechniqueName,
+      techniqueVersion: Option[TechniqueVersion]
+  ): Box[Option[TechniqueVersion]] = {
     techniqueVersion match {
       case Some(version) =>
         techniqueRepository.getTechniqueVersions(techniqueName).find(_ == version) match {

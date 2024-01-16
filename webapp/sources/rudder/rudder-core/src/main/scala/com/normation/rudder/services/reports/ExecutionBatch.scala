@@ -249,7 +249,7 @@ final case class ComputeCompliance(
     expectedConfig:     NodeExpectedReports,
     expirationDateTime: DateTime
 ) extends Ok with LastRunAvailable {
-  val lastRunConfigId   = expectedConfig.nodeConfigId
+  val lastRunConfigId = expectedConfig.nodeConfigId
   val lastRunConfigInfo: Some[NodeExpectedReports] = Some(expectedConfig)
 }
 
@@ -298,7 +298,9 @@ final case class UnexpectedReportInterpretation(options: Set[UnexpectedReportBeh
   def set(opt: UnexpectedReportBehavior): UnexpectedReportInterpretation = UnexpectedReportInterpretation(options + opt)
 
   // return a copy of that interpretation with the given value removed
-  def unset(opt: UnexpectedReportBehavior): UnexpectedReportInterpretation = UnexpectedReportInterpretation(options.filter(_ != opt))
+  def unset(opt: UnexpectedReportBehavior): UnexpectedReportInterpretation = UnexpectedReportInterpretation(
+    options.filter(_ != opt)
+  )
 }
 
 /**
@@ -310,7 +312,7 @@ object ExecutionBatch extends Loggable {
   // these patterns must be reluctant matches to avoid strange things
   // when two variables are presents, or something like: ${foo}xxxxxx}.
   // Note: the method checkExpectedVariable expects that a $ is in the pattern
-  final val matchCFEngineVars: Regex           = """.*\$(\{.+?\}|\(.+?\)).*""".r
+  final val matchCFEngineVars: Regex = """.*\$(\{.+?\}|\(.+?\)).*""".r
   final private val replaceCFEngineVars = """\$\{.+?\}|\$\(.+?\)"""
 
   /**

@@ -57,7 +57,7 @@ final protected case class Warning(
  */
 class PluginExpirationInfo extends DispatchSnippet with Loggable {
 
-  def dispatch: PartialFunction[String,NodeSeq => NodeSeq] = {
+  def dispatch: PartialFunction[String, NodeSeq => NodeSeq] = {
     case "render"     => pluginInfo
     case "renderIcon" => pluginInfoIcon
   }

@@ -160,7 +160,7 @@ class LinkUtil(
     }
   }
 
-  def createNodeLink(id: NodeId): Elem              = {
+  def createNodeLink(id: NodeId):              Elem = {
     nodeInfoService.getNodeInfo(id).either.runNow match {
       case Right(Some(node)) =>
         <span>Node <a href={baseNodeLink(id)}>{node.hostname}</a> (Rudder ID: {id.value})</span>

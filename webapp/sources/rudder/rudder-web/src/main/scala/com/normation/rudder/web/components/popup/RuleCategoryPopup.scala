@@ -87,9 +87,9 @@ class RuleCategoryPopup(
   private[this] val categoryHierarchyDisplayer = RudderConfig.categoryHierarchyDisplayer
   private[this] val uuidGen                    = RudderConfig.stringUuidGenerator
 
-  def dispatch: PartialFunction[String,NodeSeq => NodeSeq] = { case "popupContent" => { _ => popupContent() } }
+  def dispatch: PartialFunction[String, NodeSeq => NodeSeq] = { case "popupContent" => { _ => popupContent() } }
 
-  val title: String         = {
+  val title:         String = {
     targetCategory match {
       case None    => "Create new Rule category"
       case Some(c) => s"Update category '${c.name}'"
@@ -103,7 +103,7 @@ class RuleCategoryPopup(
   }
 
   val parentCategory: Option[String] = targetCategory.flatMap(rootCategory.findParent(_)).map(_.id.value)
-  def popupContent(): NodeSeq = {
+  def popupContent(): NodeSeq        = {
     (
       "#creationForm *" #> { (xml: NodeSeq) => SHtml.ajaxForm(xml) } andThen
       "#dialogTitle *" #> title &

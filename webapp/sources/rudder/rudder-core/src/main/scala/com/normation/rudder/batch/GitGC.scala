@@ -112,7 +112,7 @@ class GitGC(
   }
 
   // start cron
-  def start(): Fiber.Runtime[Nothing,Unit] = {
+  def start(): Fiber.Runtime[Nothing, Unit] = {
     ZioRuntime.unsafeRun(prog.forkDaemon)
   }
 }

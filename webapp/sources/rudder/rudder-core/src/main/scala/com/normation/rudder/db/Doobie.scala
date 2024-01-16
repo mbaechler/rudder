@@ -54,6 +54,7 @@ import doobie.postgres.implicits._
 import doobie.util.log.ExecFailure
 import doobie.util.log.LogEvent
 import doobie.util.log.ProcessingFailure
+import doobie.util.transactor
 import java.sql.SQLXML
 import javax.sql.DataSource
 import net.liftweb.common._
@@ -66,7 +67,6 @@ import zio.interop.catz._
 import zio.json.JsonDecoder
 import zio.json.JsonEncoder
 import zio.json.ast.Json
-import doobie.util.transactor
 
 /**
  *
@@ -76,7 +76,7 @@ import doobie.util.transactor
  */
 class Doobie(datasource: DataSource) {
 
-  val xa: transactor.Transactor.Aux[Task,DataSource] = (for {
+  val xa: transactor.Transactor.Aux[Task, DataSource] = (for {
     // zio.interop.catz._ provides a `zioContextShift`
     // our transaction EC: wait for aquire/release connections, must accept blocking operations
     te <- ZIO.blockingExecutor.map(_.asExecutionContext)

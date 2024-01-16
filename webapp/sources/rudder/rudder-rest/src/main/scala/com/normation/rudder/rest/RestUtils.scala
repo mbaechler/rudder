@@ -212,7 +212,8 @@ object RestUtils extends Loggable {
     )
   }
 
-  def unauthorized: LiftResponse = effectiveResponse(None, JString("You are not authorized to access that API"), ForbiddenError, "", false)
+  def unauthorized: LiftResponse =
+    effectiveResponse(None, JString("You are not authorized to access that API"), ForbiddenError, "", false)
 
   def response(
       restExtractor: RestExtractorService,

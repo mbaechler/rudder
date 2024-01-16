@@ -64,7 +64,7 @@ class LoadDemoDataTest extends Specification {
     this.getClass.getClassLoader.getResource("ldap-data/schema/" + name + ".ldif").toURI.getPath
   }
 
-  val baseDN         = "cn=rudder-configuration"
+  val baseDN = "cn=rudder-configuration"
   val bootstrapLDIFs: List[String] = ("ldap-data/bootstrap.ldif" :: Nil) map { name =>
     this.getClass.getClassLoader.getResource(name).toURI.getPath
   }
@@ -77,11 +77,13 @@ class LoadDemoDataTest extends Specification {
       i + x
   }
 
-  val ldap: InMemoryDsConnectionProvider[RwLDAPConnection with RoLDAPConnection] = InMemoryDsConnectionProvider[RwLDAPConnection with RoLDAPConnection](
-    baseDNs = baseDN :: Nil,
-    schemaLDIFPaths = schemaLDIFs,
-    bootstrapLDIFPaths = bootstrapLDIFs
-  )
+  val ldap: InMemoryDsConnectionProvider[RwLDAPConnection with RoLDAPConnection] = {
+    InMemoryDsConnectionProvider[RwLDAPConnection with RoLDAPConnection](
+      baseDNs = baseDN :: Nil,
+      schemaLDIFPaths = schemaLDIFs,
+      bootstrapLDIFPaths = bootstrapLDIFs
+    )
+  }
 
   "The in memory LDAP directory" should {
 

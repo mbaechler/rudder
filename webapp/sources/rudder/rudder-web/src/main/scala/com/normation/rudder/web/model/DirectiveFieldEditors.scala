@@ -88,7 +88,7 @@ class TextField(
   type ValueType = String
   protected var _x: String = getDefaultValue
 
-  def get            = _x
+  def get = _x
   def set(x: String): String = { if (null == x) _x = "" else _x = x; _x }
 
   def toForm: Box[NodeSeq] = display(TextField.textInput("text")(_))
@@ -121,10 +121,10 @@ class TextField(
   def manifest: Manifest[String] = manifestOf[String]
 
   override val uniqueFieldId: Full[String] = Full(id)
-  def name                   = id
-  def validate               = Nil
-  def validations            = Nil
-  def setFilter              = Nil
+  def name        = id
+  def validate    = Nil
+  def validations = Nil
+  def setFilter   = Nil
   def parseClient(s: String): Unit   = if (null == s) _x = "" else _x = s
   def toClient:               String = if (null == _x) "" else _x
 
@@ -139,19 +139,19 @@ class ReadOnlyTextField(val id: String) extends DirectiveField {
 
   val readOnly = true
 
-  def get            = _x
-  def set(x: String): String = { if (null == x) _x = "" else _x = x; _x }
-  def toForm: Full[Elem]         = {
+  def get = _x
+  def set(x: String): String           = { if (null == x) _x = "" else _x = x; _x }
+  def toForm:         Full[Elem]       = {
     val attrs = if (isReadOnly) Seq(("readonly" -> "readonly")) else Seq()
     Full(SHtml.text(toClient, x => parseClient(x), attrs: _*))
   }
-  def manifest: Manifest[String]       = manifestOf[String]
+  def manifest:       Manifest[String] = manifestOf[String]
 
   override val uniqueFieldId: Full[String] = Full(id)
-  def name                   = id
-  def validate               = Nil
-  def validations            = Nil
-  def setFilter              = Nil
+  def name        = id
+  def validate    = Nil
+  def validations = Nil
+  def setFilter   = Nil
   def parseClient(s: String): Unit   = if (null == s) _x = "" else _x = s
   def toClient:               String = if (null == _x) "" else _x
 
@@ -180,10 +180,12 @@ class InputSizeField(
     scriptSwitch:    () => Box[FeatureSwitch],
     expectedUnit:    String = "b"
 ) extends TextField(id, scriptSwitch) {
-  val units: List[ValueLabel] = ValueLabel("b", "B") :: ValueLabel("kb", "KB") :: ValueLabel("mb", "MB") :: ValueLabel("gb", "GB") :: ValueLabel(
-    "tb",
-    "TB"
-  ) :: Nil
+  val units: List[ValueLabel] = {
+    ValueLabel("b", "B") :: ValueLabel("kb", "KB") :: ValueLabel("mb", "MB") :: ValueLabel("gb", "GB") :: ValueLabel(
+      "tb",
+      "TB"
+    ) :: Nil
+  }
 
   override def toForm: Full[Elem] = Full(<div>{inputToForm ++ unitsToForm}</div>)
 
@@ -229,7 +231,7 @@ class SelectField(val id: String, items: Seq[ValueLabel]) extends DirectiveField
   type ValueType = Seq[String]
   private var values: ValueType = getDefaultValue
 
-  def get               = values
+  def get = values
   def set(x: ValueType): ValueType = { values = x; values }
 
   def toForm: Full[NodeSeq] = {
@@ -248,10 +250,10 @@ class SelectField(val id: String, items: Seq[ValueLabel]) extends DirectiveField
   def manifest: Manifest[ValueType] = manifestOf[ValueType]
 
   override val uniqueFieldId: Full[String] = Full(id)
-  def name                   = id
-  def validate               = Nil
-  def validations            = Nil
-  def setFilter              = Nil
+  def name        = id
+  def validate    = Nil
+  def validations = Nil
+  def setFilter   = Nil
 
   def parseClient(s: String): Unit = {
     if (null == s) values = getDefaultValue
@@ -274,9 +276,9 @@ class SelectOneField(val id: String, valueslabels: Seq[ValueLabel]) extends Dire
   type ValueType = String
   private var _x: String = getDefaultValue
 
-  def get            = _x
-  def set(x: String): String = { if (null == x) _x = "" else _x = x; _x }
-  def toForm: Box[NodeSeq]         = {
+  def get = _x
+  def set(x: String): String       = { if (null == x) _x = "" else _x = x; _x }
+  def toForm:         Box[NodeSeq] = {
     if (valueslabels.size <= 3)
       radios
     else
@@ -303,10 +305,10 @@ class SelectOneField(val id: String, valueslabels: Seq[ValueLabel]) extends Dire
   def manifest: Manifest[String] = manifestOf[String]
 
   override val uniqueFieldId: Full[String] = Full(id)
-  def name                   = id
-  def validate               = Nil
-  def validations            = Nil
-  def setFilter              = Nil
+  def name        = id
+  def validate    = Nil
+  def validations = Nil
+  def setFilter   = Nil
   def parseClient(s: String): Unit   = if (null == s) _x = "" else _x = s
   def toClient:               String = if (null == _x) "" else _x
 
@@ -336,25 +338,25 @@ class UploadedFileField(basePath: String)(val id: String) extends DirectiveField
   private val root = new File(basePath)
   private var f: File = getDefaultValue
 
-  def get          = f
-  def set(x: File): File = {
+  def get = f
+  def set(x: File): File           = {
     if (null == x) f = null
     else if (listFiles.exists(_._1 == x)) {
       f = x
     }
     f
   }
-  def toForm: Full[Elem]       = {
-    val xml = SHtml.selectObj(listFiles, if (null == f) Empty else Full(f), { (x: File) => set(x) }, ("id", id))
+  def toForm:       Full[Elem]     = {
+    val xml = SHtml.selectObj(listFiles, if (null == f) Empty else Full(f), (x: File) => set(x), ("id", id))
     Full(xml)
   }
-  def manifest: Manifest[File]     = manifestOf[File]
+  def manifest:     Manifest[File] = manifestOf[File]
 
   override val uniqueFieldId: Full[String] = Full(id)
-  def name                   = id
-  def validate               = Nil
-  def validations            = Nil
-  def setFilter              = Nil
+  def name        = id
+  def validate    = Nil
+  def validations = Nil
+  def setFilter   = Nil
   def parseClient(s: String): Unit   = {
     if (isEmpty(s)) set(null)
     else set(new File(root, s))
@@ -377,9 +379,9 @@ class DateField(format: DateTimeFormatter)(val id: String) extends DirectiveFiel
 
   private var _x:     ValueType        = getDefaultValue
   private var errors: List[FieldError] = Nil
-  def get               = _x
-  def set(x: ValueType): ValueType = { _x = x; _x }
-  def manifest: Manifest[LocalDate]          = manifestOf[LocalDate]
+  def get = _x
+  def set(x: ValueType): ValueType           = { _x = x; _x }
+  def manifest:          Manifest[LocalDate] = manifestOf[LocalDate]
 
   override val uniqueFieldId: Full[String] = Full(id)
 
@@ -417,8 +419,8 @@ class DateField(format: DateTimeFormatter)(val id: String) extends DirectiveFiel
     Full(xml)
   }
 
-  def getPossibleValues(filters: (ValueType => Boolean)*): Option[Set[ValueType]] = None // not supported in the general cases
-  def getDefaultValue: LocalDate = DateTime.now().toLocalDate // default datetime
+  def getPossibleValues(filters: (ValueType => Boolean)*): Option[Set[ValueType]] = None                       // not supported in the general cases
+  def getDefaultValue:                                     LocalDate              = DateTime.now().toLocalDate // default datetime
 }
 
 class TimeField(format: DateTimeFormatter)(val id: String) extends DirectiveField {
@@ -426,9 +428,9 @@ class TimeField(format: DateTimeFormatter)(val id: String) extends DirectiveFiel
 
   private var _x:     ValueType        = getDefaultValue
   private var errors: List[FieldError] = Nil
-  def get               = _x
-  def set(x: ValueType): ValueType = { _x = x; _x }
-  def manifest: Manifest[LocalTime]          = manifestOf[LocalTime]
+  def get = _x
+  def set(x: ValueType): ValueType           = { _x = x; _x }
+  def manifest:          Manifest[LocalTime] = manifestOf[LocalTime]
 
   override val uniqueFieldId: Full[String] = Full(id)
 
@@ -466,8 +468,8 @@ class TimeField(format: DateTimeFormatter)(val id: String) extends DirectiveFiel
     Full(xml)
   }
 
-  def getPossibleValues(filters: (ValueType => Boolean)*): Option[Set[ValueType]] = None // not supported in the general cases
-  def getDefaultValue: LocalTime = DateTime.now().toLocalTime // default datetime
+  def getPossibleValues(filters: (ValueType => Boolean)*): Option[Set[ValueType]] = None                       // not supported in the general cases
+  def getDefaultValue:                                     LocalTime              = DateTime.now().toLocalTime // default datetime
 }
 
 class PeriodField(showSeconds: Boolean = true, showMinutes: Boolean = true, showHours: Boolean = true, showDays: Boolean = true)(
@@ -477,9 +479,9 @@ class PeriodField(showSeconds: Boolean = true, showMinutes: Boolean = true, show
 
   private var _x:     ValueType        = getDefaultValue
   private var errors: List[FieldError] = Nil
-  def get               = _x
-  def set(x: ValueType): ValueType = { _x = x; _x }
-  def manifest: Manifest[Period]          = manifestOf[Period]
+  def get = _x
+  def set(x: ValueType): ValueType        = { _x = x; _x }
+  def manifest:          Manifest[Period] = manifestOf[Period]
 
   override val uniqueFieldId: Full[String] = Full(id)
 
@@ -547,15 +549,15 @@ class FilePermsField(val id: String) extends DirectiveField {
 
   private val _x: ValueType = getDefaultValue
 
-  def get               = _x
-  def set(x: ValueType): ValueType = { _x.set(x); _x }
-  def manifest: Manifest[FilePerms]          = manifestOf[FilePerms]
+  def get = _x
+  def set(x: ValueType): ValueType           = { _x.set(x); _x }
+  def manifest:          Manifest[FilePerms] = manifestOf[FilePerms]
 
   override val uniqueFieldId: Full[String] = Full(id)
-  def name                   = id
-  def validate               = Nil
-  def validations            = Nil
-  def setFilter              = Nil
+  def name        = id
+  def validate    = Nil
+  def validations = Nil
+  def setFilter   = Nil
   def parseClient(s: String): Unit   = {
     if (!isEmpty(s)) FilePerms(s).map(_x.set(_))
   }
@@ -598,20 +600,20 @@ class CheckboxField(val id: String) extends DirectiveField {
   override def displayName = description
   override def displayName_=(s: String): Unit = description = s
 
-  def get            = _x
-  def set(x: String): String = { if (null == x) _x = "" else _x = x; _x }
-  def manifest: Manifest[String]       = manifestOf[String]
+  def get = _x
+  def set(x: String): String           = { if (null == x) _x = "" else _x = x; _x }
+  def manifest:       Manifest[String] = manifestOf[String]
 
   override val uniqueFieldId: Full[String] = Full(id)
-  def name                   = id
-  def validate               = Nil
-  def validations            = Nil
-  def setFilter              = Nil
+  def name        = id
+  def validate    = Nil
+  def validations = Nil
+  def setFilter   = Nil
   def parseClient(s: String): Unit   = if (null == s) _x = "false" else _x = s
   def toClient:               String = if (null == _x) "false" else _x
 
-  override def displayHtml: Text = { if ((null == _x) || ("false" == _x)) Text("No") else Text("Yes") }
-  def toForm: Full[NodeSeq]               = Full(SHtml.checkbox(toClient.equalsIgnoreCase("true"), x => parseClient(x.toString)))
+  override def displayHtml: Text          = { if ((null == _x) || ("false" == _x)) Text("No") else Text("Yes") }
+  def toForm:               Full[NodeSeq] = Full(SHtml.checkbox(toClient.equalsIgnoreCase("true"), x => parseClient(x.toString)))
 
   def getPossibleValues(filters: (ValueType => Boolean)*): Option[Set[ValueType]] = None
 
@@ -635,13 +637,13 @@ class PasswordField(
   self =>
   type ValueType = String
   def getPossibleValues(filters: (ValueType => Boolean)*): Option[Set[ValueType]] = None // not supported in the general cases
-  def getDefaultValue        = ""
-  def manifest: Manifest[String]               = manifestOf[String]
-  override val uniqueFieldId: Full[String] = Full(id)
-  def name                   = id
-  def validate               = Nil
-  def validations            = Nil
-  def setFilter              = Nil
+  def getDefaultValue = ""
+  def manifest:               Manifest[String] = manifestOf[String]
+  override val uniqueFieldId: Full[String]     = Full(id)
+  def name        = id
+  def validate    = Nil
+  def validations = Nil
+  def setFilter   = Nil
   private var errors: List[FieldError] = Nil
 
   override def usedFields_=(fields: Seq[DirectiveField]): Unit = {
@@ -649,7 +651,8 @@ class PasswordField(
     slaves = fields.collect { case f: DerivedPasswordField => f }.toList
   }
 
-  protected var slaves: List[DerivedPasswordField] = List[DerivedPasswordField]() // will be init on usedField update - I hate mutable state
+  protected var slaves: List[DerivedPasswordField] =
+    List[DerivedPasswordField]() // will be init on usedField update - I hate mutable state
 
   // the actual backend value like: sha1:XXXXXX
   protected var _x: String = getDefaultValue
@@ -705,7 +708,7 @@ class PasswordField(
    * }
    *
    */
-  def parseClient(s: String): Unit = {
+  def parseClient(s: String): Unit   = {
     import net.liftweb.json._
     errors = Nil
     val json = parse(s)
@@ -744,7 +747,7 @@ class PasswordField(
         errors = errors ::: List(FieldError(this, fail.messageChain))
     }
   }
-  def toClient: String = if (null == _x) "" else _x
+  def toClient:               String = if (null == _x) "" else _x
 
   def get: String = {
     _x
@@ -888,13 +891,13 @@ class DerivedPasswordField(val id: String, val derivedType: HashAlgoConstraint.D
   self =>
   type ValueType = String
   def getPossibleValues(filters: (ValueType => Boolean)*): Option[Set[ValueType]] = None // not supported in the general cases
-  def getDefaultValue        = ""
-  def manifest: Manifest[String]               = manifestOf[String]
-  override val uniqueFieldId: Full[String] = Full(id)
-  def name                   = id
-  def validate               = Nil
-  def validations            = Nil
-  def setFilter              = Nil
+  def getDefaultValue = ""
+  def manifest:               Manifest[String] = manifestOf[String]
+  override val uniqueFieldId: Full[String]     = Full(id)
+  def name        = id
+  def validate    = Nil
+  def validations = Nil
+  def setFilter   = Nil
 
   // the actual backend value like: sha1:XXXXXX
   private[this] var _x: String = getDefaultValue
@@ -936,11 +939,11 @@ class DerivedPasswordField(val id: String, val derivedType: HashAlgoConstraint.D
   }
 
   // we don't want to display ANYTHING for that field
-  def toForm: Full[NodeSeq]                 = Full(NodeSeq.Empty)
+  def toForm: Full[NodeSeq] = Full(NodeSeq.Empty)
   override def toFormNodeSeq = NodeSeq.Empty
   override def toHtmlNodeSeq: Elem = <span></span>
-  override def displayValue: Elem  = <span></span>
-  override def displayHtml: Text   = Text("")
+  override def displayValue:  Elem = <span></span>
+  override def displayHtml:   Text = Text("")
 }
 
 object FileField {
@@ -964,7 +967,7 @@ class FileField(
   type ValueType = String
   protected var _x: String = getDefaultValue
 
-  def get            = _x
+  def get = _x
   def set(x: String): String = { if (null == x) _x = "" else _x = x; _x }
 
   def toForm: Box[NodeSeq] = display(FileField.fileInput("shared")(_))
@@ -981,10 +984,10 @@ class FileField(
   def manifest: Manifest[String] = manifestOf[String]
 
   override val uniqueFieldId: Full[String] = Full(id)
-  def name                   = id
-  def validate               = Nil
-  def validations            = Nil
-  def setFilter              = Nil
+  def name        = id
+  def validate    = Nil
+  def validations = Nil
+  def setFilter   = Nil
   def parseClient(s: String): Unit   = if (null == s) _x = "" else _x = s
   def toClient:               String = if (null == _x) "" else _x
 

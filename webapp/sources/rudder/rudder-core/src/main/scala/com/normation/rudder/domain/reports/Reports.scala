@@ -41,8 +41,8 @@ import com.normation.inventory.domain.NodeId
 import com.normation.rudder.domain.policies.DirectiveId
 import com.normation.rudder.domain.policies.RuleId
 import org.joda.time.DateTime
-import org.slf4j.LoggerFactory
 import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 
 /**
  * Define one "line" of reports from an agent execution
@@ -556,20 +556,24 @@ object Reports {
     )
   }
 
-  def unapply(report: Reports): Some[(DateTime, RuleId, DirectiveId, NodeId, String, String, String, DateTime, String, String)] = Some(
-    (
-      report.executionDate,
-      report.ruleId,
-      report.directiveId,
-      report.nodeId,
-      report.reportId,
-      report.component,
-      report.keyValue,
-      report.executionTimestamp,
-      report.severity,
-      report.message
+  def unapply(
+      report: Reports
+  ): Some[(DateTime, RuleId, DirectiveId, NodeId, String, String, String, DateTime, String, String)] = {
+    Some(
+      (
+        report.executionDate,
+        report.ruleId,
+        report.directiveId,
+        report.nodeId,
+        report.reportId,
+        report.component,
+        report.keyValue,
+        report.executionTimestamp,
+        report.severity,
+        report.message
+      )
     )
-  )
+  }
 
   val LOG_TRACE    = "log_trace"
   val LOG_DEBUG    = "log_debug"

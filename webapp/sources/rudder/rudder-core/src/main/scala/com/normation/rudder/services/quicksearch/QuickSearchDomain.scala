@@ -292,7 +292,7 @@ object QSMapping {
    * Mapping between a string and actual objects.
    * We try to be kind with users: not case sensitive, not plural sensitive
    */
-  val objectNameMapping: Map[String,QSObject] = {
+  val objectNameMapping: Map[String, QSObject] = {
     QSObject.all.map { obj =>
       val n = obj.name.toLowerCase
       (n -> obj) :: (n + "s" -> obj) :: Nil

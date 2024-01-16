@@ -36,10 +36,11 @@ import scala.xml.Elem
 @RunWith(classOf[JUnitRunner])
 class TestXmlUnserialisation extends Specification with BoxSpecMatcher {
 
-  val queryParser: CmdbQueryParser with DefaultStringQueryParser with JsonQueryLexer                      = new CmdbQueryParser with DefaultStringQueryParser with JsonQueryLexer {
+  val queryParser: CmdbQueryParser with DefaultStringQueryParser with JsonQueryLexer = new CmdbQueryParser
+    with DefaultStringQueryParser with JsonQueryLexer {
     override val criterionObjects = Map[String, ObjectCriterion]()
   }
-  val directiveUnserialisation         = new DirectiveUnserialisationImpl
+  val directiveUnserialisation = new DirectiveUnserialisationImpl
   val nodeGroupCategoryUnserialisation = new NodeGroupCategoryUnserialisationImpl
   val nodeGroupUnserialisation         = new NodeGroupUnserialisationImpl(queryParser)
   val ruleUnserialisation              = new RuleUnserialisationImpl

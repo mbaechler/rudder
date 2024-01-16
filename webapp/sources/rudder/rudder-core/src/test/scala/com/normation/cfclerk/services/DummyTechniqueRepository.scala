@@ -46,10 +46,11 @@ import scala.collection.mutable
 
 class DummyTechniqueRepository(policies: Seq[Technique] = Seq()) extends TechniqueRepository {
 
-  def agentCfg(bundle: String): List[AgentConfig] = AgentConfig(AgentType.CfeCommunity, Nil, Nil, List(BundleName(bundle)), Nil) :: Nil
+  def agentCfg(bundle: String): List[AgentConfig] =
+    AgentConfig(AgentType.CfeCommunity, Nil, Nil, List(BundleName(bundle)), Nil) :: Nil
 
   var returnedVariable: mutable.Set[VariableSpec] = collection.mutable.Set[VariableSpec]()
-  val policy1: Technique          = Technique(
+  val policy1:          Technique                 = Technique(
     TechniqueId(TechniqueName("policy1"), TechniqueVersionHelper("1.0")),
     "policy1",
     "",
@@ -66,7 +67,7 @@ class DummyTechniqueRepository(policies: Seq[Technique] = Seq()) extends Techniq
       InputVariableSpec("$variable22", "a variable22", id = None)
     )
   )
-  val policy2: Technique  = Technique(
+  val policy2:  Technique   = Technique(
     TechniqueId(TechniqueName("policy2"), TechniqueVersionHelper("1.0")),
     "policy2",
     "",
@@ -76,8 +77,9 @@ class DummyTechniqueRepository(policies: Seq[Technique] = Seq()) extends Techniq
     None
   )
 
-  val sections3: SectionSpec = SectionSpec(name = "root", children = Seq(InputVariableSpec("$variable3", "a variable3", id = None)))
-  val policy3: Technique   = Technique(
+  val sections3: SectionSpec =
+    SectionSpec(name = "root", children = Seq(InputVariableSpec("$variable3", "a variable3", id = None)))
+  val policy3:   Technique   = Technique(
     TechniqueId(TechniqueName("policy3"), TechniqueVersionHelper("1.0")),
     "policy3",
     "",
@@ -87,8 +89,9 @@ class DummyTechniqueRepository(policies: Seq[Technique] = Seq()) extends Techniq
     None
   )
 
-  val sections4: SectionSpec = SectionSpec(name = "root", children = Seq(InputVariableSpec("$variable4", "an variable4", id = None)))
-  val policy4: Technique   = Technique(
+  val sections4: SectionSpec =
+    SectionSpec(name = "root", children = Seq(InputVariableSpec("$variable4", "an variable4", id = None)))
+  val policy4:   Technique   = Technique(
     TechniqueId(TechniqueName("policy4"), TechniqueVersionHelper("1.0")),
     "policy4",
     "",
@@ -99,7 +102,7 @@ class DummyTechniqueRepository(policies: Seq[Technique] = Seq()) extends Techniq
   )
 
   val sectionsFoo: SectionSpec = SectionSpec(name = "root", children = Seq(InputVariableSpec("$bar", "bar", id = None)))
-  val foo: Technique         = Technique(
+  val foo:         Technique   = Technique(
     TechniqueId(TechniqueName("foo"), TechniqueVersionHelper("1.0")),
     "foo",
     "",
@@ -109,7 +112,7 @@ class DummyTechniqueRepository(policies: Seq[Technique] = Seq()) extends Techniq
     None
   )
 
-  val policyMap: Map[TechniqueId,Technique] = {
+  val policyMap: Map[TechniqueId, Technique] = {
     Map(policy1.id -> policy1, policy2.id -> policy2, policy3.id -> policy3, policy4.id -> policy4, foo.id -> foo) ++ policies
       .map(p => (p.id, p))
   }

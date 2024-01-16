@@ -206,7 +206,8 @@ object BuildFilter {
    *
    * @return  The created approximate match search filter.
    */
-  def MATCH(attributeName: String, assertionValue: Array[Byte]): Filter = createApproximateMatchFilter(attributeName, assertionValue)
+  def MATCH(attributeName: String, assertionValue: Array[Byte]): Filter =
+    createApproximateMatchFilter(attributeName, assertionValue)
 
   /**
    * Creates a new extensible match search filter with the provided

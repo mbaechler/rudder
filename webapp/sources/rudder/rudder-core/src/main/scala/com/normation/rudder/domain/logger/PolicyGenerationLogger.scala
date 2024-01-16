@@ -38,8 +38,8 @@ package com.normation.rudder.domain.logger
 
 import com.normation.NamedZioLogger
 import net.liftweb.common.Logger
-import org.slf4j.LoggerFactory
 import org.slf4j
+import org.slf4j.LoggerFactory
 
 /**
  * Applicative log of for policy generation

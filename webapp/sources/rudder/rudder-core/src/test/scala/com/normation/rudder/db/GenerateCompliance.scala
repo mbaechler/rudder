@@ -51,13 +51,13 @@ import doobie._
 import doobie.implicits._
 import doobie.postgres.implicits._
 import java.io.ByteArrayInputStream
+import java.io.Closeable
 import java.nio.charset.StandardCharsets
 import java.util.Properties
+import javax.sql.DataSource
 import org.joda.time.DateTime
 import scala.util.Random
 import zio.interop.catz._
-import java.io.Closeable
-import javax.sql.DataSource
 
 /*
  * Allow to generate false compliance for testing purpose
@@ -303,7 +303,7 @@ object GenerateCompliance {
   // second example with a successly normalized table (with loads of line)
   // -----------------------------------------------------------------------
 
-  val columns: List[String]            = List(
+  val columns:            List[String] = List(
     "nodeid",
     "runtimestamp",
     "ruleid",
@@ -323,8 +323,8 @@ object GenerateCompliance {
     "auditerror",
     "badpolicymode"
   )
-  val columnsString: String      = columns.mkString(",")
-  val columnsPlaceholder: String = columns.map(_ => "?").mkString(",")
+  val columnsString:      String       = columns.mkString(",")
+  val columnsPlaceholder: String       = columns.map(_ => "?").mkString(",")
 
   // in that case, our data are just expansion of RuleCompliance
   type DATA = (String, DateTime, String, String, ComplianceLevel)

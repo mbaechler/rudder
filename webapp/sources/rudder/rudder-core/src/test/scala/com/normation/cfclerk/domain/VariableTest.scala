@@ -43,12 +43,12 @@ import com.normation.rudder.services.policies.write.CFEngineAgentSpecificGenerat
 import java.io.FileNotFoundException
 import org.joda.time.format._
 import org.junit.runner.RunWith
+import org.specs2.matcher.MatchResult
 import org.specs2.mutable._
 import org.specs2.runner._
 import org.xml.sax.SAXParseException
-import scala.xml._
-import org.specs2.matcher.MatchResult
 import scala.collection.mutable
+import scala.xml._
 
 @RunWith(classOf[JUnitRunner])
 class VariableTest extends Specification {
@@ -91,7 +91,7 @@ class VariableTest extends Specification {
   val rawVar             = "raw_type"
   val gui_only           = "gui_only"
 
-  val variables: mutable.Map[String,Variable] = {
+  val variables: mutable.Map[String, Variable] = {
     val doc = {
       try {
         XML.load(ClassLoader.getSystemResourceAsStream("testVariable.xml"))
@@ -356,7 +356,11 @@ class VariableTest extends Specification {
     }
   }
 
-  def testSpecVarFields(spec: VariableSpec, longDescription: String = "", defaultValue: Option[String] = None): MatchResult[Serializable] = {
+  def testSpecVarFields(
+      spec:            VariableSpec,
+      longDescription: String = "",
+      defaultValue:    Option[String] = None
+  ): MatchResult[Serializable] = {
     spec.longDescription === longDescription and
     spec.constraint.default === defaultValue
   }

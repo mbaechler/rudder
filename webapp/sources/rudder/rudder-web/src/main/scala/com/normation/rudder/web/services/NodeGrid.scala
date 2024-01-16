@@ -56,9 +56,9 @@ import net.liftweb.http.js.JE._
 import net.liftweb.http.js.JsCmds._
 import net.liftweb.json._
 import net.liftweb.util.Helpers._
+import org.slf4j
 import org.slf4j.LoggerFactory
 import scala.xml._
-import org.slf4j
 
 object NodeGrid {
   val logger: slf4j.Logger = LoggerFactory.getLogger(classOf[NodeGrid])

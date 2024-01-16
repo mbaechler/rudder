@@ -133,8 +133,8 @@ abstract class RudderBaseField extends BaseField {
 
   ///// fields errors //////
   protected var _errors: List[FieldError] = Nil
-  def errors            = _errors
-  def hasErrors         = _errors.nonEmpty
+  def errors    = _errors
+  def hasErrors = _errors.nonEmpty
   def cleanErrors: Unit = _errors = Nil
 
   // The human readable name for the field
@@ -154,32 +154,32 @@ abstract class RudderBaseField extends BaseField {
   ///////// method to optionnaly override //////////
 
   // add some HTLM to help the user to fill that field
-  override def helpAsHtml:      Box[NodeSeq] = Empty
+  override def helpAsHtml:      Box[NodeSeq]                        = Empty
   // override the field name look
-  override def displayNameHtml: Box[NodeSeq] = {
+  override def displayNameHtml: Box[NodeSeq]                        = {
     validations match {
       case Nil => Some(<span class="text-fit">{displayName}</span>)
       case _   => Some(<b>{displayName}</b>)
     }
   }
   // optionnaly override validate to add validation functions
-  override def validations: List[ValueType => List[FieldError]] = Nil
+  override def validations:     List[ValueType => List[FieldError]] = Nil
   // override to add setFilter
-  override def setFilter: List[ValueType => ValueType] = Nil
+  override def setFilter:       List[ValueType => ValueType]        = Nil
 
   ////// other method //////
 
   protected lazy val id = Helpers.nextFuncName
-  override lazy val uniqueFieldId: Box[String]     = Full(id)
-  override lazy val fieldId:       Option[NodeSeq] = Some(Text(id))
-  override def toString: String = "[%s:%s]".format(name, get.toString)
-  override def validate: List[FieldError] = {
+  override lazy val uniqueFieldId: Box[String]      = Full(id)
+  override lazy val fieldId:       Option[NodeSeq]  = Some(Text(id))
+  override def toString:           String           = "[%s:%s]".format(name, get.toString)
+  override def validate:           List[FieldError] = {
     _errors = validations.flatMap(v => v(this.get))
     _errors
   }
 
   override def toForm: Full[NodeSeq] = Full(toForm_!)
-  def toForm_!        = {
+  def toForm_! = {
     (
       "field-label" #> displayHtml
       & "field-input" #> (
@@ -309,7 +309,7 @@ class WBRadioField(
 ) extends RudderBaseField with StringValidators {
   type ValueType = String
 
-  def defaultVal: Box[String] = {
+  def defaultVal: Box[String]            = {
     if (opts.filter(x => (x == defaultValue)).size > 0)
       Full(defaultValue)
     else

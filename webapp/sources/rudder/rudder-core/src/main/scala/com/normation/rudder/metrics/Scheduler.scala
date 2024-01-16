@@ -105,7 +105,7 @@ class Scheduler[A](
    * We need to special case the first iteration, because for it the max time is
    * really max time, while for next iteration, it's only (max - min).
    */
-  val loop: ZIO[Any,Nothing,Nothing] = {
+  val loop: ZIO[Any, Nothing, Nothing] = {
     def oneStep(d: Duration) = {
       for {
         a <- queue.take.race(ZIO.unit.delay(d) *> default)

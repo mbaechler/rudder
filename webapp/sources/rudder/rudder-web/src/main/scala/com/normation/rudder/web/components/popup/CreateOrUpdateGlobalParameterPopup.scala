@@ -76,7 +76,7 @@ class CreateOrUpdateGlobalParameterPopup(
 
   private[this] val userPropertyService = RudderConfig.userPropertyService
 
-  def dispatch: PartialFunction[String,NodeSeq => NodeSeq] = { case "popupContent" => { _ => popupContent() } }
+  def dispatch: PartialFunction[String, NodeSeq => NodeSeq] = { case "popupContent" => { _ => popupContent() } }
 
   /* Text variation for
    * - Global Parameter

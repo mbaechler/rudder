@@ -565,7 +565,8 @@ object PolicyServerConfigurationObjects {
   }
 
   val relayTechniques: List[String] = List("server-common", "rudder-service-apache", "rudder-service-relayd")
-  val rootTechniques: List[String]  = List("rudder-service-postgresql", "rudder-service-slapd", "rudder-service-webapp") ::: relayTechniques
+  val rootTechniques:  List[String] =
+    List("rudder-service-postgresql", "rudder-service-slapd", "rudder-service-webapp") ::: relayTechniques
 
   def directiveCommonHasPolicyServer(nodeId: NodeId): (TechniqueName, Directive) = {
     TechniqueName("common") ->

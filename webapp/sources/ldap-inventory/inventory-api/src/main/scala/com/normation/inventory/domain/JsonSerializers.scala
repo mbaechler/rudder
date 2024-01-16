@@ -38,9 +38,9 @@
 package com.normation.inventory.domain
 
 import org.joda.time.DateTime
+import org.joda.time.format.DateTimeFormatter
 import org.joda.time.format.ISODateTimeFormat
 import zio.json._
-import org.joda.time.format.DateTimeFormatter
 
 /*
  * This file provide serializer for core inventory objects.
@@ -64,8 +64,8 @@ object JsonSerializers {
   object implicits extends InventoryJsonEncoders with InventoryJsonDecoders
 
   // the update date is normalized in RFC3339, UTC, no millis
-  val softwareUpdateDateTimeFormat: DateTimeFormatter           = ISODateTimeFormat.dateTimeNoMillis().withZoneUTC()
-  def parseSoftwareUpdateDateTime(d: String): Either[String,DateTime] = {
+  val softwareUpdateDateTimeFormat:           DateTimeFormatter        = ISODateTimeFormat.dateTimeNoMillis().withZoneUTC()
+  def parseSoftwareUpdateDateTime(d: String): Either[String, DateTime] = {
     try {
       Right(JsonSerializers.softwareUpdateDateTimeFormat.parseDateTime(d))
     } catch {

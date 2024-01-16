@@ -84,8 +84,8 @@ import org.reflections.Reflections
 import org.springframework.security.core.context.SecurityContextHolder
 import scala.concurrent.duration.DAYS
 import scala.concurrent.duration.Duration
-import scala.xml.NodeSeq
 import scala.util.matching.Regex
+import scala.xml.NodeSeq
 
 /*
  * Utilities about rights
@@ -238,7 +238,7 @@ object PluginsInfo {
 //////////
 object StaticResourceRewrite extends RestHelper {
   // prefix added to signal that the resource is cached
-  val prefix: String = s"cache-${RudderConfig.rudderFullVersion}"
+  val prefix:                                  String                 = s"cache-${RudderConfig.rudderFullVersion}"
   def headers(others: List[(String, String)]): List[(String, String)] = {
     ("Cache-Control", "max-age=31556926, public") ::
     ("Pragma", "") ::
@@ -276,9 +276,9 @@ object StaticResourceRewrite extends RestHelper {
  */
 object FatalException {
 
-  private[this] var fatalException  = Set[String]()
+  private[this] var fatalException = Set[String]()
   // need to be pre-allocated
-  private[this] val format          = org.joda.time.format.ISODateTimeFormat.dateTime()
+  private[this] val format         = org.joda.time.format.ISODateTimeFormat.dateTime()
   /*
    * Call that method with the list of fatal exception to set-up the
    * UncaughtExceptionHandler.

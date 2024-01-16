@@ -48,12 +48,12 @@ import com.normation.zio._
 import net.liftweb.common._
 import net.liftweb.common.Box
 import net.liftweb.common.Loggable
+import net.liftweb.http.js
 import net.liftweb.http.js.JE._
 import org.joda.time.DateTime
 import org.joda.time.Interval
 import zio.{System => _, _}
 import zio.syntax._
-import net.liftweb.http.js
 
 /**
  * This service is responsible to make available node changes for nodes.

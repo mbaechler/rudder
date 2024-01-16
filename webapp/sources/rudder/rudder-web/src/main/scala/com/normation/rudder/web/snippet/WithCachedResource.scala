@@ -45,12 +45,12 @@ import net.liftweb.common.Empty
 import net.liftweb.common.Full
 import net.liftweb.http.DispatchSnippet
 import net.liftweb.http.LiftRules
+import scala.util.matching.Regex
 import scala.xml.Elem
 import scala.xml.MetaData
 import scala.xml.NodeSeq
 import scala.xml.Null
 import scala.xml.UnprefixedAttribute
-import scala.util.matching.Regex
 
 /**
  *

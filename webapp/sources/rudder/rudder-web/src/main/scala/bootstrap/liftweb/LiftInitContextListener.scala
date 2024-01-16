@@ -43,13 +43,13 @@ import com.normation.rudder.domain.logger.ApplicationLogger
 import com.normation.zio._
 import com.typesafe.config.ConfigException
 import java.io.File
+import java.net.URL
 import javax.servlet.ServletContextEvent
 import net.liftweb.common._
 import org.springframework.core.io.{ClassPathResource => CPResource}
 import org.springframework.core.io.{FileSystemResource => FSResource}
 import org.springframework.web.context.ContextLoaderListener
 import org.springframework.web.context.support.WebApplicationContextUtils
-import java.net.URL
 
 /**
  * A context loader listener for initializing Spring webapp context

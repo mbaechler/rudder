@@ -232,7 +232,7 @@ final case class DirectiveApplicationManagement(
    * Check Status methods, here are functions to check whether a rule is considered apply the Directive or not
    */
   // Check status of rule
-  def ruleStatus(rule: Rule): Boolean = {
+  def ruleStatus(rule: Rule):     Boolean      = {
     currentApplyingRules.get(rule.categoryId).getOrElse(Nil).contains(rule.id)
   }
   // Check status of Rule, based on its Id

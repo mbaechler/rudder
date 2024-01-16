@@ -68,11 +68,13 @@ import com.normation.zio.ZioRuntime
 import com.softwaremill.quicklens._
 import com.typesafe.config.ConfigValueFactory
 import cron4s.Cron
+import java.io.InputStream
 import java.security.Security
 import org.apache.commons.io.FileUtils
 import org.bouncycastle.jce.provider.BouncyCastleProvider
 import org.joda.time.DateTime
 import org.junit.runner._
+import org.specs2.matcher.MatchResult
 import org.specs2.mutable._
 import org.specs2.runner._
 import org.specs2.specification.BeforeAfterAll
@@ -80,8 +82,6 @@ import scala.annotation.nowarn
 import zio._
 import zio.concurrent.ReentrantLock
 import zio.syntax._
-import java.io.InputStream
-import org.specs2.matcher.MatchResult
 
 /**
  *
@@ -151,8 +151,8 @@ class TestSaveInventoryLdap extends TestSaveInventory {
   //////// for LDAP reposiotyr, in addition to main acceptation test, we are
   //////// checking properties around certificate validation
 
-  val windows: NodeId   = NodeId("b73ea451-c42a-420d-a540-47b445e58313")
-  val linuxKey: NodeId  = NodeId("baded9c8-902e-4404-96c1-278acca64e3a")
+  val windows:   NodeId = NodeId("b73ea451-c42a-420d-a540-47b445e58313")
+  val linuxKey:  NodeId = NodeId("baded9c8-902e-4404-96c1-278acca64e3a")
   val linuxCert: NodeId = NodeId("67e00959-ccda-430d-b6c2-ad1f3e89276a")
 
   val exist: IOManaged[Boolean] = IOManaged.make(true)(_ => ())
@@ -372,7 +372,7 @@ trait TestSaveInventory extends Specification with BeforeAfterAll {
   Security.addProvider(new BouncyCastleProvider())
 
   implicit class RunThing[E, T](thing: ZIO[Any, E, T])      {
-    def testRun: Either[E,T] = ZioRuntime.unsafeRun(thing.either)
+    def testRun: Either[E, T] = ZioRuntime.unsafeRun(thing.either)
   }
   implicit class RunOptThing[A](thing: IOResult[Option[A]]) {
     def testRunGet: A = ZioRuntime.unsafeRun(thing.either) match {
@@ -383,7 +383,7 @@ trait TestSaveInventory extends Specification with BeforeAfterAll {
   }
 
   implicit class TestIsOK[E, T](thing: ZIO[Any, E, T]) {
-    def isOK: MatchResult[Either[E,T]] = thing.testRun must beRight
+    def isOK: MatchResult[Either[E, T]] = thing.testRun must beRight
   }
 
   implicit class ForceGetE[E, A](opt: Either[E, A]) {
@@ -404,12 +404,12 @@ trait TestSaveInventory extends Specification with BeforeAfterAll {
 
   val basePath: String = s"/tmp/test-rudder-inventory/${DateFormaterService.gitTagFormat.print(DateTime.now())}"
 
-  val INVENTORY_ROOT_DIR: String     = basePath + "/inventories"
+  val INVENTORY_ROOT_DIR:     String = basePath + "/inventories"
   val INVENTORY_DIR_INCOMING: String = INVENTORY_ROOT_DIR + "/incoming"
 
   def incomingInventoryFile(name: String): File = File(INVENTORY_DIR_INCOMING + "/" + name)
 
-  val INVENTORY_DIR_FAILED: String   = INVENTORY_ROOT_DIR + "/failed"
+  val INVENTORY_DIR_FAILED:   String = INVENTORY_ROOT_DIR + "/failed"
   val INVENTORY_DIR_RECEIVED: String = INVENTORY_ROOT_DIR + "/received"
 
   def receivedInventoryFile(name: String): File = File(INVENTORY_DIR_RECEIVED + "/" + name)
@@ -436,8 +436,8 @@ trait TestSaveInventory extends Specification with BeforeAfterAll {
 
   // TODO WARNING POC: this can't work on a machine with lots of node
   val callbackLog: Ref[Chunk[NodeFactChangeEvent]] = Ref.make(Chunk.empty[NodeFactChangeEvent]).runNow
-  def resetLog: Unit    = callbackLog.set(Chunk.empty).runNow
-  def getLogName: Chunk[String]  = callbackLog.get.map(_.map(_.name)).runNow
+  def resetLog:    Unit                            = callbackLog.set(Chunk.empty).runNow
+  def getLogName:  Chunk[String]                   = callbackLog.get.map(_.map(_.name)).runNow
 
   object noopNodeBySoftwareName extends GetNodesbySofwareName {
     override def apply(softName: String): IOResult[List[(NodeId, Software)]] = {
@@ -520,11 +520,11 @@ trait TestSaveInventory extends Specification with BeforeAfterAll {
 
   sequential
 
-  val nodeId       = "86d9ec77-9db5-4ba3-bdca-f0baf3a5b477"
-  val nodeName: String     = s"node2-${nodeId}.ocs"
+  val nodeId = "86d9ec77-9db5-4ba3-bdca-f0baf3a5b477"
+  val nodeName:     String = s"node2-${nodeId}.ocs"
   val nodeResource: String = s"inventories/7.2/${nodeName}"
-  val newfqdn      = "node42.fqdn"
-  val fqdn         = "node2.rudder.local"
+  val newfqdn = "node42.fqdn"
+  val fqdn    = "node2.rudder.local"
 
   "Saving a new, unknown inventory" should {
     implicit val status = SelectNodeStatus.Pending

@@ -1750,14 +1750,14 @@ class EventLogDetailsGenerator(
   }
 
   case object RollbackTo extends RollBackAction {
-    val name   = "after"
-    val op     = ">"
+    val name = "after"
+    val op   = ">"
     def action: (EventLog, PersonIdent, Seq[EventLog], EventLog) => Box[GitCommitId] = modificationService.restoreToEventLog _
   }
 
   case object RollbackBefore extends RollBackAction {
-    val name   = "before"
-    val op     = ">="
+    val name = "before"
+    val op   = ">="
     def action: (EventLog, PersonIdent, Seq[EventLog], EventLog) => Box[GitCommitId] = modificationService.restoreBeforeEventLog _
   }
 

@@ -100,7 +100,7 @@ class ItemArchiveManagerImpl(
   // import (retore, rollback, etc) action must be exclusive so if a second one happens concurrently, it's an error.
   val importSemaphore: Semaphore = Semaphore.make(1).runNow
 
-  def useSemaphoreOrFail[A](effect: IOResult[A]): ZIO[Any,RudderError,A] = {
+  def useSemaphoreOrFail[A](effect: IOResult[A]): ZIO[Any, RudderError, A] = {
     // we timeout the semaphore acquisition to fail if another op is already running
     ZIO.scoped(
       importSemaphore.withPermitScoped
@@ -377,7 +377,7 @@ class ItemArchiveManagerImpl(
       actor:         EventActor,
       reason:        Option[String],
       includeSystem: Boolean = false
-  ): ZIO[Any,RudderError,GitCommitId] = {
+  ): ZIO[Any, RudderError, GitCommitId] = {
     val commitMsg = "User %s requested rule archive restoration to commit %s".format(actor.name, archiveId.value)
     useSemaphoreOrFail(
       for {
@@ -508,7 +508,7 @@ class ItemArchiveManagerImpl(
       actor:         EventActor,
       reason:        Option[String],
       includeSystem: Boolean = false
-  ): ZIO[Any,RudderError,GitCommitId] = {
+  ): ZIO[Any, RudderError, GitCommitId] = {
     val commitMsg = "User %s requested Parameters archive restoration to commit %s".format(actor.name, archiveId.value)
     useSemaphoreOrFail(
       for {
@@ -642,23 +642,24 @@ trait ArchiveMode extends Any {
  * To be counted as a directory the last character have to be a /.
  */
 final case class PartialArchive(directory: String) extends AnyVal with ArchiveMode {
-  def configureRm(rmCmd: RmCommand): RmCommand             = rmCmd.addFilepattern(directory)
+  def configureRm(rmCmd: RmCommand):             RmCommand       = rmCmd.addFilepattern(directory)
   def configureCheckout(coCmd: CheckoutCommand): CheckoutCommand = coCmd.addPath(directory)
 }
 
 object PartialArchive {
-  val groupArchive: PartialArchive     = PartialArchive("groups/")
-  val ruleArchive: PartialArchive      = PartialArchive("rules/")
+  val groupArchive:     PartialArchive = PartialArchive("groups/")
+  val ruleArchive:      PartialArchive = PartialArchive("rules/")
   val directiveArchive: PartialArchive = PartialArchive("directives/")
-  val ncfArchive: PartialArchive       = PartialArchive("ncf/")
+  val ncfArchive:       PartialArchive = PartialArchive("ncf/")
   val parameterArchive: PartialArchive = PartialArchive("parameters/")
 }
 
 import com.normation.rudder.repository.xml.PartialArchive._
 
 case object TechniqueLibraryArchive extends ArchiveMode {
-  def configureRm(rmCmd: RmCommand): RmCommand             = directiveArchive.configureRm(ncfArchive.configureRm(rmCmd))
-  def configureCheckout(coCmd: CheckoutCommand): CheckoutCommand = directiveArchive.configureCheckout(ncfArchive.configureCheckout(coCmd))
+  def configureRm(rmCmd: RmCommand):             RmCommand       = directiveArchive.configureRm(ncfArchive.configureRm(rmCmd))
+  def configureCheckout(coCmd: CheckoutCommand): CheckoutCommand =
+    directiveArchive.configureCheckout(ncfArchive.configureCheckout(coCmd))
 }
 case object FullArchive             extends ArchiveMode {
 

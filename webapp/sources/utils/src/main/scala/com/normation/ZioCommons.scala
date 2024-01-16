@@ -184,12 +184,12 @@ object errors {
   }
 
   final case class Accumulated[E <: RudderError](all: NonEmptyList[E]) extends RudderError {
-    implicit val ord: Order[E] = new Order[E]() {
+    implicit val ord: Order[E]       = new Order[E]() {
       override def compare(x: E, y: E): Int = String.CASE_INSENSITIVE_ORDER.compare(x.fullMsg, y.fullMsg)
     }
-    def msg: String = all.map(_.fullMsg).toList.mkString(" ; ")
+    def msg:          String         = all.map(_.fullMsg).toList.mkString(" ; ")
     // only unique error
-    def deduplicate: Accumulated[E] = {
+    def deduplicate:  Accumulated[E] = {
       Accumulated(all.distinct)
     }
   }
@@ -224,7 +224,7 @@ object errors {
 
   // not optional - mandatory presence of an object
   implicit class OptionToPureResult[A](val res: Option[A]) extends AnyVal {
-    def notOptionalPure(error: => String): Either[Inconsistency,A] = res match {
+    def notOptionalPure(error: => String): Either[Inconsistency, A] = res match {
       case None    => Left(Inconsistency(error))
       case Some(x) => Right(x)
     }
@@ -388,9 +388,9 @@ object errors {
 
 object zio {
 
-  val currentTimeMillis: ZIO[Any,Nothing,Long] = ZIO.clockWith(_.currentTime(TimeUnit.MILLISECONDS))
+  val currentTimeMillis: ZIO[Any, Nothing, Long] = ZIO.clockWith(_.currentTime(TimeUnit.MILLISECONDS))
 //    ZIO.access[_root_.zio.clock.Clock](_.get.currentTime(TimeUnit.MILLISECONDS))
-  val currentTimeNanos: ZIO[Any,Nothing,Long]  = ZIO.clockWith(_.nanoTime)
+  val currentTimeNanos:  ZIO[Any, Nothing, Long] = ZIO.clockWith(_.nanoTime)
 //  ZIO.accessM[_root_.zio.clock.Clock](_.get.nanoTime)
 
   /*

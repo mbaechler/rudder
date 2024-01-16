@@ -235,8 +235,8 @@ object TechniqueFiles {
 
     // `rudder_reporting.cf` is only used when the generation is done by webapp, it does not exist with rudderc
     val cfengineReporting = "rudder_reporting.cf"
-    val cfengineRudderc: Chunk[String]   = Chunk("technique.cf")
-    val cfengineAll: Chunk[String]       = Chunk(cfengineReporting, "technique.cf")
+    val cfengineRudderc: Chunk[String] = Chunk("technique.cf")
+    val cfengineAll:     Chunk[String] = Chunk(cfengineReporting, "technique.cf")
 
     val dsc: Chunk[String] = Chunk("technique.ps1")
 
@@ -244,7 +244,7 @@ object TechniqueFiles {
   }
 
   // all is for current version only, ie json is not part of it.
-  val all: Chunk[String] = yaml +: Generated.all
+  val all:    Chunk[String] = yaml +: Generated.all
   val common: Chunk[String] = yaml +: Generated.all_common
 }
 

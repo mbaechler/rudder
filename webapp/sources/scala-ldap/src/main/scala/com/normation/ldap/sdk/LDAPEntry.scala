@@ -28,11 +28,11 @@ import com.unboundid.ldap.sdk.Modification
 import com.unboundid.ldap.sdk.RDN
 import com.unboundid.ldap.sdk.schema.Schema
 import com.unboundid.ldif.LDIFRecord
+import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import scala.collection.mutable.Buffer
 import scala.jdk.CollectionConverters._
 import zio.Chunk
-import org.slf4j.Logger
 
 /**
  * A Scala facade for LDAP Entry.
@@ -251,7 +251,8 @@ class LDAPEntry(private val _backed: UnboundidEntry) {
   def mergeAttribute(attribute: Attribute): Boolean = _backed.addAttribute(attribute)
 
   /** add given attribute. If already present, existing values will be merged */
-  def addValues(attributeName: String, values: String*): Boolean = _backed.addAttribute(new Attribute(attributeName, values.asJava))
+  def addValues(attributeName: String, values: String*): Boolean =
+    _backed.addAttribute(new Attribute(attributeName, values.asJava))
 
   /** remove attribute */
   def deleteAttribute(attributeName: String): Boolean = _backed.removeAttribute(attributeName)

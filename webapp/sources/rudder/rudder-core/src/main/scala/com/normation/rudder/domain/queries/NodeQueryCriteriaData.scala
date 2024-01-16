@@ -397,7 +397,7 @@ object MatcherUtils {
 }
 
 final case class DebugInfo(comparatorName: String, value: Option[String]) {
-  def formatValue: String = value match {
+  def formatValue:                                                                   String = value match {
     case None    => ""
     case Some(v) => s" ${v}"
   }
@@ -409,7 +409,7 @@ final case class DebugInfo(comparatorName: String, value: Option[String]) {
 final case class MatchHolderZio[A](debug: DebugInfo, values: Chunk[A], matcher: Chunk[A] => IOResult[Boolean])(implicit
     serializer:                           A => String
 ) {
-  def matches: ZIO[Any,RudderError,Boolean] = for {
+  def matches: ZIO[Any, RudderError, Boolean] = for {
     res <- matcher(values)
     _   <- FactQueryProcessorLoggerPure.trace(debug.debugMsg(values, res))
   } yield res
@@ -559,7 +559,7 @@ final case class NodeCriterionMatcherDate(extractorNode: CoreNodeFact => Chunk[D
   override def extractor:               CoreNodeFact => Chunk[DateTime] = (n: CoreNodeFact) => extractorNode(n).map(_.withTimeAtStartOfDay())
   override def parseNum(value: String): Option[DateTime]                = parseDate(value).map(_.withTimeAtStartOfDay())
   override def serialise(a: DateTime):  String                          = DateFormaterService.serialize(a)
-  val order: Ordering[DateTime] = Ordering.by(_.getMillis)
+  val order:                            Ordering[DateTime]              = Ordering.by(_.getMillis)
 }
 
 /*

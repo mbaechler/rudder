@@ -42,8 +42,8 @@ import com.normation.rudder.domain.Constants.XML_CURRENT_FILE_FORMAT
 import com.normation.rudder.migration.MigrableEntity
 import net.liftweb.common.Failure
 import net.liftweb.common.Logger
-import org.slf4j.LoggerFactory
 import org.slf4j
+import org.slf4j.LoggerFactory
 
 final case class MigrationLogger(
     goal: Int = XML_CURRENT_FILE_FORMAT

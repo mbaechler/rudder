@@ -45,10 +45,10 @@ import net.liftweb.common.Box
 import net.liftweb.common.Full
 import net.liftweb.common.Loggable
 import org.junit.runner.RunWith
+import org.specs2.matcher.MatchResult
 import org.specs2.mutable.Specification
 import org.specs2.runner.JUnitRunner
 import scala.xml.Elem
-import org.specs2.matcher.MatchResult
 import scala.xml.Node
 
 /**

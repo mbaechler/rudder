@@ -140,7 +140,8 @@ object DB {
       nodeConfigId: Option[String],
       insertionId:  Long
   ) {
-    def toAgentRun: RudderAgentRun = RudderAgentRun(AgentRunId(NodeId(nodeId), date), nodeConfigId.map(NodeConfigId.apply), insertionId)
+    def toAgentRun: RudderAgentRun =
+      RudderAgentRun(AgentRunId(NodeId(nodeId), date), nodeConfigId.map(NodeConfigId.apply), insertionId)
   }
 
   final case class UncomputedAgentRun(

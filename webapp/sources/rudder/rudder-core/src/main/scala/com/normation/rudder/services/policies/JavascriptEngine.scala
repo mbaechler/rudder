@@ -323,7 +323,7 @@ final class JsRudderLibImpl(
   def getPassword = password
 
   // with the Proxy interface, it will be accessed with rudder.password... or rudder.hash...
-  val members: Map[String,ImplicitGetBytes] = Map(
+  val members: Map[String, ImplicitGetBytes] = Map(
     ("password", password),
     ("hash", hash)
   )
@@ -360,12 +360,12 @@ object JsRudderLibBinding {
    */
   object Aix extends JsRudderLibBinding {
     val jsRudderLib = new JsRudderLibImpl(AixHash)
-    def bindings: Bindings    = toBindings("rudder", jsRudderLib)
+    def bindings: Bindings = toBindings("rudder", jsRudderLib)
   }
 
   object Crypt extends JsRudderLibBinding {
     val jsRudderLib = new JsRudderLibImpl(CryptHash)
-    def bindings: Bindings    = toBindings("rudder", jsRudderLib)
+    def bindings: Bindings = toBindings("rudder", jsRudderLib)
   }
 }
 
@@ -493,7 +493,7 @@ object JsEngine {
   }
 
   final case class GraalEngine(engine: Engine) {
-    def buildContext: ZIO[Any with Any with Scope,SystemError,Context] = ZIO.acquireRelease(
+    def buildContext: ZIO[Any with Any with Scope, SystemError, Context] = ZIO.acquireRelease(
       IOResult.attempt(
         Context
           .newBuilder("js")

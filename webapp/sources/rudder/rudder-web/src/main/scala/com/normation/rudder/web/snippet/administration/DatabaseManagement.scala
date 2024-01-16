@@ -50,23 +50,23 @@ import net.liftweb.http.js.JsCmds._
 import net.liftweb.util.Helpers._
 import org.joda.time.DateTime
 import org.joda.time.format.DateTimeFormat
-import scala.xml._
 import org.joda.time.format.DateTimeFormatter
+import scala.xml._
 
 class DatabaseManagement extends DispatchSnippet with Loggable {
 
   private[this] val databaseManager = RudderConfig.databaseManager
   private[this] val dbCleaner       = RudderConfig.automaticReportsCleaning
 
-  private[this] var from: String = ""
-  val archiveAction: ArchiveAction = ArchiveAction(databaseManager, dbCleaner)
-  val deleteAction: DeleteAction  = DeleteAction(databaseManager, dbCleaner)
+  private[this] var from:   String            = ""
+  val archiveAction:        ArchiveAction     = ArchiveAction(databaseManager, dbCleaner)
+  val deleteAction:         DeleteAction      = DeleteAction(databaseManager, dbCleaner)
   private[this] var action: CleanReportAction = archiveAction
 
   val DATETIME_FORMAT = "yyyy-MM-dd"
   val DATETIME_PARSER: DateTimeFormatter = DateTimeFormat.forPattern(DATETIME_FORMAT)
 
-  def dispatch: PartialFunction[String,NodeSeq => NodeSeq] = { case "display" => display }
+  def dispatch: PartialFunction[String, NodeSeq => NodeSeq] = { case "display" => display }
 
   def display(xml: NodeSeq): NodeSeq = {
 

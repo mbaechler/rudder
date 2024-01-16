@@ -76,7 +76,7 @@ class GiveReasonPopup(
   private[this] val userPropertyService         = RudderConfig.userPropertyService
   private[this] val techniqueRepository         = RudderConfig.techniqueRepository
 
-  def dispatch: PartialFunction[String,NodeSeq => NodeSeq] = { case "popupContent" => popupContent _ }
+  def dispatch: PartialFunction[String, NodeSeq => NodeSeq] = { case "popupContent" => popupContent _ }
 
   def popupContent(html: NodeSeq): NodeSeq = {
     SHtml.ajaxForm(

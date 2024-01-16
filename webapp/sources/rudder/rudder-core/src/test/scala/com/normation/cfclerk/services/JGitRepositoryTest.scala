@@ -38,6 +38,7 @@
 package com.normation.cfclerk.services
 
 import better.files.File
+import com.normation.errors
 import com.normation.errors.Inconsistency
 import com.normation.errors.IOResult
 import com.normation.errors.effectUioUnit
@@ -64,7 +65,6 @@ import scala.annotation.nowarn
 import scala.util.Random
 import zio._
 import zio.syntax._
-import com.normation.errors
 
 /**
  * Details of tests executed in each instances of
@@ -94,7 +94,7 @@ class JGitRepositoryTest extends Specification with Loggable with AfterAll {
 
   gitRoot.createDirectories()
 
-  val repo: GitRepositoryProviderImpl    = GitRepositoryProviderImpl.make(gitRoot.pathAsString).runNow
+  val repo:    GitRepositoryProviderImpl                     = GitRepositoryProviderImpl.make(gitRoot.pathAsString).runNow
   val archive: GitConfigItemRepository with XmlArchiverUtils = new GitConfigItemRepository with XmlArchiverUtils {
     override val gitRepo = repo
     override def relativePath: String = ""
@@ -113,7 +113,7 @@ class JGitRepositoryTest extends Specification with Loggable with AfterAll {
 
   import org.eclipse.jgit.treewalk.TreeWalk
 
-  def readElementsAt(repository: Repository, commit: String): ZIO[Any,errors.SystemError,List[String]] = {
+  def readElementsAt(repository: Repository, commit: String): ZIO[Any, errors.SystemError, List[String]] = {
     val ref = repository.findRef(commit)
 
     // a RevWalk allows to walk over commits based on some filtering that is defined

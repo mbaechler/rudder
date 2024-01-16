@@ -140,20 +140,20 @@ final case class ApiPath(parts: NonEmptyList[ApiPathSegment]) extends AnyVal {
 }
 
 object ApiPath {
-  def toPathElement(s: String): ApiPathSegment = {
+  def toPathElement(s: String):        ApiPathSegment          = {
     if (s.startsWith("{") && s.endsWith("}")) {
       ApiPathSegment.Resource(s.substring(1, s.size - 1))
     } else {
       ApiPathSegment.Segment(s)
     }
   }
-  def of(head: String, tail: String*): ApiPath = {
+  def of(head: String, tail: String*): ApiPath                 = {
     ApiPath(NonEmptyList(toPathElement(head), tail.map(toPathElement).toList))
   }
   // parse a path to an api path.
   // we don't accept empty string and ignore empty subpart, but appart
   // from that everything works
-  def parse(path: String): Either[String, ApiPath] = {
+  def parse(path: String):             Either[String, ApiPath] = {
     path.trim.split("/").filter(_.nonEmpty).toList match {
       case Nil    =>
         Left("The given is empty, it can't be a Rudder API path")
@@ -436,7 +436,7 @@ class RudderEndpointDispatcher(logger: Log) extends ConnectEndpoint {
    *   On secure, we only make available the latest version on a shorter path:
    * - /secure/api/endpoint
    */
-  val publicBase: ApiPath   = ApiPath.of("api")
+  val publicBase:   ApiPath = ApiPath.of("api")
   val internalBase: ApiPath = ApiPath.of("secure", "api")
 
   // from a base path and versions, builed "base/v1", "base/v2", "...", "base/latest"

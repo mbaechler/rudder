@@ -58,12 +58,12 @@ class TestRemoveNodeService extends Specification with AfterAll {
 
   // nodeXX appears at seleral places
 
-  override def afterAll(): Unit = {
+  override def afterAll(): Unit       = {
     if (System.getProperty("tests.clean.tmp") != "false") {
       varRudderShare.delete()
     }
   }
-  val expected: List[File] = List(
+  val expected:            List[File] = List(
     varRudderShare,
     varRudderShare / "node1",
     varRudderShare / "node1" / "rules",

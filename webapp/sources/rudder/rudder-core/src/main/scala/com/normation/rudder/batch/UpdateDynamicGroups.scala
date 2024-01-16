@@ -206,7 +206,7 @@ class UpdateDynamicGroups(
       }
     }
 
-    override protected def messageHandler: PartialFunction[GroupUpdateMessage,Unit] = {
+    override protected def messageHandler: PartialFunction[GroupUpdateMessage, Unit] = {
 
       //
       // Ask for a new dynamic group update
@@ -293,7 +293,7 @@ class UpdateDynamicGroups(
 
     private[this] object LAUpdateDyngroup extends SpecializedLiftActor[StartDynamicUpdate] {
 
-      override protected def messageHandler: PartialFunction[StartDynamicUpdate,Unit] = {
+      override protected def messageHandler: PartialFunction[StartDynamicUpdate, Unit] = {
         //
         // Process a dynamic group update
         //

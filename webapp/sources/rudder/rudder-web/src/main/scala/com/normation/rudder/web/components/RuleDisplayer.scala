@@ -84,7 +84,7 @@ class RuleDisplayer(
     getRootCategory()
   }
 
-  def dispatch: PartialFunction[String,NodeSeq => NodeSeq] = { case "display" => { _ => NodeSeq.Empty } }
+  def dispatch: PartialFunction[String, NodeSeq => NodeSeq] = { case "display" => { _ => NodeSeq.Empty } }
 
   // Update Rule displayer after a Rule has changed ( update / creation )
   def onRuleChange(selectedCategoryUpdate: RuleCategoryId): JsCmd = {
@@ -116,7 +116,7 @@ class RuleDisplayer(
     )
   }
 
-  def includeSubCategory: Elem = {
+  def includeSubCategory:   Elem    = {
     SHtml.ajaxCheckbox(
       true,
       value => OnLoad(JsRaw(s"""

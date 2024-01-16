@@ -66,8 +66,8 @@ sealed abstract class TechniqueCategoryId(val name: TechniqueCategoryName) {
    * The list of category from root to that one
    * (including that one)
    */
-  lazy val getPathFromRoot: List[TechniqueCategoryName]   = TechniqueCategoryId.pathFrom(this).reverse
-  lazy val getIdPathFromRoot: List[TechniqueCategoryId] = TechniqueCategoryId.idPathFrom(this).reverse
+  lazy val getPathFromRoot:   List[TechniqueCategoryName] = TechniqueCategoryId.pathFrom(this).reverse
+  lazy val getIdPathFromRoot: List[TechniqueCategoryId]   = TechniqueCategoryId.idPathFrom(this).reverse
 
   /**
    * The list of category from root to the

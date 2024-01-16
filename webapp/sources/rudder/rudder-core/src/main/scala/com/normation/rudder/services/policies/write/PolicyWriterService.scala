@@ -114,11 +114,12 @@ trait PolicyWriterService {
 object PolicyWriterServiceImpl {
   import PosixFilePermission._
   // we want: /bin/chmod u-x,u+rwX,g-wx,g+rX,o-rwx ... for nodes other than root
-  val defaultFilePerms: Set[PosixFilePermission]      = Set[PosixFilePermission](OWNER_READ, OWNER_WRITE, GROUP_READ)
-  val defaultDirectoryPerms: Set[PosixFilePermission] = Set[PosixFilePermission](OWNER_READ, OWNER_WRITE, OWNER_EXECUTE, GROUP_READ, GROUP_EXECUTE)
+  val defaultFilePerms:      Set[PosixFilePermission] = Set[PosixFilePermission](OWNER_READ, OWNER_WRITE, GROUP_READ)
+  val defaultDirectoryPerms: Set[PosixFilePermission] =
+    Set[PosixFilePermission](OWNER_READ, OWNER_WRITE, OWNER_EXECUTE, GROUP_READ, GROUP_EXECUTE)
   // we want: /bin/chmod u-x,u+rwX,g-rwx,o-rwx ... for root
-  val rootFilePerms: Set[PosixFilePermission]         = Set[PosixFilePermission](OWNER_READ, OWNER_WRITE)
-  val rootDirectoryPerms: Set[PosixFilePermission]    = Set[PosixFilePermission](OWNER_READ, OWNER_WRITE, OWNER_EXECUTE)
+  val rootFilePerms:         Set[PosixFilePermission] = Set[PosixFilePermission](OWNER_READ, OWNER_WRITE)
+  val rootDirectoryPerms:    Set[PosixFilePermission] = Set[PosixFilePermission](OWNER_READ, OWNER_WRITE, OWNER_EXECUTE)
 
   def createParentsIfNotExist(file: File, optPerms: Option[Set[PosixFilePermission]], optGroupOwner: Option[String]): Unit = {
     file.parentOption.foreach { parent =>
@@ -212,7 +213,7 @@ case class WriteTimer(
 )
 
 object WriteTimer {
-  def make(): ZIO[Any,Nothing,WriteTimer] = for {
+  def make(): ZIO[Any, Nothing, WriteTimer] = for {
     a <- Ref.make(0L)
     b <- Ref.make(0L)
     c <- Ref.make(0L)
@@ -243,15 +244,15 @@ class PolicyWriterServiceImpl(
   val timingLogger = PolicyGenerationLoggerPure.timing
 
   val hookGlobalWarnTimeout: Duration = 60.seconds // max time before warning for executing all hooks
-  val hookUnitWarnTimeout: Duration   = 2.seconds  // max time before warning for executing each hook
-  val hookUnitKillTimeout: Duration   = 20.seconds // max time before killing for executing one hook
+  val hookUnitWarnTimeout:   Duration = 2.seconds  // max time before warning for executing each hook
+  val hookUnitKillTimeout:   Duration = 20.seconds // max time before killing for executing one hook
 
   val newPostfix    = ".new"
   val backupPostfix = ".bkp"
 
   // an utility that write text in a file and create file parents if needed
   implicit class CreateParentAndWrite(val file: File) {
-    def getPerms(isRootServer: Boolean): (Option[String], Set[PosixFilePermission], Set[PosixFilePermission])                            = {
+    def getPerms(isRootServer: Boolean):                            (Option[String], Set[PosixFilePermission], Set[PosixFilePermission]) = {
       if (isRootServer) {
         (None, rootFilePerms, rootDirectoryPerms)
       } else {
@@ -260,14 +261,14 @@ class PolicyWriterServiceImpl(
     }
     import StandardOpenOption._
     // open file mode for create or overwrite mode
-    def createParentsAndWrite(text: String, isRootServer: Boolean): IO[SystemError,Unit] = IOResult.attempt {
+    def createParentsAndWrite(text: String, isRootServer: Boolean): IO[SystemError, Unit]                                                = IOResult.attempt {
       val (optGroupOwner, filePerms, dirPerms) = getPerms(isRootServer)
       createParentsIfNotExist(file, Some(dirPerms), optGroupOwner)
       file.writeText(text)(Seq(WRITE, TRUNCATE_EXISTING, CREATE), charset).setPermissions(filePerms)
       optGroupOwner.foreach(file.setGroup)
     }
 
-    def createParentsAndWrite(content: Array[Byte], isRootServer: Boolean): IO[SystemError,Unit] = IOResult.attempt {
+    def createParentsAndWrite(content: Array[Byte], isRootServer: Boolean): IO[SystemError, Unit] = IOResult.attempt {
       val (optGroupOwner, filePerms, dirPerms) = getPerms(isRootServer)
       createParentsIfNotExist(file, Some(dirPerms), optGroupOwner)
       file.writeByteArray(content)(Seq(WRITE, TRUNCATE_EXISTING, CREATE)).setPermissions(filePerms)

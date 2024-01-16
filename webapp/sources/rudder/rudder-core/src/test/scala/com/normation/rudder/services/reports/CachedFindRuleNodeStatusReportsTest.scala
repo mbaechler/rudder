@@ -46,6 +46,7 @@ import com.normation.rudder.domain.reports.NodeConfigId
 import com.normation.rudder.domain.reports.NodeExpectedReports
 import com.normation.rudder.domain.reports.NodeStatusReport
 import com.normation.rudder.domain.reports.RunComplianceInfo
+import com.normation.rudder.facts.nodes.CoreNodeFact
 import com.normation.rudder.facts.nodes.CoreNodeFactRepository
 import com.normation.rudder.facts.nodes.NodeFactRepository
 import com.normation.rudder.facts.nodes.NoopFactStorage
@@ -70,7 +71,6 @@ import org.specs2.mutable._
 import org.specs2.runner.JUnitRunner
 import zio.Chunk
 import zio.syntax.ToZio
-import com.normation.rudder.facts.nodes.CoreNodeFact
 
 /*
  * Test the cache behaviour
@@ -82,13 +82,14 @@ class CachedFindRuleNodeStatusReportsTest extends Specification {
   val stillOk: DateTime = DateTime.now.plusMinutes(5)
 
   // build one node by kind of reports, expired or not
-  def buildNode(id: String): (NodeId, CoreNodeFact)                   = {
+  def buildNode(id: String):                   (NodeId, CoreNodeFact) = {
     (NodeId(id), NodeConfigData.fact1.modify(_.id).setTo(NodeId(id)))
   }
-  def run(id: String, info: RunAndConfigInfo): NodeStatusReport = NodeStatusReport(NodeId(id), info, RunComplianceInfo.OK, Nil, Set())
+  def run(id: String, info: RunAndConfigInfo): NodeStatusReport       =
+    NodeStatusReport(NodeId(id), info, RunComplianceInfo.OK, Nil, Set())
   // a list of node, on node by type of reports, in a triplet:
   // (node, expired report, still ok report)
-  def expected(id: String): NodeExpectedReports                    = NodeExpectedReports(NodeId(id), NodeConfigId(id), null, null, null, Nil, Nil)
+  def expected(id: String):                    NodeExpectedReports    = NodeExpectedReports(NodeId(id), NodeConfigId(id), null, null, null, Nil, Nil)
 
   val nodes: List[((NodeId, CoreNodeFact), NodeStatusReport, NodeStatusReport)] = List(
     (
@@ -138,16 +139,16 @@ class CachedFindRuleNodeStatusReportsTest extends Specification {
     )
   )
 
-  val accepted: Map[NodeId,CoreNodeFact]     = nodes.map { case (n, _, _) => n }.toMap
-  val nodeFactRepo: CoreNodeFactRepository =
+  val accepted:     Map[NodeId, CoreNodeFact] = nodes.map { case (n, _, _) => n }.toMap
+  val nodeFactRepo: CoreNodeFactRepository    =
     CoreNodeFactRepository.make(NoopFactStorage, NoopGetNodesbySofwareName, Map(), accepted, Chunk.empty).runNow
 
   class TestCache extends CachedFindRuleNodeStatusReports() {
     val batchSize = 3
     // what the backend will give to the cache
-    var reports: Map[NodeId,NodeStatusReport]   = Map[NodeId, NodeStatusReport]()
+    var reports: Map[NodeId, NodeStatusReport] = Map[NodeId, NodeStatusReport]()
     // store all updated nodes
-    var updated: List[NodeId] = Nil
+    var updated: List[NodeId]                  = Nil
 
     override def defaultFindRuleNodeStatusReports: DefaultFindRuleNodeStatusReports = new DefaultFindRuleNodeStatusReports() {
       override def confExpectedRepo:                                                      FindExpectedReportRepository              = ???
@@ -180,7 +181,7 @@ class CachedFindRuleNodeStatusReportsTest extends Specification {
           qc:                                        QueryContext
       ): IOResult[Map[NodeId, NodeStatusReport]] = ???
     }
-    override def nodeFactRepository: NodeFactRepository = nodeFactRepo
+    override def nodeFactRepository:               NodeFactRepository               = nodeFactRepo
 
     override def findDirectiveRuleStatusReportsByRule(ruleId: RuleId)(implicit
         qc:                                                   QueryContext

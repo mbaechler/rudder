@@ -90,7 +90,7 @@ class CreateCategoryOrGroupPopup(
 
   var createContainer = false // issue #1190 always create a group by default
 
-  def dispatch: PartialFunction[String,NodeSeq => NodeSeq] = { case "popupContent" => { _ => popupContent() } }
+  def dispatch: PartialFunction[String, NodeSeq => NodeSeq] = { case "popupContent" => { _ => popupContent() } }
 
   /**
    * If we create a category, the info about the group is hidden (default), otherwise we show it

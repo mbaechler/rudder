@@ -49,10 +49,10 @@ import net.liftweb.http._
 import net.liftweb.http.js._
 import net.liftweb.http.js.JE._
 import net.liftweb.http.js.JsCmds._
+import net.liftweb.util.CssSel
 import net.liftweb.util.Helpers._
 import org.springframework.security.core.context.SecurityContextHolder
 import scala.xml.NodeSeq
-import net.liftweb.util.CssSel
 
 class UserInformation extends DispatchSnippet with DefaultExtendableSnippet[UserInformation] {
 

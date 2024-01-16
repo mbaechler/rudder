@@ -367,7 +367,7 @@ class InventoryMover(
 
   val received: File = File(receivedInventoryPath)
   InventoryProcessingUtils.logDirPerm(received, "Received")
-  val failed: File   = File(failedInventoryPath)
+  val failed:   File = File(failedInventoryPath)
   InventoryProcessingUtils.logDirPerm(failed, "Failed")
 
   // we don't manage race condition very well, so we have cases where

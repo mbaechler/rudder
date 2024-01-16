@@ -72,12 +72,12 @@ import net.liftweb.json.JsonAST
 import net.liftweb.json.JsonAST._
 import net.liftweb.json.JsonAST.JValue
 import org.joda.time.DateTime
+import scala.util.matching.Regex
 import zio.Chunk
 import zio.json._
 import zio.json.ast.Json
 import zio.json.ast.Json._
 import zio.json.internal.Write
-import scala.util.matching.Regex
 
 /**
  * A node fact is the node with all inventory info, settings, properties, etc, in a layout that is similar to what API
@@ -1168,8 +1168,8 @@ object SelectFacts {
   // format: on
 
   val softwareOnly: SelectFacts = none.copy(software = none.software.toRetrieve)
-  val noSoftware: SelectFacts   = all.copy(software = all.software.toIgnore)
-  val default: SelectFacts      = all.copy(processes = all.processes.toIgnore, software = all.software.toIgnore)
+  val noSoftware:   SelectFacts = all.copy(software = all.software.toIgnore)
+  val default:      SelectFacts = all.copy(processes = all.processes.toIgnore, software = all.software.toIgnore)
 
   // inventory elements, not carring for software
   def retrieveInventory(attrs: SelectFacts): Boolean = {
@@ -1325,9 +1325,9 @@ final case class NodeFact(
 ) extends MinimalNodeFactInterface {
   def machineId = machine.id
 
-  def isPolicyServer: Boolean = rudderSettings.kind != NodeKind.Node
-  def isSystem:       Boolean = isPolicyServer
-  def serverIps: List[String]        = ipAddresses.map(_.inet).toList
+  def isPolicyServer:   Boolean               = rudderSettings.kind != NodeKind.Node
+  def isSystem:         Boolean               = isPolicyServer
+  def serverIps:        List[String]          = ipAddresses.map(_.inet).toList
   def customProperties: Chunk[CustomProperty] = properties.collect {
     case p if (p.provider == Some(NodeProperty.customPropertyProvider)) => CustomProperty(p.name, p.jsonValue)
   }

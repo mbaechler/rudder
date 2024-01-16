@@ -111,8 +111,8 @@ final class NodeStatusReport private (
     val reports:    Set[RuleNodeStatusReport]
 ) extends StatusReport {
   // here, reports is a set. Be careful to not loose compliance with map (b/c scala make a set of the result)
-  lazy val compliance: ComplianceLevel = ComplianceLevel.sum(reports.iterator.map(_.compliance).iterator.to(Iterable))
-  lazy val byRules: Map[RuleId, AggregatedStatusReport] =
+  lazy val compliance: ComplianceLevel                     = ComplianceLevel.sum(reports.iterator.map(_.compliance).iterator.to(Iterable))
+  lazy val byRules:    Map[RuleId, AggregatedStatusReport] =
     reports.groupBy(_.ruleId).view.mapValues(AggregatedStatusReport(_)).toMap
 }
 
@@ -186,7 +186,7 @@ final class AggregatedStatusReport private (
     // by rule or node and we don't want to loose the weight
     DirectiveStatusReport.merge(reports.toList.flatMap(_.directives.values))
   }
-  lazy val compliance: ComplianceLevel = ComplianceLevel.sum(directives.map(_._2.compliance))
+  lazy val compliance: ComplianceLevel                         = ComplianceLevel.sum(directives.map(_._2.compliance))
 }
 
 object AggregatedStatusReport {
@@ -224,11 +224,13 @@ final case class RuleNodeStatusReport(
 
   override lazy val compliance: ComplianceLevel = ComplianceLevel.sum(directives.map(_._2.compliance))
 
-  override def toString(): String = s"""[[${nodeId.value}: ${ruleId.serialize}; run: ${agentRunTime
-                                .getOrElse("no time")};${configId.map(_.value).getOrElse("no config id")}->${expirationDate}]
-                               |  compliance:${compliance}
-                               |  ${directives.values.toSeq.sortBy(_.directiveId.serialize).map(x => s"${x}").mkString("\n  ")}]
-                               |""".stripMargin('|')
+  override def toString(): String = {
+    s"""[[${nodeId.value}: ${ruleId.serialize}; run: ${agentRunTime
+        .getOrElse("no time")};${configId.map(_.value).getOrElse("no config id")}->${expirationDate}]
+       |  compliance:${compliance}
+       |  ${directives.values.toSeq.sortBy(_.directiveId.serialize).map(x => s"${x}").mkString("\n  ")}]
+       |""".stripMargin('|')
+  }
 
   def getValues(predicate: ComponentValueStatusReport => Boolean): Seq[(DirectiveId, String, ComponentValueStatusReport)] = {
     directives.values.flatMap(_.getValues(predicate)).toSeq
@@ -271,7 +273,7 @@ final case class DirectiveStatusReport(
 
     components: List[ComponentStatusReport]
 ) extends StatusReport {
-  override lazy val compliance: ComplianceLevel = ComplianceLevel.sum(components.map(_.compliance))
+  override lazy val compliance:                                    ComplianceLevel                                        = ComplianceLevel.sum(components.map(_.compliance))
   def getValues(predicate: ComponentValueStatusReport => Boolean): Seq[(DirectiveId, String, ComponentValueStatusReport)] = {
     components.flatMap(_.getValues(predicate)).map { case v => (directiveId, v.componentValue, v) }
   }
@@ -381,7 +383,7 @@ final case class ValueStatusReport(
 
   override def toString(): String = s"${componentName}:${componentValues.toSeq.sortBy(_.componentValue).mkString("[", ",", "]")}"
 
-  override lazy val compliance: ComplianceLevel = ComplianceLevel.sum(componentValues.map(_.compliance))
+  override lazy val compliance:                                    ComplianceLevel                 = ComplianceLevel.sum(componentValues.map(_.compliance))
   /*
    * Get all values matching the predicate
    */
@@ -492,7 +494,7 @@ final case class MessageStatusReport(
     message:    Option[String]
 ) {
   override def toString(): String = reportType.severity + message.fold(":\"\"")(":\"" + _ + "\"")
-  def debugString: String         = toString()
+  def debugString:         String = toString()
 }
 
 object MessageStatusReport {
@@ -580,13 +582,13 @@ object NodeStatusReportSerialization {
       )
     }
 
-    def toJson: String        = prettyRender(toJValue)
+    def toJson:        String = prettyRender(toJValue)
     def toCompactJson: String = compactRender(toJValue)
   }
 
   implicit class AggregatedStatusReportToJs(val x: AggregatedStatusReport) extends AnyVal {
-    def toJValue: JValue = x.reports.toJValue
-    def toJson: String        = prettyRender(toJValue)
+    def toJValue:      JValue = x.reports.toJValue
+    def toJson:        String = prettyRender(toJValue)
     def toCompactJson: String = compactRender(toJValue)
   }
 
@@ -638,7 +640,7 @@ object NodeStatusReportSerialization {
       }
     }
 
-    def toJson: String        = prettyRender(toJValue)
+    def toJson:        String = prettyRender(toJValue)
     def toCompactJson: String = compactRender(toJValue)
   }
 }

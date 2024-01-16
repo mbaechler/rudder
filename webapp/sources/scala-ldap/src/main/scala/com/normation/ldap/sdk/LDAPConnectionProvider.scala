@@ -26,12 +26,12 @@ import com.normation.ldap.ldif.LDIFFileLogger
 import com.normation.ldap.sdk.LDAPIOResult._
 import com.normation.ldap.sdk.syntax._
 import com.normation.zio.ZioRuntime
+import com.unboundid.ldap.sdk.LDAPConnection
 import com.unboundid.ldap.sdk.LDAPConnectionOptions
 import com.unboundid.ldap.sdk.LDAPConnectionPool
 import com.unboundid.ldap.sdk.LDAPException
 import zio._
 import zio.syntax._
-import com.unboundid.ldap.sdk.LDAPConnection
 
 /**
  * A LDAP connection manager.
@@ -268,10 +268,10 @@ class ROAnonymousConnectionProvider(
     override val ldifFileLogger: LDIFFileLogger = new DefaultLDIFFileLogger(),
     override val useSchemaInfos: Boolean = false
 ) extends AnonymousConnection with OneConnectionProvider[RoLDAPConnection] {
-  override val semaphore: Semaphore  = ZioRuntime.unsafeRun(Semaphore.make(1))
+  override val semaphore:  Semaphore                     = ZioRuntime.unsafeRun(Semaphore.make(1))
   override val connection: Ref[Option[RoLDAPConnection]] = ZioRuntime.unsafeRun(Ref.make(Option.empty[RoLDAPConnection]))
 
-  def newConnection: IO[LDAPRudderError.BackendException,RoLDAPConnection] = {
+  def newConnection: IO[LDAPRudderError.BackendException, RoLDAPConnection] = {
     LDAPIOResult.attempt(new RoLDAPConnection(newUnboundidConnection, ldifFileLogger))
   }
 }
@@ -286,10 +286,10 @@ class RWAnonymousConnectionProvider(
     override val ldifFileLogger: LDIFFileLogger = new DefaultLDIFFileLogger(),
     override val useSchemaInfos: Boolean = false
 ) extends AnonymousConnection with OneConnectionProvider[RwLDAPConnection] {
-  override def semaphore: Semaphore  = ZioRuntime.unsafeRun(Semaphore.make(1))
+  override def semaphore:  Semaphore                     = ZioRuntime.unsafeRun(Semaphore.make(1))
   override val connection: Ref[Option[RwLDAPConnection]] = ZioRuntime.unsafeRun(Ref.make(Option.empty[RwLDAPConnection]))
 
-  def newConnection: IO[LDAPRudderError.BackendException,RwLDAPConnection] = {
+  def newConnection: IO[LDAPRudderError.BackendException, RwLDAPConnection] = {
     LDAPIOResult.attempt(new RwLDAPConnection(newUnboundidConnection, ldifFileLogger))
   }
 }
@@ -305,8 +305,8 @@ class ROPooledAnonymousConnectionProvider(
     override val useSchemaInfos: Boolean = false,
     override val poolSize:       Int = 2
 ) extends AnonymousConnection with PooledConnectionProvider[RoLDAPConnection] {
-  override def poolname: String = s"rudder-anonymous-ro"
-  def newConnection: IO[LDAPRudderError.BackendException,RoLDAPConnection] = {
+  override def poolname: String                                                 = s"rudder-anonymous-ro"
+  def newConnection:     IO[LDAPRudderError.BackendException, RoLDAPConnection] = {
     LDAPIOResult.attempt(new RoLDAPConnection(pool.getConnection, ldifFileLogger))
   }
 }
@@ -322,8 +322,8 @@ class RWPooledAnonymousConnectionProvider(
     override val useSchemaInfos: Boolean = false,
     override val poolSize:       Int = 2
 ) extends AnonymousConnection with PooledConnectionProvider[RwLDAPConnection] {
-  override def poolname: String = s"rudder-anonymous-rw"
-  def newConnection: IO[LDAPRudderError.BackendException,RwLDAPConnection] = {
+  override def poolname: String                                                 = s"rudder-anonymous-rw"
+  def newConnection:     IO[LDAPRudderError.BackendException, RwLDAPConnection] = {
     LDAPIOResult.attempt(new RwLDAPConnection(pool.getConnection, ldifFileLogger))
   }
 }
@@ -341,10 +341,10 @@ class ROSimpleAuthConnectionProvider(
     override val ldifFileLogger: LDIFFileLogger = new DefaultLDIFFileLogger(),
     override val useSchemaInfos: Boolean = false
 ) extends SimpleAuthConnection with OneConnectionProvider[RoLDAPConnection] {
-  override val semaphore: Semaphore  = ZioRuntime.unsafeRun(Semaphore.make(1))
+  override val semaphore:  Semaphore                     = ZioRuntime.unsafeRun(Semaphore.make(1))
   override val connection: Ref[Option[RoLDAPConnection]] = ZioRuntime.unsafeRun(Ref.make(Option.empty[RoLDAPConnection]))
 
-  def newConnection: IO[LDAPRudderError.BackendException,RoLDAPConnection] = {
+  def newConnection: IO[LDAPRudderError.BackendException, RoLDAPConnection] = {
     LDAPIOResult.attempt(new RoLDAPConnection(newUnboundidConnection, ldifFileLogger))
   }
 }
@@ -362,10 +362,10 @@ class RWSimpleAuthConnectionProvider(
     override val ldifFileLogger: LDIFFileLogger = new DefaultLDIFFileLogger(),
     override val useSchemaInfos: Boolean = false
 ) extends SimpleAuthConnection with OneConnectionProvider[RwLDAPConnection] {
-  override val semaphore: Semaphore  = ZioRuntime.unsafeRun(Semaphore.make(1))
+  override val semaphore:  Semaphore                     = ZioRuntime.unsafeRun(Semaphore.make(1))
   override val connection: Ref[Option[RwLDAPConnection]] = ZioRuntime.unsafeRun(Ref.make(Option.empty[RwLDAPConnection]))
 
-  def newConnection: IO[LDAPRudderError.BackendException,RwLDAPConnection] = {
+  def newConnection: IO[LDAPRudderError.BackendException, RwLDAPConnection] = {
     LDAPIOResult.attempt(new RwLDAPConnection(newUnboundidConnection, ldifFileLogger))
   }
 }
@@ -383,8 +383,8 @@ class ROPooledSimpleAuthConnectionProvider(
     override val useSchemaInfos: Boolean = false,
     override val poolSize:       Int = 2
 ) extends SimpleAuthConnection with PooledConnectionProvider[RoLDAPConnection] {
-  override def poolname: String = s"rudder-authenticated-ro"
-  def newConnection: IO[LDAPRudderError.BackendException,RoLDAPConnection] = {
+  override def poolname: String                                                 = s"rudder-authenticated-ro"
+  def newConnection:     IO[LDAPRudderError.BackendException, RoLDAPConnection] = {
     LDAPIOResult.attempt(new RoLDAPConnection(pool.getConnection, ldifFileLogger))
   }
 }
@@ -405,7 +405,7 @@ class RWPooledSimpleAuthConnectionProvider(
 
   override def poolname: String = s"rudder-authenticated-rw"
 
-  def newConnection: IO[LDAPRudderError.BackendException,RwLDAPConnection] = {
+  def newConnection: IO[LDAPRudderError.BackendException, RwLDAPConnection] = {
     LDAPIOResult.attempt(new RwLDAPConnection(pool.getConnection, ldifFileLogger))
   }
 }

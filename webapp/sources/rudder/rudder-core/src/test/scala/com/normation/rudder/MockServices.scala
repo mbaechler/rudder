@@ -195,13 +195,13 @@ object Diff {
 // a global test actor
 object TestActor {
   val actor: EventActor = EventActor("test user")
-  def get   = actor
+  def get = actor
 }
 
 object revisionRepo {
   import com.normation.GitVersion._
 
-  val revisionsMap: Ref.Synchronized[Map[Revision,RevisionInfo]] = Ref.Synchronized.make(Map[Revision, RevisionInfo]()).runNow
+  val revisionsMap: Ref.Synchronized[Map[Revision, RevisionInfo]] = Ref.Synchronized.make(Map[Revision, RevisionInfo]()).runNow
 
   def getOpt(revision: Revision): IOResult[Option[RevisionInfo]] =
     revisionsMap.get.map(_.get(revision))
@@ -287,10 +287,10 @@ class MockTechniques(configurationRepositoryRoot: File, mockGit: MockGitConfigRe
 
   val techniqueRevisionRepo: TechniqueRevisionRepository =
     new GitParseTechniqueLibrary(techniqueParser, mockGit.gitRepo, mockGit.revisionProvider, "techniques", "metadata.xml")
-  val xmlEntityMigration: XmlEntityMigration = new XmlEntityMigration {
+  val xmlEntityMigration:    XmlEntityMigration          = new XmlEntityMigration {
     override def getUpToDateXml(entity: Elem): Box[Elem] = Full(entity)
   }
-  val ruleRevisionRepo: RuleRevisionRepository =
+  val ruleRevisionRepo:      RuleRevisionRepository      =
     new GitParseRules(new RuleUnserialisationImpl(), mockGit.gitRepo, xmlEntityMigration, "rules")
 
   ///////////////////////////  policyServer and systemVariables  ///////////////////////////
@@ -350,10 +350,10 @@ class MockTechniques(configurationRepositoryRoot: File, mockGit: MockGitConfigRe
     getReportProtocolDefault = () => Full(AgentReportingHTTPS)
   )
 
-  val globalAgentRun: AgentRunInterval       = AgentRunInterval(None, 5, 1, 0, 4)
+  val globalAgentRun:       AgentRunInterval     = AgentRunInterval(None, 5, 1, 0, 4)
   val globalComplianceMode: GlobalComplianceMode = GlobalComplianceMode(FullCompliance, 15)
 
-  val globalSystemVariables: Map[String,Variable] = systemVariableService
+  val globalSystemVariables: Map[String, Variable] = systemVariableService
     .getGlobalSystemVariables(globalAgentRun)
     .openOrThrowException("I should get global system variable in test!")
 }
@@ -373,8 +373,8 @@ class MockDirectives(mockTechniques: MockTechniques) {
      * in class TestNodeConfiguration
      */
 
-    val commonTechnique: Technique                                                      = techniqueRepos.unsafeGet(TechniqueId(TechniqueName("common"), TV("1.0")))
-    def commonVariables(nodeId: NodeId, allNodeInfos: Map[NodeId, NodeInfo]): Map[String,VariableSpec#V] = {
+    val commonTechnique:                                                      Technique                   = techniqueRepos.unsafeGet(TechniqueId(TechniqueName("common"), TV("1.0")))
+    def commonVariables(nodeId: NodeId, allNodeInfos: Map[NodeId, NodeInfo]): Map[String, VariableSpec#V] = {
       val spec = commonTechnique.getAllVariableSpecs.map(s => (s.name, s)).toMap
       Seq(
         spec("OWNER").toVariable(Seq(allNodeInfos(nodeId).localAdministratorAccountName)),
@@ -386,7 +386,7 @@ class MockDirectives(mockTechniques: MockTechniques) {
         spec("ALLOWEDNETWORK").toVariable(Seq(""))
       ).map(v => (v.spec.name, v)).toMap
     }
-    val commonDirective: Directive                                                      = Directive(
+    val commonDirective:                                                      Directive                   = Directive(
       DirectiveId(DirectiveUid("common-root"), GitVersion.DEFAULT_REV),
       TV("1.0"),
       Map(
@@ -404,7 +404,8 @@ class MockDirectives(mockTechniques: MockTechniques) {
       true // short desc / policyMode / long desc / prio / enabled / system
     )
 
-    val archiveTechnique: Technique = techniqueRepos.unsafeGet(TechniqueId(TechniqueName("test_import_export_archive"), TV("1.0")))
+    val archiveTechnique: Technique =
+      techniqueRepos.unsafeGet(TechniqueId(TechniqueName("test_import_export_archive"), TV("1.0")))
     val archiveDirective: Directive = Directive(
       DirectiveId(DirectiveUid("test_import_export_archive_directive"), GitVersion.DEFAULT_REV),
       TV("1.0"),
@@ -528,8 +529,8 @@ class MockDirectives(mockTechniques: MockTechniques) {
       ""
     )
 
-    val fileTemplateTechnique  = techniqueRepos.unsafeGet(TechniqueId(TechniqueName("fileTemplate"), TV("1.0")))
-    val fileTemplateDirecive1: Directive  = Directive(
+    val fileTemplateTechnique = techniqueRepos.unsafeGet(TechniqueId(TechniqueName("fileTemplate"), TV("1.0")))
+    val fileTemplateDirecive1:  Directive = Directive(
       DirectiveId(DirectiveUid("e9a1a909-2490-4fc9-95c3-9d0aa01717c9"), GitVersion.DEFAULT_REV),
       TV("1.0"),
       Map(
@@ -591,7 +592,7 @@ class MockDirectives(mockTechniques: MockTechniques) {
       */
     val DIRECTIVE_NAME_COPY_GIT_FILE = "directive-copyGitFile"
     val copyGitFileTechnique         = techniqueRepos.unsafeGet(TechniqueId(TechniqueName("copyGitFile"), TV("2.3")))
-    val copyGitFileDirective: Directive         = Directive(
+    val copyGitFileDirective: Directive = Directive(
       DirectiveId(DirectiveUid("directive-copyGitFile"), GitVersion.DEFAULT_REV),
       TV("2.3"),
       Map(
@@ -631,7 +632,7 @@ class MockDirectives(mockTechniques: MockTechniques) {
      *
      * In summary: sorting directives that are merged into one is a different problem than sorting directives for the bundle sequence.
      */
-    val gvdTechnique  = techniqueRepos.unsafeGet(TechniqueId(TechniqueName("genericVariableDefinition"), TV("2.0")))
+    val gvdTechnique = techniqueRepos.unsafeGet(TechniqueId(TechniqueName("genericVariableDefinition"), TV("2.0")))
     val gvdDirective1: Directive = Directive(
       DirectiveId(DirectiveUid("gvd-directive1"), GitVersion.DEFAULT_REV),
       TV("2.0"),
@@ -872,7 +873,10 @@ class MockDirectives(mockTechniques: MockTechniques) {
           )
       }
     }
-    def saveGen(inActiveTechniqueId: ActiveTechniqueId, directive: Directive): ZIO[Any,RudderError,Option[ModifyDirectiveDiff]] = {
+    def saveGen(
+        inActiveTechniqueId: ActiveTechniqueId,
+        directive:           Directive
+    ): ZIO[Any, RudderError, Option[ModifyDirectiveDiff]] = {
       rootActiveTechniqueCategory
         .modifyZIO(r => {
           r.saveDirective(inActiveTechniqueId, directive)
@@ -911,7 +915,7 @@ class MockDirectives(mockTechniques: MockTechniques) {
       else saveGen(inActiveTechniqueId, directive)
     }
 
-    def deleteGen(id: DirectiveUid): ZIO[Any,Nothing,Option[DeleteDirectiveDiff]] = {
+    def deleteGen(id: DirectiveUid): ZIO[Any, Nothing, Option[DeleteDirectiveDiff]] = {
       // TODO: we should check if directive is system
       rootActiveTechniqueCategory
         .modifyZIO(r => (r.allDirectives.get(DirectiveId(id, GitVersion.DEFAULT_REV)), r.deleteDirective(id)).succeed)
@@ -1349,9 +1353,10 @@ class MockRules() {
 
   object ruleRepo extends RoRuleRepository with WoRuleRepository {
 
-    val rulesMap: Ref.Synchronized[Map[RuleId,Rule]] = Ref.Synchronized.make(rules.all.map(r => (r.id, r)).toMap).runNow
+    val rulesMap: Ref.Synchronized[Map[RuleId, Rule]] = Ref.Synchronized.make(rules.all.map(r => (r.id, r)).toMap).runNow
 
-    val predicate: Boolean => (Rule => Boolean) = (includeSytem: Boolean) => (r: Rule) => if (includeSytem) true else r.isSystem == false
+    val predicate: Boolean => (Rule => Boolean) = (includeSytem: Boolean) =>
+      (r: Rule) => if (includeSytem) true else r.isSystem == false
 
     override def getOpt(ruleId: RuleId): IOResult[Option[Rule]] =
       rulesMap.get.map(_.get(ruleId))
@@ -1528,10 +1533,10 @@ class MockGlobalParam() {
     InheritMode(ObjectMode.Override, ArrayMode.Prepend, StringMode.Append)
   }
 
-  val stringParam: GlobalParameter =
+  val stringParam: GlobalParameter              =
     GlobalParameter("stringParam", GitVersion.DEFAULT_REV, "some string".toConfigValue, None, "a simple string param", None)
   // json: the key will be sorted alpha-num by Config lib; array value order is kept.
-  val jsonParam: GlobalParameter   = GlobalParameter
+  val jsonParam:   GlobalParameter              = GlobalParameter
     .parse(
       "jsonParam",
       GitVersion.DEFAULT_REV,
@@ -1541,9 +1546,9 @@ class MockGlobalParam() {
       None
     )
     .getOrElse(throw new RuntimeException("error in mock jsonParam"))
-  val modeParam: GlobalParameter   =
+  val modeParam:   GlobalParameter              =
     GlobalParameter("modeParam", GitVersion.DEFAULT_REV, "some string".toConfigValue, Some(mode), "a simple string param", None)
-  val systemParam: GlobalParameter = GlobalParameter(
+  val systemParam: GlobalParameter              = GlobalParameter(
     "systemParam",
     GitVersion.DEFAULT_REV,
     "some string".toConfigValue,
@@ -1551,12 +1556,13 @@ class MockGlobalParam() {
     "a simple string param",
     Some(PropertyProvider.systemPropertyProvider)
   )
-  val all: Map[String,GlobalParameter]         = List(stringParam, jsonParam, modeParam, systemParam).map(p => (p.name, p)).toMap
+  val all:         Map[String, GlobalParameter] = List(stringParam, jsonParam, modeParam, systemParam).map(p => (p.name, p)).toMap
 
   val paramsRepo: paramsRepo = new paramsRepo
   class paramsRepo extends RoParameterRepository with WoParameterRepository {
 
-    val paramsMap: Ref.Synchronized[Map[String,GlobalParameter]] = Ref.Synchronized.make[Map[String, GlobalParameter]](all).runNow
+    val paramsMap: Ref.Synchronized[Map[String, GlobalParameter]] =
+      Ref.Synchronized.make[Map[String, GlobalParameter]](all).runNow
 
     override def getGlobalParameter(parameterName: String): IOResult[Option[GlobalParameter]] = {
       paramsMap.get.map(_.get(parameterName))
@@ -1721,16 +1727,16 @@ z5VEb9yx2KikbWyChM1Akp82AV5BzqE80QIBIw==
 
   val emptyNodeReportingConfiguration: ReportingConfiguration = ReportingConfiguration(None, None, None)
 
-  val id1: NodeId          = NodeId("node1")
-  val hostname1    = "node1.localhost"
-  val admin1       = "root"
-  val id2: NodeId          = NodeId("node2")
-  val hostname2    = "node2.localhost"
-  val rootId: NodeId       = NodeId("root")
+  val id1: NodeId = NodeId("node1")
+  val hostname1 = "node1.localhost"
+  val admin1    = "root"
+  val id2: NodeId = NodeId("node2")
+  val hostname2 = "node2.localhost"
+  val rootId: NodeId = NodeId("root")
   val rootHostname = "server.rudder.local"
   val rootAdmin    = "root"
 
-  val rootNode: Node = Node(
+  val rootNode: Node     = Node(
     rootId,
     "root",
     "",
@@ -1743,7 +1749,7 @@ z5VEb9yx2KikbWyChM1Akp82AV5BzqE80QIBIw==
     Some(PolicyMode.Enforce),
     None
   )
-  val root: NodeInfo     = NodeInfo(
+  val root:     NodeInfo = NodeInfo(
     rootNode,
     rootHostname,
     Some(MachineInfo(MachineUuid("machine1"), VirtualMachineType(VmType.VirtualBox), None, None)),
@@ -1886,8 +1892,8 @@ z5VEb9yx2KikbWyChM1Akp82AV5BzqE80QIBIw==
   )
 
   // node1 us a relay
-  val node2Node: Node = node1Node.copy(id = id2, name = id2.value)
-  val node2: NodeInfo     = node1.copy(node = node2Node, hostname = hostname2, policyServerId = root.id)
+  val node2Node:      Node          = node1Node.copy(id = id2, name = id2.value)
+  val node2:          NodeInfo      = node1.copy(node = node2Node, hostname = hostname2, policyServerId = root.id)
   val nodeInventory2: NodeInventory = {
     import com.softwaremill.quicklens._
     nodeInventory1
@@ -1971,14 +1977,14 @@ z5VEb9yx2KikbWyChM1Akp82AV5BzqE80QIBIw==
     fileSystems = Seq()
   )
 
-  val allNodesInfo: Map[NodeId,NodeInfo]       = Map(rootId -> root, node1.id -> node1, node2.id -> node2)
-  val allNodeFacts: Map[NodeId,NodeFact]       = Map(
+  val allNodesInfo:       Map[NodeId, NodeInfo] = Map(rootId -> root, node1.id -> node1, node2.id -> node2)
+  val allNodeFacts:       Map[NodeId, NodeFact] = Map(
     rootId      -> NodeFact.fromCompat(root, Right(FullInventory(rootInventory, None)), softwares.take(7)),
     node1.id    -> NodeFact.fromCompat(node1, Right(FullInventory(nodeInventory1, None)), softwares.drop(5).take(10)),
     node2.id    -> NodeFact.fromCompat(node2, Right(FullInventory(nodeInventory2, None)), softwares.drop(5).take(10)),
     dscNode1.id -> NodeFact.fromCompat(dscNode1, Right(FullInventory(dscInventory1, None)), softwares.drop(5).take(7))
   )
-  val defaultModesConfig: NodeModeConfig = NodeModeConfig(
+  val defaultModesConfig: NodeModeConfig        = NodeModeConfig(
     globalComplianceMode = GlobalComplianceMode(FullCompliance, 30),
     nodeHeartbeatPeriod = None,
     globalAgentRun = AgentRunInterval(None, 5, 0, 0, 0),
@@ -2031,7 +2037,7 @@ z5VEb9yx2KikbWyChM1Akp82AV5BzqE80QIBIw==
   def newNode(id: NodeId): Node =
     Node(id, "", "", NodeState.Enabled, false, false, DateTime.now, ReportingConfiguration(None, None, None), Nil, None, None)
 
-  val nodes: Map[NodeId,NodeInfo] = (
+  val nodes: Map[NodeId, NodeInfo] = (
     Set(root, node1, node2) ++ nodeIds.map { id =>
       NodeInfo(
         newNode(id),
@@ -2057,7 +2063,7 @@ class MockNodes() {
   val t2: Long = System.currentTimeMillis()
 
   object nodeFactStorage extends NodeFactStorage {
-    val nodeFactBase: Ref[Map[NodeId,NodeFact]] = Ref.make(allNodeFacts).runNow
+    val nodeFactBase: Ref[Map[NodeId, NodeFact]] = Ref.make(allNodeFacts).runNow
 
     override def save(nodeFact: NodeFact)(implicit attrs: SelectFacts = SelectFacts.all): IOResult[StorageChangeEventSave] = {
       nodeFactBase.modify { b =>
@@ -2133,7 +2139,8 @@ class MockNodes() {
   object softwareDao extends ReadOnlySoftwareDAO {
     implicit val qc: QueryContext = QueryContext.todoQC
 
-    val softRef: Ref.Synchronized[Map[SoftwareUuid,Software]] = Ref.Synchronized.make(MockNodes.softwares.map(s => (s.id, s)).toMap).runNow
+    val softRef: Ref.Synchronized[Map[SoftwareUuid, Software]] =
+      Ref.Synchronized.make(MockNodes.softwares.map(s => (s.id, s)).toMap).runNow
 
     override def getSoftware(ids: Seq[SoftwareUuid]): IOResult[Seq[Software]] = {
       softRef.get.map(_.map(_._2).toList)
@@ -2716,7 +2723,7 @@ class MockNodeGroups(nodesRepo: MockNodes) {
       .getOrElse(null) // for test
   )
 
-  val g0: NodeGroup     = NodeGroup(
+  val g0:     NodeGroup                     = NodeGroup(
     NodeGroupId(NodeGroupUid("0000f5d3-8c61-4d20-88a7-bb947705ba8a")),
     "Real nodes",
     "",
@@ -2726,9 +2733,9 @@ class MockNodeGroups(nodesRepo: MockNodes) {
     Set(MockNodes.rootId, MockNodes.node1.id, MockNodes.node2.id),
     true
   )
-  val g1: NodeGroup     =
+  val g1:     NodeGroup                     =
     NodeGroup(NodeGroupId(NodeGroupUid("1111f5d3-8c61-4d20-88a7-bb947705ba8a")), "Empty group", "", Nil, None, false, Set(), true)
-  val g2: NodeGroup     = NodeGroup(
+  val g2:     NodeGroup                     = NodeGroup(
     NodeGroupId(NodeGroupUid("2222f5d3-8c61-4d20-88a7-bb947705ba8a")),
     "only root",
     "",
@@ -2738,7 +2745,7 @@ class MockNodeGroups(nodesRepo: MockNodes) {
     Set(NodeId("root")),
     true
   )
-  val g3: NodeGroup     = NodeGroup(
+  val g3:     NodeGroup                     = NodeGroup(
     NodeGroupId(NodeGroupUid("3333f5d3-8c61-4d20-88a7-bb947705ba8a")),
     "Even nodes",
     "",
@@ -2748,7 +2755,7 @@ class MockNodeGroups(nodesRepo: MockNodes) {
     MockNodes.nodeIds.filter(_.value.toInt % 2 == 0),
     true
   )
-  val g4: NodeGroup     = NodeGroup(
+  val g4:     NodeGroup                     = NodeGroup(
     NodeGroupId(NodeGroupUid("4444f5d3-8c61-4d20-88a7-bb947705ba8a")),
     "Odd nodes",
     "",
@@ -2758,7 +2765,7 @@ class MockNodeGroups(nodesRepo: MockNodes) {
     MockNodes.nodeIds.filter(_.value.toInt % 2 != 0),
     true
   )
-  val g5: NodeGroup     = NodeGroup(
+  val g5:     NodeGroup                     = NodeGroup(
     NodeGroupId(NodeGroupUid("5555f5d3-8c61-4d20-88a7-bb947705ba8a")),
     "Nodes id divided by 3",
     "",
@@ -2768,7 +2775,7 @@ class MockNodeGroups(nodesRepo: MockNodes) {
     MockNodes.nodeIds.filter(_.value.toInt % 3 == 0),
     true
   )
-  val g6: NodeGroup     = NodeGroup(
+  val g6:     NodeGroup                     = NodeGroup(
     NodeGroupId(NodeGroupUid("6666f5d3-8c61-4d20-88a7-bb947705ba8a")),
     "Nodes id divided by 5",
     "",
@@ -2782,7 +2789,7 @@ class MockNodeGroups(nodesRepo: MockNodes) {
 
   val groupsTargets: Set[(GroupTarget, NodeGroup)] = groups.map { case (id, g) => (GroupTarget(g.id), g) }
 
-  val groupsTargetInfos: Map[NodeGroupId,FullRuleTargetInfo] = (groupsTargets
+  val groupsTargetInfos: Map[NodeGroupId, FullRuleTargetInfo] = (groupsTargets
     .map(gt => {
       (
         gt._1.groupId,
@@ -2864,9 +2871,9 @@ class MockNodeGroups(nodesRepo: MockNodes) {
 
 class MockLdapQueryParsing(mockGit: MockGitConfigRepo, mockNodeGroups: MockNodeGroups) {
   ///// query parsing ////
-  def DN(rdn: String, parent: DN)      = new DN(new RDN(rdn), parent)
-  val LDAP_BASEDN                      = new DN("cn=rudder-configuration")
-  val LDAP_INVENTORIES_BASEDN: DN          = DN("ou=Inventories", LDAP_BASEDN)
+  def DN(rdn: String, parent: DN) = new DN(new RDN(rdn), parent)
+  val LDAP_BASEDN                 = new DN("cn=rudder-configuration")
+  val LDAP_INVENTORIES_BASEDN: DN = DN("ou=Inventories", LDAP_BASEDN)
   val LDAP_INVENTORIES_SOFTWARE_BASEDN = LDAP_INVENTORIES_BASEDN
 
   val acceptedNodesDitImpl: InventoryDit = new InventoryDit(
@@ -2888,14 +2895,15 @@ class MockLdapQueryParsing(mockGit: MockGitConfigRepo, mockNodeGroups: MockNodeG
   val getSubGroupChoices = new DefaultSubGroupComparatorRepository(mockNodeGroups.groupsRepo)
   val nodeQueryData      = new NodeQueryCriteriaData(() => getSubGroupChoices)
   val ditQueryDataImpl   = new DitQueryData(acceptedNodesDitImpl, nodeDit, rudderDit, nodeQueryData)
-  val queryParser: CmdbQueryParser with DefaultStringQueryParser with JsonQueryLexer        = new CmdbQueryParser with DefaultStringQueryParser with JsonQueryLexer {
+  val queryParser: CmdbQueryParser with DefaultStringQueryParser with JsonQueryLexer = new CmdbQueryParser
+    with DefaultStringQueryParser with JsonQueryLexer {
     override val criterionObjects = Map[String, ObjectCriterion]() ++ ditQueryDataImpl.criteriaMap
   }
 
-  val xmlEntityMigration: XmlEntityMigration = new XmlEntityMigration {
+  val xmlEntityMigration: XmlEntityMigration      = new XmlEntityMigration {
     override def getUpToDateXml(entity: Elem): Box[Elem] = Full(entity)
   }
-  val groupRevisionRepo: GroupRevisionRepository = new GitParseGroupLibrary(
+  val groupRevisionRepo:  GroupRevisionRepository = new GitParseGroupLibrary(
     new NodeGroupCategoryUnserialisationImpl(),
     new NodeGroupUnserialisationImpl(new CmdbQueryParser {
       override def parse(query: StringQuery): Box[Query]       = ???
@@ -2949,7 +2957,7 @@ class MockCampaign() {
   val campaignSerializer = new CampaignSerializer()
 
   // init item: one campaign, with a finished event, one running, one scheduled
-  val c0: DumbCampaign = DumbCampaign(
+  val c0: DumbCampaign  = DumbCampaign(
     CampaignInfo(
       CampaignId("c0"),
       "first campaign",
@@ -2963,7 +2971,7 @@ class MockCampaign() {
     CampaignEvent(CampaignEventId("e0"), c0.info.id, "campaign #0", Finished, new DateTime(0), new DateTime(1), DumbCampaignType)
 
   object repo extends CampaignRepository {
-    val items: Ref[Map[CampaignId,DumbCampaignTrait]] = Ref.make(Map[CampaignId, DumbCampaignTrait]((c0.info.id -> c0))).runNow
+    val items: Ref[Map[CampaignId, DumbCampaignTrait]] = Ref.make(Map[CampaignId, DumbCampaignTrait]((c0.info.id -> c0))).runNow
 
     override def getAll(typeFilter: List[CampaignType], statusFilter: List[CampaignStatusValue]): IOResult[List[Campaign]] = {
       for {
@@ -3005,7 +3013,7 @@ class MockCampaign() {
   }
 
   object dumbCampaignEventRepository extends CampaignEventRepository {
-    val items: Ref[Map[CampaignEventId,CampaignEvent]] = Ref.make(Map[CampaignEventId, CampaignEvent]((e0.id -> e0))).runNow
+    val items: Ref[Map[CampaignEventId, CampaignEvent]] = Ref.make(Map[CampaignEventId, CampaignEvent]((e0.id -> e0))).runNow
 
     def isActive(e: CampaignEvent): Boolean = {
       e.state == Scheduled || e.state == Running

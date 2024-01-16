@@ -78,7 +78,7 @@ class TestRestFromFileDef extends TraitTestApiFromYamlFiles with AfterAll {
     orig.replaceAll("VALID-REV", revision.rev.value)
   }
 
-  val transformations: Map[String,String => String] = Map(
+  val transformations: Map[String, String => String] = Map(
     ("api_revisions.yml" -> copyTransformApiRevision _)
   )
 

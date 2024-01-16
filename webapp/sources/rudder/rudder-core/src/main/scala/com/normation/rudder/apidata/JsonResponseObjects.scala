@@ -601,7 +601,7 @@ object JsonResponseObjects {
 
   object JRGlobalParameter {
     import GenericProperty._
-    def empty(name: String): JRGlobalParameter = JRGlobalParameter(None, name, "".toConfigValue, "", None, None)
+    def empty(name: String):                                                    JRGlobalParameter = JRGlobalParameter(None, name, "".toConfigValue, "", None, None)
     def fromGlobalParameter(p: GlobalParameter, crId: Option[ChangeRequestId]): JRGlobalParameter = {
       JRGlobalParameter(crId.map(_.value.toString), p.name, p.value, p.description, p.inheritMode, p.provider)
     }
@@ -682,7 +682,11 @@ object JsonResponseObjects {
   )
 
   object JRGroupInheritedProperties {
-    def fromGroup(groupId: NodeGroupId, properties: List[NodePropertyHierarchy], renderInHtml: RenderInheritedProperties): JRGroupInheritedProperties = {
+    def fromGroup(
+        groupId:      NodeGroupId,
+        properties:   List[NodePropertyHierarchy],
+        renderInHtml: RenderInheritedProperties
+    ): JRGroupInheritedProperties = {
       JRGroupInheritedProperties(
         groupId.serialize,
         properties.sortBy(_.prop.name).map(JRProperty.fromNodePropertyHierarchy(_, renderInHtml))

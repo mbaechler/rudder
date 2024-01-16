@@ -60,7 +60,7 @@ class TestStringQueryParser {
   val oc1: ObjectCriterion = ObjectCriterion("node", List(c1, c2))
   val oc2: ObjectCriterion = ObjectCriterion("machine", List(c3))
 
-  val criteria: Map[String,ObjectCriterion] = Map(
+  val criteria: Map[String, ObjectCriterion] = Map(
     "node"    -> oc1,
     "machine" -> oc2
   )
@@ -87,8 +87,8 @@ class TestStringQueryParser {
   val valid2_2: StringQuery = StringQuery(NodeReturnType, None, Some("none"), List())     // default to and
   val valid2_3: StringQuery = StringQuery(NodeReturnType, None, Some("invert"), List())   // default to and
 
-  val unvalidComp: StringQuery          = StringQuery(NodeReturnType, Some("foo"), None, List())
-  val unknowObjectType: StringQuery     = StringQuery(
+  val unvalidComp:          StringQuery = StringQuery(NodeReturnType, Some("foo"), None, List())
+  val unknowObjectType:     StringQuery = StringQuery(
     NodeReturnType,
     None,
     None,
@@ -96,7 +96,7 @@ class TestStringQueryParser {
       StringCriterionLine("unknown", "name", "exists")
     )
   )
-  val unknowAttribute: StringQuery      = StringQuery(
+  val unknowAttribute:      StringQuery = StringQuery(
     NodeReturnType,
     None,
     None,
@@ -104,7 +104,7 @@ class TestStringQueryParser {
       StringCriterionLine("node", "unknown", "exists")
     )
   )
-  val unknowComparator: StringQuery     = StringQuery(
+  val unknowComparator:     StringQuery = StringQuery(
     NodeReturnType,
     None,
     None,

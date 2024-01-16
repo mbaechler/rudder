@@ -20,11 +20,11 @@
 
 package com.normation.ldap.sdk
 
+import com.unboundid.ldap.sdk
 import com.unboundid.ldap.sdk.{Entry => UEntry}
 import com.unboundid.ldap.sdk.{LDAPConnection => ULDAPConnection}
 import com.unboundid.ldap.sdk.{LDAPResult => ULDAPResult}
 import com.unboundid.ldap.sdk.DN
-import com.unboundid.ldap.sdk
 
 object syntax {
 

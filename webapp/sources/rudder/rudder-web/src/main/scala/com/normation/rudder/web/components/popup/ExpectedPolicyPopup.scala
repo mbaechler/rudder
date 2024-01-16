@@ -73,7 +73,7 @@ class ExpectedPolicyPopup(
   private[this] val dynGroupService = RudderConfig.dynGroupService
   private[this] val checkDynGroup   = RudderConfig.pendingNodeCheckGroup
 
-  def dispatch: PartialFunction[String,NodeSeq => NodeSeq] = { case "display" => { _ => display } }
+  def dispatch: PartialFunction[String, NodeSeq => NodeSeq] = { case "display" => { _ => display } }
 
   def display: NodeSeq = {
     // find the list of dyn groups on which that server would be and from that, the Rules

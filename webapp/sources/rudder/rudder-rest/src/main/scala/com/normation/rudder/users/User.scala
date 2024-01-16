@@ -124,7 +124,7 @@ case class RudderUserDetail(
   override val isAccountNonExpired                        = true
   override val isAccountNonLocked                         = true
   override val isCredentialsNonExpired                    = true
-  override val isEnabled: Boolean                                  = status == UserStatus.Active
+  override val isEnabled: Boolean = status == UserStatus.Active
 }
 
 /**

@@ -38,6 +38,7 @@
 package com.normation.rudder.services.policies
 
 import cats.implicits._
+import com.normation.cfclerk.domain.InputVariable
 import com.normation.cfclerk.domain.InputVariableSpec
 import com.normation.cfclerk.domain.Variable
 import com.normation.errors._
@@ -58,13 +59,12 @@ import net.liftweb.json.JsonAST.JValue
 import org.junit.runner.RunWith
 import org.specs2.matcher.Expectable
 import org.specs2.matcher.Matcher
+import org.specs2.matcher.MatchResult
 import org.specs2.mutable.Specification
 import org.specs2.runner.JUnitRunner
 import scala.util.matching.Regex
 import zio._
 import zio.syntax._
-import com.normation.cfclerk.domain.InputVariable
-import org.specs2.matcher.MatchResult
 
 /**
  * Test how parametrized variables are replaced for
@@ -118,7 +118,7 @@ class TestNodeAndGlobalParameterLookup extends Specification {
   val compiler      = new InterpolatedValueCompilerImpl(propertyEngineService)
   val lookupService = new RuleValServiceImpl(compiler)
   val data          = new TestNodeConfiguration()
-  val buildContext: PromiseGeneration_BuildNodeContext  = new PromiseGeneration_BuildNodeContext {
+  val buildContext: PromiseGeneration_BuildNodeContext = new PromiseGeneration_BuildNodeContext {
     override def interpolatedValueCompiler: InterpolatedValueCompiler = compiler
     override def systemVarService:          SystemVariableService     = data.systemVariableService
   }
@@ -152,7 +152,7 @@ class TestNodeAndGlobalParameterLookup extends Specification {
   def lookupParam(
       variables:   Seq[Variable],
       lookupParam: ParamInterpolationContext
-  ): ZIO[Any,RudderError,Map[ComponentId,Variable]] = {
+  ): ZIO[Any, RudderError, Map[ComponentId, Variable]] = {
     (for {
       params <- ZIO.foreach(lookupParam.parameters.toList) { case (k, c) => c(lookupParam).map((k, _)) }
       p      <- ZIO.foreach(params.toList) { case (k, value) => GenericProperty.parseValue(value).map(v => (k, v)).toIO }
@@ -166,23 +166,26 @@ class TestNodeAndGlobalParameterLookup extends Specification {
   catch { case ex: Exception => JString(s) }
 
   // two variables
-  val var1: InputVariable              = InputVariableSpec("var1", "", id = None).toVariable(Seq("== ${rudder.param.foo} =="))
-  val var1_double: InputVariable       =
+  val var1:              InputVariable = InputVariableSpec("var1", "", id = None).toVariable(Seq("== ${rudder.param.foo} =="))
+  val var1_double:       InputVariable =
     InputVariableSpec("var1_double", "", id = None).toVariable(Seq("== ${rudder.param.foo}${rudder.param.bar} =="))
   val var1_double_space: InputVariable = InputVariableSpec("var1_double_space", "", id = None).toVariable(
     Seq("== ${rudder.param.foo} contains ${rudder.param.bar} ==")
   )
 
-  val pathCaseInsensitive: InputVariable = InputVariableSpec("pathCaseInsensitive", "", id = None).toVariable(Seq("== ${RudDer.paRam.foo} =="))
+  val pathCaseInsensitive: InputVariable =
+    InputVariableSpec("pathCaseInsensitive", "", id = None).toVariable(Seq("== ${RudDer.paRam.foo} =="))
 
   val paramNameCaseSensitive: InputVariable =
     InputVariableSpec("paramNameCaseSensitive", "", id = None).toVariable(Seq("== ${rudder.param.Foo} =="))
 
-  val recurVariable: InputVariable = InputVariableSpec("recurParam", "", id = None).toVariable(Seq("== ${rudder.param.recurToFoo} =="))
+  val recurVariable: InputVariable =
+    InputVariableSpec("recurParam", "", id = None).toVariable(Seq("== ${rudder.param.recurToFoo} =="))
 
   val dangerVariable: InputVariable = InputVariableSpec("danger", "", id = None).toVariable(Seq("${rudder.param.danger}"))
 
-  val multilineInputVariable: InputVariable    = InputVariableSpec("multiInput", "", id = None).toVariable(Seq("=\r= \n${rudder.param.foo} =\n="))
+  val multilineInputVariable:    InputVariable =
+    InputVariableSpec("multiInput", "", id = None).toVariable(Seq("=\r= \n${rudder.param.foo} =\n="))
   val multilineNodePropVariable: InputVariable =
     InputVariableSpec("multiNodeProp", "", id = None).toVariable(Seq("=\r= \n${node.properties[datacenter][Europe]} =\n="))
 
@@ -198,14 +201,14 @@ class TestNodeAndGlobalParameterLookup extends Specification {
   )
 
   val badEmptyRudder: InputVariable = InputVariableSpec("empty", "", id = None).toVariable(Seq("== ${rudder.} =="))
-  val badUnclosed: InputVariable    = InputVariableSpec("empty", "", id = None).toVariable(Seq("== ${rudder.param.foo =="))
-  val badUnknown: InputVariable     = InputVariableSpec("empty", "", id = None).toVariable(Seq("== ${rudder.foo} =="))
+  val badUnclosed:    InputVariable = InputVariableSpec("empty", "", id = None).toVariable(Seq("== ${rudder.param.foo =="))
+  val badUnknown:     InputVariable = InputVariableSpec("empty", "", id = None).toVariable(Seq("== ${rudder.foo} =="))
 
-  val fooParam: ParameterForConfiguration   = ParameterForConfiguration("foo", "fooValue")
-  val barParam: ParameterForConfiguration   = ParameterForConfiguration("bar", "barValue")
+  val fooParam:   ParameterForConfiguration = ParameterForConfiguration("foo", "fooValue")
+  val barParam:   ParameterForConfiguration = ParameterForConfiguration("bar", "barValue")
   val recurParam: ParameterForConfiguration = ParameterForConfiguration("recurToFoo", """${rudder.param.foo}""")
 
-  val badChars       = """$¹ ${plop} (foo) \$ @ %plop & \\ | $[xas]^"""
+  val badChars = """$¹ ${plop} (foo) \$ @ %plop & \\ | $[xas]^"""
   val dangerousChars: ParameterForConfiguration = ParameterForConfiguration("danger", badChars)
 
   def p(params: ParameterForConfiguration*): Map[String, ParamInterpolationContext => IOResult[String]] = {

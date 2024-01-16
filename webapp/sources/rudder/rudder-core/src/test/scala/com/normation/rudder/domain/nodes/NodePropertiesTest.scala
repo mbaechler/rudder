@@ -44,11 +44,11 @@ import com.normation.rudder.domain.properties.GenericProperty
 import com.normation.rudder.domain.properties.GenericProperty._
 import com.normation.rudder.domain.properties.NodeProperty
 import com.normation.rudder.domain.properties.PropertyProvider
+import com.typesafe.config.ConfigValue
 import net.liftweb.common._
 import org.junit.runner.RunWith
 import org.specs2.mutable._
 import org.specs2.runner._
-import com.typesafe.config.ConfigValue
 
 @RunWith(classOf[JUnitRunner])
 class NodePropertiesTest extends Specification with Loggable with BoxSpecMatcher {
@@ -60,8 +60,8 @@ class NodePropertiesTest extends Specification with Loggable with BoxSpecMatcher
   }
 
   val RudderP: Some[PropertyProvider] = Some(PropertyProvider.defaultPropertyProvider)
-  val P1: Some[PropertyProvider]      = Some(PropertyProvider("p1"))
-  val P2: Some[PropertyProvider]      = Some(PropertyProvider("p2"))
+  val P1:      Some[PropertyProvider] = Some(PropertyProvider("p1"))
+  val P2:      Some[PropertyProvider] = Some(PropertyProvider("p2"))
 
   // just to have sequence in same order
   implicit val ord: Ordering[NodeProperty] = new Ordering[NodeProperty] {

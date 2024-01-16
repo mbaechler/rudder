@@ -287,13 +287,13 @@ trait TraitTestApiFromYamlFiles extends Specification with BoxSpecMatcher with J
     }
   }
 
-  def cleanResponse(r: LiftResponse): (Int, String) = {
+  def cleanResponse(r: LiftResponse):                                          (Int, String) = {
     val response = r.toResponse.asInstanceOf[InMemoryResponse]
     val resp     = new String(response.data, "UTF-8")
     (response.code, resp)
   }
 // a way to only test some files in do test. Let it empty to ex on all.
-  def doTest(limitToFiles: List[String] = Nil, semanticJson: Boolean = false): Fragments = {
+  def doTest(limitToFiles: List[String] = Nil, semanticJson: Boolean = false): Fragments     = {
     ///// tests ////
     val restTest = new RestTest(liftRules)
 

@@ -72,7 +72,7 @@ class CreateOrCloneRulePopup(
 
   // Load the template from the popup
   def templatePath: List[String] = List("templates-hidden", "Popup", "createRule")
-  def template(): NodeSeq = Templates(templatePath) match {
+  def template():   NodeSeq      = Templates(templatePath) match {
     case Empty | Failure(_, _, _) =>
       error("Template for creation popup not found. I was looking for %s.html".format(templatePath.mkString("/")))
     case Full(n)                  => n
@@ -88,7 +88,7 @@ class CreateOrCloneRulePopup(
   private[this] val userPropertyService        = RudderConfig.userPropertyService
   private[this] val categoryHierarchyDisplayer = RudderConfig.categoryHierarchyDisplayer
 
-  def dispatch: PartialFunction[String,NodeSeq => NodeSeq] = { case "popupContent" => _ => popupContent() }
+  def dispatch: PartialFunction[String, NodeSeq => NodeSeq] = { case "popupContent" => _ => popupContent() }
 
   def popupContent(): NodeSeq = {
 

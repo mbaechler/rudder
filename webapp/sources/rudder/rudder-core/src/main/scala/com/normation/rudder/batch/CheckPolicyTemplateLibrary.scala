@@ -98,7 +98,7 @@ class CheckTechniqueLibrary(
       }
     }
 
-    override protected def messageHandler: PartialFunction[StartLibUpdate,Unit] = {
+    override protected def messageHandler: PartialFunction[StartLibUpdate, Unit] = {
       //
       // Ask for a new dynamic group update
       //

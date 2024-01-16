@@ -58,7 +58,7 @@ class TestFileHistoryLogRepository {
   val repos = new FileHistoryLogRepository(rootDir, StringMarshaller, StringId)
 
   implicit class RunThing[R, E, T](thing: ZIO[Any, E, T]) {
-    def runNow: Either[E,T] = ZioRuntime.unsafeRun(thing.either)
+    def runNow: Either[E, T] = ZioRuntime.unsafeRun(thing.either)
   }
 
   // you can debug detail by setting "TRACE" level below:

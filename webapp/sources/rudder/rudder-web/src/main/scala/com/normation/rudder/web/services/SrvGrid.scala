@@ -59,10 +59,10 @@ import net.liftweb.http.SHtml._
 import net.liftweb.http.js._
 import net.liftweb.http.js.JE._
 import net.liftweb.http.js.JsCmds._
+import org.slf4j
 import org.slf4j.LoggerFactory
 import scala.xml._
 import zio._
-import org.slf4j
 
 /**
  * Very much like the NodeGrid, but with the new WB and without ldap information
@@ -241,7 +241,7 @@ final case class NodeLine(
       )
     })
   }
-  val hostname: String    = {
+  val hostname:    String                     = {
     if (isEmpty(node.hostname)) {
       s"(Missing name)  ${node.id.value}"
     } else {

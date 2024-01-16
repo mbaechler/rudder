@@ -71,8 +71,9 @@ class FusionInventoryParser(
 
   import OptText.optText
 
-  val userLoginDateTimeFormat: DateTimeFormatter = DateTimeFormat.forPattern(lastLoggedUserDatetimeFormat).withLocale(Locale.ENGLISH)
-  val biosDateTimeFormat: DateTimeFormatter      = DateTimeFormat.forPattern(biosDateFormat).withLocale(Locale.ENGLISH)
+  val userLoginDateTimeFormat: DateTimeFormatter =
+    DateTimeFormat.forPattern(lastLoggedUserDatetimeFormat).withLocale(Locale.ENGLISH)
+  val biosDateTimeFormat:      DateTimeFormatter = DateTimeFormat.forPattern(biosDateFormat).withLocale(Locale.ENGLISH)
 
   // extremely specialized convert used for optional field only, that
   // log the error in place of using a box

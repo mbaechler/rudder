@@ -134,7 +134,9 @@ final case class FullNodeGroupCategory(
     }
   }
 
-  val ownGroups: Map[NodeGroupId,FullGroupTarget] = targetInfos.collect { case FullRuleTargetInfo(g: FullGroupTarget, _, _, _, _) => (g.nodeGroup.id, g) }.toMap
+  val ownGroups: Map[NodeGroupId, FullGroupTarget] = targetInfos.collect {
+    case FullRuleTargetInfo(g: FullGroupTarget, _, _, _, _) => (g.nodeGroup.id, g)
+  }.toMap
 
   val allGroups: Map[NodeGroupId, FullGroupTarget] = (
     ownGroups ++ subCategories.flatMap(_.allGroups)

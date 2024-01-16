@@ -62,9 +62,9 @@ final case class TechniqueName(value: String) extends AnyVal with Ordered[Techni
  */
 final case class TechniqueId(name: TechniqueName, version: TechniqueVersion) extends Ordered[TechniqueId] {
   // intended for debug/log, not serialization
-  def debugString    = serialize
+  def debugString = serialize
   // a technique
-  def serialize: String      = name.value + "/" + version.serialize
+  def serialize:      String      = name.value + "/" + version.serialize
   def withDefaultRev: TechniqueId = TechniqueId(name, version.withDefaultRev)
 
   override def compare(that: TechniqueId): Int = {
@@ -216,7 +216,8 @@ final case class Technique(
    */
   val templatesIds: Set[TechniqueResourceId] = agentConfigs.flatMap(cfg => cfg.templates.map(_.id)).toSet
 
-  val getAllVariableSpecs: Seq[VariableSpec] = this.rootSection.getAllVariables ++ this.systemVariableSpecs :+ this.trackerVariableSpec
+  val getAllVariableSpecs: Seq[VariableSpec] =
+    this.rootSection.getAllVariables ++ this.systemVariableSpecs :+ this.trackerVariableSpec
 
   // Escape the description, so that text cannot be used to inject anything in display
   def escapedDescription: String = {

@@ -44,8 +44,8 @@ import com.normation.cfclerk.domain.implicits._
 import com.normation.cfclerk.services.SystemVariableSpecService
 import com.normation.cfclerk.xmlparsers.CfclerkXmlConstants._
 import com.normation.inventory.domain.AgentType
-import scala.xml._
 import scala.util.matching.Regex
+import scala.xml._
 
 /**
  * Parse a technique (metadata.xml file)

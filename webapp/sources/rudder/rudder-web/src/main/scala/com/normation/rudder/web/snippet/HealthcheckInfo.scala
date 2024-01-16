@@ -60,7 +60,7 @@ object NotificationLevel {
 class HealthcheckInfo(
 ) extends DispatchSnippet with Loggable {
 
-  def dispatch: PartialFunction[String,NodeSeq => NodeSeq] = {
+  def dispatch: PartialFunction[String, NodeSeq => NodeSeq] = {
     case "render"     => healthcheckInfo
     case "renderIcon" => healthcheckInfoIcon
   }

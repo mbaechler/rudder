@@ -56,13 +56,13 @@ import org.apache.commons.io.FileUtils
 import org.joda.time.DateTime
 import org.junit.runner.RunWith
 import org.specs2.matcher.ContentMatchers
+import org.specs2.matcher.MatchResult
 import org.specs2.mutable.Specification
 import org.specs2.runner.JUnitRunner
 import org.specs2.specification.BeforeAfterAll
 import scala.annotation.nowarn
 import zio.Chunk
 import zio.syntax._
-import org.specs2.matcher.MatchResult
 
 /*
  * Test the fallback logic for the technique writer
@@ -175,9 +175,10 @@ class TestEditorTechniqueWriterFallback extends Specification with ContentMatche
 
   import ParameterType._
 
-  val defaultConstraint: List[Constraint.Constraint] = Constraint.AllowEmpty(false) :: Constraint.AllowWhiteSpace(false) :: Constraint.MaxLength(16384) :: Nil
+  val defaultConstraint: List[Constraint.Constraint] =
+    Constraint.AllowEmpty(false) :: Constraint.AllowWhiteSpace(false) :: Constraint.MaxLength(16384) :: Nil
 
-  val methods: Map[BundleName,GenericMethod] = (
+  val methods: Map[BundleName, GenericMethod] = (
     GenericMethod(
       BundleName("package_install"),
       "Package install",
@@ -272,17 +273,23 @@ class TestEditorTechniqueWriterFallback extends Specification with ContentMatche
   }
 
   // check validity of xml file written by rudderc
-  def checkXML(status: OutputFileStatus)(implicit compiler: TechniqueCompilerWithFallback, technique: EditorTechnique): MatchResult[Any] = {
+  def checkXML(
+      status:          OutputFileStatus
+  )(implicit compiler: TechniqueCompilerWithFallback, technique: EditorTechnique): MatchResult[Any] = {
     checkOutput(compiler, "metadata.xml", technique.id.value, Content.ruddercMetadata, status)
   }
 
   // check validity of .cf file written by rudderc
-  def checkCFE(status: OutputFileStatus)(implicit compiler: TechniqueCompilerWithFallback, technique: EditorTechnique): MatchResult[Any] = {
+  def checkCFE(
+      status:          OutputFileStatus
+  )(implicit compiler: TechniqueCompilerWithFallback, technique: EditorTechnique): MatchResult[Any] = {
     checkOutput(compiler, "technique.cf", technique.id.value, Content.ruddercCFE, status)
   }
 
   // check validity of .ps1 file written by rudderc
-  def checkPS1(status: OutputFileStatus)(implicit compiler: TechniqueCompilerWithFallback, technique: EditorTechnique): MatchResult[Any] = {
+  def checkPS1(
+      status:          OutputFileStatus
+  )(implicit compiler: TechniqueCompilerWithFallback, technique: EditorTechnique): MatchResult[Any] = {
     checkOutput(compiler, "technique.ps1", technique.id.value, Content.ruddercPS1, status)
   }
 

@@ -145,7 +145,7 @@ class ComplianceModeEditForm[T <: ComplianceMode](
     "property-compliancemode"
   )
 
-  def dispatch: PartialFunction[String,NodeSeq => NodeSeq] = { case "complianceMode" => (xml) => complianceModeConfiguration }
+  def dispatch: PartialFunction[String, NodeSeq => NodeSeq] = { case "complianceMode" => (xml) => complianceModeConfiguration }
 
   val isNodePage: Boolean = p.isNodePage
 

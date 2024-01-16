@@ -67,7 +67,8 @@ class LoadDemoDataTest extends Specification {
       i + x
   }
 
-  val ldap: InMemoryDsConnectionProvider[RwLDAPConnection with RoLDAPConnection] = InitTestLDAPServer.newLdapConnectionProvider(InitTestLDAPServer.schemaLDIFs, bootstrapLDIFs)
+  val ldap: InMemoryDsConnectionProvider[RwLDAPConnection with RoLDAPConnection] =
+    InitTestLDAPServer.newLdapConnectionProvider(InitTestLDAPServer.schemaLDIFs, bootstrapLDIFs)
 
   "The in memory LDAP directory" should {
 
@@ -94,7 +95,10 @@ object InitTestLDAPServer {
 
   val baseDN = "cn=rudder-configuration"
 
-  def newLdapConnectionProvider(schema: List[String], fullLdifPaths: List[String]): InMemoryDsConnectionProvider[RwLDAPConnection with RoLDAPConnection] = {
+  def newLdapConnectionProvider(
+      schema:        List[String],
+      fullLdifPaths: List[String]
+  ): InMemoryDsConnectionProvider[RwLDAPConnection with RoLDAPConnection] = {
     InMemoryDsConnectionProvider[RwLDAPConnection with RoLDAPConnection](
       baseDNs = baseDN :: Nil,
       schemaLDIFPaths = schema,

@@ -75,7 +75,7 @@ object NodeGroupForm {
   val templatePath: List[String] = "templates-hidden" :: "components" :: "NodeGroupForm" :: Nil
 
   val staticInit: NodeSeq = ChooseTemplate(templatePath, "component-staticinit")
-  val body: NodeSeq       = ChooseTemplate(templatePath, "component-body")
+  val body:       NodeSeq = ChooseTemplate(templatePath, "component-body")
   val staticBody: NodeSeq = ChooseTemplate(templatePath, "component-staticbody")
 
   private val saveButtonId = "groupSaveButtonId"
@@ -160,7 +160,7 @@ class NodeGroupForm(
 
   setSearchNodeComponent
 
-  def mainDispatch: Map[String,NodeSeq => NodeSeq] = Map(
+  def mainDispatch: Map[String, NodeSeq => NodeSeq] = Map(
     "showForm"  -> { (_: NodeSeq) => showForm() },
     "showGroup" -> { (_: NodeSeq) =>
       searchNodeComponent.get match {

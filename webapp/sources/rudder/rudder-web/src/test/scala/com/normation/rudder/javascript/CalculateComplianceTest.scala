@@ -65,17 +65,18 @@ class CalculateComplianceTest extends Specification {
     )
   }
 
-  def beVariableValue[T](cond: String => Boolean): Matcher[Either[RudderError, Variable]] = { (b: Either[RudderError, Variable]) =>
-    (
-      b match {
-        case Right(v) if (v.values.size == 1 && cond(v.values(0))) => true
-        case Right(v)                                              => false
-        case Left(err)                                             =>
-          println(err.fullMsg)
-          false
-      },
-      s"${b} is not a Full(InputVariable) that matches condition ${cond} but a '${b}'"
-    )
+  def beVariableValue[T](cond: String => Boolean): Matcher[Either[RudderError, Variable]] = {
+    (b: Either[RudderError, Variable]) =>
+      (
+        b match {
+          case Right(v) if (v.values.size == 1 && cond(v.values(0))) => true
+          case Right(v)                                              => false
+          case Left(err)                                             =>
+            println(err.fullMsg)
+            false
+        },
+        s"${b} is not a Full(InputVariable) that matches condition ${cond} but a '${b}'"
+      )
   }
 
   def js(js: String): Either[RudderError, String] = {

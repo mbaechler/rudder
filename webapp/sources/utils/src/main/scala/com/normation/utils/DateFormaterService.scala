@@ -44,12 +44,12 @@ import org.joda.time.DateTimeFieldType
 import org.joda.time.Duration
 import org.joda.time.chrono.ISOChronology
 import org.joda.time.format.DateTimeFormat
+import org.joda.time.format.DateTimeFormatter
 import org.joda.time.format.DateTimeFormatterBuilder
 import org.joda.time.format.ISODateTimeFormat
 import org.joda.time.format.PeriodFormatterBuilder
 import scala.util.control.NonFatal
 import zio.json._
-import org.joda.time.format.DateTimeFormatter
 
 object DateFormaterService {
 
@@ -59,7 +59,7 @@ object DateFormaterService {
     .append(DateTimeFormat.forPattern("HH:mm:ssZ"))
     .toFormatter
 
-  val rfcDateformat: DateTimeFormatter           = DateTimeFormat.forPattern("yyyy-MM-dd'T'HH:mm:ssZZ")
+  val rfcDateformat:           DateTimeFormatter = DateTimeFormat.forPattern("yyyy-MM-dd'T'HH:mm:ssZZ")
   val rfcDateformatWithMillis: DateTimeFormatter = DateTimeFormat.forPattern("yyyy-MM-dd'T'HH:mm:ss.SSSZZ")
 
   /*

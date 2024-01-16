@@ -45,7 +45,7 @@ class CreateCloneGroupPopup(
 
   var createContainer = false
 
-  def dispatch: PartialFunction[String,NodeSeq => NodeSeq] = { case "popupContent" => { _ => popupContent() } }
+  def dispatch: PartialFunction[String, NodeSeq => NodeSeq] = { case "popupContent" => { _ => popupContent() } }
 
   def popupContent(): NodeSeq = {
     S.appendJs(initJs)

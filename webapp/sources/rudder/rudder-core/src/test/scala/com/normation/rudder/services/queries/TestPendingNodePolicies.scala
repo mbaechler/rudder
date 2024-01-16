@@ -111,7 +111,7 @@ class TestPendingNodePolicies extends Specification {
   // a query line for sub group
   def sub(g: NodeGroup): CriterionLine = CriterionLine(groupCriterion, groupCriterion.criteria.head, Equals, g.id.serialize)
   // a random query that will be added as dummy content - query checker will returns pre-defined things
-  val cl: CriterionLine                = CriterionLine(
+  val cl:                CriterionLine = CriterionLine(
     ObjectCriterion(
       OC_MACHINE,
       Seq(Criterion(A_MACHINE_UUID, StringComparator, NodeCriterionMatcherString(n => Chunk(n.machine.id.value))))
@@ -124,11 +124,11 @@ class TestPendingNodePolicies extends Specification {
   // the node that we will try to accept
   val node: NodeId = NodeId("node")
 
-  def orQuery(g: NodeGroup): Query      = Query(null, Or, Identity, List(cl, sub(g), cl))
-  def andQuery(g: NodeGroup): Query     = Query(null, And, Identity, List(cl, sub(g), cl))
+  def orQuery(g: NodeGroup):      Query = Query(null, Or, Identity, List(cl, sub(g), cl))
+  def andQuery(g: NodeGroup):     Query = Query(null, And, Identity, List(cl, sub(g), cl))
   def onlySubQuery(g: NodeGroup): Query = Query(null, And, Identity, List(sub(g)))
-  val dummyQuery0: Query                = Query(null, And, Identity, List(cl)) // will return 0 node
-  val dummyQuery1: Query                = Query(null, Or, Identity, List(cl))  // will return 1 node
+  val dummyQuery0:                Query = Query(null, And, Identity, List(cl)) // will return 0 node
+  val dummyQuery1:                Query = Query(null, Or, Identity, List(cl))  // will return 1 node
 
   def ng(id: String, q: Query, dyn: Boolean = true): NodeGroup =
     NodeGroup(NodeGroupId(NodeGroupUid(id)), id, id, Nil, Some(q), dyn, Set(), true, false)
@@ -148,12 +148,12 @@ class TestPendingNodePolicies extends Specification {
   val j: NodeGroup = ng("j", dummyQuery1) // ok
   val i: NodeGroup = ng("i", andQuery(j)) // ok
 
-  val l: NodeGroup  = ng("l", dummyQuery0)      // no
-  val k: NodeGroup  = ng("k", orQuery(l))       // ok b/c remaning query returns node
-  val n: NodeGroup  = ng("n", dummyQuery1)      // ok
-  val m: NodeGroup  = ng("m", orQuery(n))       // ok
+  val l:  NodeGroup = ng("l", dummyQuery0)      // no
+  val k:  NodeGroup = ng("k", orQuery(l))       // ok b/c remaning query returns node
+  val n:  NodeGroup = ng("n", dummyQuery1)      // ok
+  val m:  NodeGroup = ng("m", orQuery(n))       // ok
   val pp: NodeGroup = ng("p", dummyQuery1)      // ok ('p' is already taken apparently)
-  val o: NodeGroup  = ng("o", onlySubQuery(pp)) // ok
+  val o:  NodeGroup = ng("o", onlySubQuery(pp)) // ok
 
   // a fake dyn group service
   val getDynGroups: DynGroupService = new DynGroupService {

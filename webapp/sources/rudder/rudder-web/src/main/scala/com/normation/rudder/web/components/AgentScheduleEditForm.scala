@@ -64,7 +64,7 @@ class AgentScheduleEditForm(
     "schedule-agentschedule"
   )
 
-  def dispatch: PartialFunction[String,NodeSeq => NodeSeq] = { case "cfagentSchedule" => (xml) => cfagentScheduleConfiguration }
+  def dispatch: PartialFunction[String, NodeSeq => NodeSeq] = { case "cfagentSchedule" => (xml) => cfagentScheduleConfiguration }
 
   def submit(jsonSchedule: String): JsRaw = {
     parseJsonSchedule(jsonSchedule) match {

@@ -161,7 +161,7 @@ object NodeDetailLevel {
 
   val minimalFields: List[String] = List("id", "hostname", "status")
   val defaultFields: List[String] = minimalFields ::: otherDefaultFields
-  val allFields: List[String]     = defaultFields ::: otherAllFields
+  val allFields:     List[String] = defaultFields ::: otherAllFields
 
   /**
    * A methods that map fields that only use nodeInfo

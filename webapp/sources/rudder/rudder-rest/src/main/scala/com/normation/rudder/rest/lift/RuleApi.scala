@@ -619,7 +619,9 @@ class RuleApiService2(
     }
   }
 
-  def actualRuleCreation(change: RuleChangeRequest)(actor: EventActor, modId: ModificationId, reason: Option[String]): Box[JArray] = {
+  def actualRuleCreation(
+      change: RuleChangeRequest
+  )(actor:    EventActor, modId: ModificationId, reason: Option[String]): Box[JArray] = {
     (for {
       _ <- writeRule.create(change.newRule, modId, actor, reason).toBox
     } yield {

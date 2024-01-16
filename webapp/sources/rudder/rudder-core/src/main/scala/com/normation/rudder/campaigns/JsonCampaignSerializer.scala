@@ -42,6 +42,7 @@ import com.normation.errors.Inconsistency
 import com.normation.errors.IOResult
 import com.normation.utils.DateFormaterService
 import org.joda.time.DateTime
+import zio.ZIO
 import zio.json.DecoderOps
 import zio.json.DeriveJsonDecoder
 import zio.json.DeriveJsonEncoder
@@ -50,14 +51,14 @@ import zio.json.JsonDecoder
 import zio.json.JsonEncoder
 import zio.json.ast.Json
 import zio.syntax._
-import zio.ZIO
 
 trait JSONTranslateCampaign {
 
   def getRawJson(): PartialFunction[Campaign, IOResult[Json]]
 
   // serialize the campaign based on its campaignType
-  def handle(pretty: Boolean): PartialFunction[Campaign,ZIO[Any,RudderError,String]] = getRawJson().andThen(r => r.map(json => if (pretty) json.toJsonPretty else json.toJson))
+  def handle(pretty: Boolean): PartialFunction[Campaign, ZIO[Any, RudderError, String]] =
+    getRawJson().andThen(r => r.map(json => if (pretty) json.toJsonPretty else json.toJson))
 
   def read(): PartialFunction[(String, CampaignParsingInfo), IOResult[Campaign]]
 
@@ -69,7 +70,7 @@ class CampaignSerializer {
   private[this] var tranlaters: List[JSONTranslateCampaign] = Nil
   import CampaignSerializer._
 
-  def getJson(campaign: Campaign): ZIO[Any,RudderError,Json] = {
+  def getJson(campaign: Campaign): ZIO[Any, RudderError, Json] = {
     tranlaters.map(_.getRawJson()).fold(Jsonbase) { case (a, b) => b orElse a }(campaign).flatMap { json =>
       CampaignParsingInfo(campaign.campaignType, campaign.version).toJsonAST.toIO.map(json.merge)
 

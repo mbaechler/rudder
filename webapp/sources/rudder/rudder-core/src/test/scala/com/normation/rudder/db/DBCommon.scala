@@ -46,7 +46,9 @@ import com.normation.rudder.repository.jdbc.RudderDatasourceProvider
 import doobie._
 import doobie.implicits._
 import doobie.implicits.javasql._
+import java.io.Closeable
 import java.util.Properties
+import javax.sql.DataSource
 import net.liftweb.common.Loggable
 import org.joda.time.DateTime
 import org.specs2.mutable.Specification
@@ -54,8 +56,6 @@ import org.specs2.specification.BeforeAfterAll
 import scala.io.Source
 import zio._
 import zio.interop.catz._
-import java.io.Closeable
-import javax.sql.DataSource
 
 /**
  * Here we manage all the initialisation of services and database
@@ -168,14 +168,14 @@ trait DBCommon extends Specification with Loggable with BeforeAfterAll {
     }).mkString(", "))
   }
 
-  lazy val doobie                                       = new DoobieIO(dataSource)
+  lazy val doobie = new DoobieIO(dataSource)
   def transacRun[T](query: Transactor[Task] => Task[T]): T = {
     doobie.transactRunEither(xa => query(xa)) match {
       case Right(x) => x
       case Left(ex) => throw ex
     }
   }
-  lazy val migrationEventLogRepository                  = new MigrationEventLogRepository(doobie)
+  lazy val migrationEventLogRepository = new MigrationEventLogRepository(doobie)
 
   def insertLog(log: MigrationTestLog): Int = {
     doobie.transactRunEither(xa => sql"""

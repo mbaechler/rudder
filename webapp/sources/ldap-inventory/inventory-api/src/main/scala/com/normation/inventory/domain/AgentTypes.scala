@@ -98,33 +98,33 @@ sealed trait AgentType {
 object AgentType {
 
   final case object CfeEnterprise extends AgentType {
-    override def id                                              = "cfengine-nova"
-    override def oldShortName                                    = "nova"
-    override def displayName                                     = "CFEngine Enterprise"
-    override def toRulesPath                                     = "/cfengine-nova"
-    override def inventoryAgentNames: Set[String]                             = Set("cfengine-nova", "nova")
-    override val inventorySoftwareName                           = "cfengine nova"
+    override def id           = "cfengine-nova"
+    override def oldShortName = "nova"
+    override def displayName  = "CFEngine Enterprise"
+    override def toRulesPath  = "/cfengine-nova"
+    override def inventoryAgentNames: Set[String] = Set("cfengine-nova", "nova")
+    override val inventorySoftwareName = "cfengine nova"
     override def toAgentVersionName(softwareVersionName: String): String = s"cfe-${softwareVersionName}"
-    override val defaultPolicyExtension                          = ".cf"
+    override val defaultPolicyExtension = ".cf"
   }
 
   final case object CfeCommunity extends AgentType {
-    override def id                                              = "cfengine-community"
-    override def oldShortName                                    = "community"
-    override def displayName                                     = "Rudder"
-    override def toRulesPath                                     = "/cfengine-community"
-    override def inventoryAgentNames: Set[String]                             = Set("cfengine-community", "community")
+    override def id           = "cfengine-community"
+    override def oldShortName = "community"
+    override def displayName  = "Rudder"
+    override def toRulesPath  = "/cfengine-community"
+    override def inventoryAgentNames: Set[String] = Set("cfengine-community", "community")
     override val inventorySoftwareName                           = "rudder-agent"
     override def toAgentVersionName(softwareVersionName: String) = softwareVersionName
     override val defaultPolicyExtension                          = ".cf"
   }
 
   final case object Dsc extends AgentType {
-    override def id                                              = "dsc"
-    override def oldShortName                                    = "dsc"
-    override def displayName                                     = "Rudder Windows"
-    override def toRulesPath                                     = "/dsc"
-    override def inventoryAgentNames: Set[String]                             = Set("dsc")
+    override def id           = "dsc"
+    override def oldShortName = "dsc"
+    override def displayName  = "Rudder Windows"
+    override def toRulesPath  = "/dsc"
+    override def inventoryAgentNames: Set[String] = Set("dsc")
     override val inventorySoftwareName                           = "Rudder agent (DSC)"
     override def toAgentVersionName(softwareVersionName: String) = softwareVersionName
     override val defaultPolicyExtension                          =

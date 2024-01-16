@@ -68,15 +68,15 @@ import com.normation.zio._
 import com.unboundid.ldap.sdk.DN
 import org.apache.commons.io.FileUtils
 import org.joda.time.DateTime
+import org.joda.time.format.DateTimeFormatter
 import org.joda.time.format.ISODateTimeFormat
 import org.junit.runner._
+import org.specs2.matcher.MatchResult
 import org.specs2.mutable._
 import org.specs2.runner._
 import org.specs2.specification.AfterAll
 import zio._
 import zio.syntax._
-import org.joda.time.format.DateTimeFormatter
-import org.specs2.matcher.MatchResult
 
 /**
  * Check that historical inventories are correctly migrated.
@@ -156,7 +156,7 @@ trait TestMigrateNodeAcceptationInventories extends Specification with AfterAll 
     new InventoryMapper(inventoryDitService, pendingNodesDitImpl, acceptedNodesDitImpl, removedNodesDitImpl)
 
   val historical = "historical-inventories"
-  val srcDir: File     = File("src/test/resources") / historical
+  val srcDir: File = File("src/test/resources") / historical
 
   val fileLog = new InventoryHistoryLogRepository(
     (testDir / historical).pathAsString,
@@ -235,11 +235,13 @@ trait TestMigrateNodeAcceptationInventories extends Specification with AfterAll 
     }
   }
 
-  lazy val deleteBefore: Vector[NodeId]   = Vector(NodeId("fb0096f3-a928-454d-9776-e8079d48cdd8"))
-  lazy val acceptedBefore: Vector[NodeId] = Vector(NodeId("1bd58a1f-3faa-4783-a7a2-52d84021663a"), NodeId("59512a56-53e9-41e1-b36f-ca22d3cdfcbc"))
+  lazy val deleteBefore:   Vector[NodeId] = Vector(NodeId("fb0096f3-a928-454d-9776-e8079d48cdd8"))
+  lazy val acceptedBefore: Vector[NodeId] =
+    Vector(NodeId("1bd58a1f-3faa-4783-a7a2-52d84021663a"), NodeId("59512a56-53e9-41e1-b36f-ca22d3cdfcbc"))
 
   // lazy val needed to be able to not init datasource when tests are skipped
-  lazy val testFactLog: HistoryLogRepository[NodeId,DateTime,FactLogData,FactLog] with InventoryHistoryDelete = if (doJdbcTest && doobie != null) new InventoryHistoryJdbcRepository(doobie) else fileFactLog
+  lazy val testFactLog: HistoryLogRepository[NodeId, DateTime, FactLogData, FactLog] with InventoryHistoryDelete =
+    if (doJdbcTest && doobie != null) new InventoryHistoryJdbcRepository(doobie) else fileFactLog
 
   // 0afa1d13-d125-4c91-9d71-24c47dc867e9 => deleted, far too old, not supported format
   // 0bd58a1f-3faa-4783-a7a2-52d84021663a => ok, only one file, age ok
@@ -250,8 +252,8 @@ trait TestMigrateNodeAcceptationInventories extends Specification with AfterAll 
   // fb0096f4-a928-454d-9776-e8079d48cdd8 => deleted, too old
   object nodeInfoService extends NodeInfoService {
     import com.softwaremill.quicklens._
-    val n                       = NodeConfigData.node1
-    def success(nodeId: NodeId): ZIO[Any,Nothing,Some[NodeInfo]] = Some(n.modify(_.node.id).setTo(nodeId)).succeed
+    val n = NodeConfigData.node1
+    def success(nodeId: NodeId): ZIO[Any, Nothing, Some[NodeInfo]] = Some(n.modify(_.node.id).setTo(nodeId)).succeed
 
     override def getAll():                              IOResult[Map[NodeId, NodeInfo]] = ???
     override def getNodeInfo(nodeId: NodeId):           IOResult[Option[NodeInfo]]      = nodeId.value match {
@@ -278,7 +280,7 @@ trait TestMigrateNodeAcceptationInventories extends Specification with AfterAll 
   val referenceNow: DateTime =
     dateFormat.parseDateTime("2023-06-01T04:15:35.000+02:00")
 
-  def migratedAndCanRead(id: String, date: String): MatchResult[Either[RudderError,Option[FactLog]]] = {
+  def migratedAndCanRead(id: String, date: String): MatchResult[Either[RudderError, Option[FactLog]]] = {
     val d      = dateFormat.parseDateTime(date)
     val nodeId = NodeId(id)
     (testFactLog.get(nodeId, d).either.runNow must beRight)

@@ -64,8 +64,8 @@ trait UserRepositoryTest extends Specification with Loggable {
     InMemoryUserRepository.make().runNow
   }
 
-  val actor: EventActor    = EventActor("test")
-  val dateInit: DateTime = DateTime.parse("2023-09-01T01:01:01Z")
+  val actor:    EventActor = EventActor("test")
+  val dateInit: DateTime   = DateTime.parse("2023-09-01T01:01:01Z")
 
   "basic sequential operations with users" >> {
     val users = List("alice", "bob", "charlie", "mallory")

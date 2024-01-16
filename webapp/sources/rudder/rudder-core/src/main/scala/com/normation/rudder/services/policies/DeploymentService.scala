@@ -631,7 +631,7 @@ trait PromiseGenerationService {
       globalComplianceMode: GlobalComplianceMode,
       globalAgentRun:       AgentRunInterval,
       globalPolicyMode:     GlobalPolicyMode
-  ): Map[NodeId,NodeModeConfig] = {
+  ): Map[NodeId, NodeModeConfig] = {
     nodes.map {
       case (id, info) =>
         (

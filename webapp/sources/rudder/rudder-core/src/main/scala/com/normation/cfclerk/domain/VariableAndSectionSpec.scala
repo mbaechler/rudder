@@ -270,8 +270,8 @@ sealed trait SectionVariableSpec extends SectionChildSpec with VariableSpec {
 }
 
 final case class ValueLabel(value: String, label: String) {
-  def tuple: (String, String)   = (value, label)
-  def reverse: ValueLabel = ValueLabel(label, value)
+  def tuple:   (String, String) = (value, label)
+  def reverse: ValueLabel       = ValueLabel(label, value)
 }
 
 trait ValueLabelVariableSpec extends SectionVariableSpec {

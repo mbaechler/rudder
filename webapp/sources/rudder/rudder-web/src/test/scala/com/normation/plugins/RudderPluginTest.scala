@@ -38,10 +38,10 @@
 package com.normation.plugins
 
 import com.normation.utils.ParseVersion
+import com.normation.utils.Version
 import org.junit.runner.RunWith
 import org.specs2.mutable._
 import org.specs2.runner.JUnitRunner
-import com.normation.utils.Version
 
 @RunWith(classOf[JUnitRunner])
 class RudderPluginTest extends Specification {

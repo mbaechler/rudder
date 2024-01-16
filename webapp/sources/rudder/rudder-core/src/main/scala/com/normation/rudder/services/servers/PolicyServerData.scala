@@ -149,7 +149,8 @@ object json {
   }
 
   object JPolicyServers {
-    def from(servers: PolicyServers): JPolicyServers = JPolicyServers(JPolicyServer.from(servers.root), servers.relays.map(JPolicyServer.from(_)))
+    def from(servers: PolicyServers): JPolicyServers =
+      JPolicyServers(JPolicyServer.from(servers.root), servers.relays.map(JPolicyServer.from(_)))
   }
 
   implicit val allowedNetworkEncoder: JsonEncoder[JAllowedNetwork] = DeriveJsonEncoder.gen

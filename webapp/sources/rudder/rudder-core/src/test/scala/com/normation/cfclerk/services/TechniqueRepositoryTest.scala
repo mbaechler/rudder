@@ -81,8 +81,8 @@ class TechniqueRepositoryTest extends Specification with Loggable with AfterAll 
   implicit val charset: Charset = StandardCharsets.UTF_8
   val setupRepos = new TestNodeConfiguration()
 
-  val fsRepos       = setupRepos.techniqueRepository
-  val git           = setupRepos.repo.git
+  val fsRepos = setupRepos.techniqueRepository
+  val git     = setupRepos.repo.git
   val techniqueRoot: File = File(setupRepos.repo.db.getWorkTree.getAbsolutePath, "techniques")
 
   val modid = new ModificationId("test")
@@ -90,8 +90,8 @@ class TechniqueRepositoryTest extends Specification with Loggable with AfterAll 
 
   object testCallback extends TechniquesLibraryUpdateNotification() {
 
-    var techniques: Map[TechniqueName,TechniquesLibraryUpdateType] = Map.empty[TechniqueName, TechniquesLibraryUpdateType]
-    var categories: Set[TechniqueCategoryModType] = Set.empty[TechniqueCategoryModType]
+    var techniques: Map[TechniqueName, TechniquesLibraryUpdateType] = Map.empty[TechniqueName, TechniquesLibraryUpdateType]
+    var categories: Set[TechniqueCategoryModType]                   = Set.empty[TechniqueCategoryModType]
 
     override def name:  String = "test-callback"
     override def order: Int    = 0
@@ -111,10 +111,10 @@ class TechniqueRepositoryTest extends Specification with Loggable with AfterAll 
 
   // a repos just to check what methods are called
   object ldapRepo extends RoDirectiveRepository with WoDirectiveRepository {
-    var added: List[String]             = Nil                           // only the category id
-    var moved: List[(String, String, Option[String])]             = Nil // (what, where, new name)
-    var deleted: List[String]           = Nil
-    var updatedTechniques: List[String] = Nil
+    var added:             List[String]                           = Nil // only the category id
+    var moved:             List[(String, String, Option[String])] = Nil // (what, where, new name)
+    var deleted:           List[String]                           = Nil
+    var updatedTechniques: List[String]                           = Nil
 
     override def addActiveTechniqueCategory(
         that:           ActiveTechniqueCategory,

@@ -37,6 +37,7 @@
 
 package com.normation.rudder.services.reports
 
+import ch.qos.logback.classic.Logger
 import com.normation.cfclerk.domain.ReportingLogic
 import com.normation.inventory.domain.NodeId
 import com.normation.rudder.domain.policies.DirectiveId
@@ -62,7 +63,6 @@ import org.junit.runner._
 import org.specs2.mutable._
 import org.specs2.runner._
 import scala.annotation.nowarn
-import ch.qos.logback.classic.Logger
 
 @nowarn("msg=a type was inferred to be `\\w+`; this may indicate a programming error.")
 @RunWith(classOf[JUnitRunner])
@@ -85,10 +85,10 @@ class ExecutionBatchTest extends Specification {
   import ReportType._
 
   val strictUnexpectedInterpretation: UnexpectedReportInterpretation = UnexpectedReportInterpretation(Set())
-  val executionTimestamp             = new DateTime()
+  val executionTimestamp = new DateTime()
 
   val globalPolicyMode: GlobalPolicyMode = GlobalPolicyMode(PolicyMode.Enforce, PolicyModeOverrides.Always)
-  val mode: NodeModeConfig             = NodeModeConfig(
+  val mode:             NodeModeConfig   = NodeModeConfig(
     GlobalComplianceMode(FullCompliance, 30),
     None,
     AgentRunInterval(None, 5, 14, 5, 4),
@@ -224,8 +224,9 @@ class ExecutionBatchTest extends Specification {
     res.toMap
   }
 
-  val getNodeStatusByRule: ((Map[NodeId,NodeExpectedReports], Seq[Reports])) => Map[NodeId,NodeStatusReport] = (getNodeStatusReportsByRule _).tupled
-  val one: NodeId                 = NodeId("one")
+  val getNodeStatusByRule: ((Map[NodeId, NodeExpectedReports], Seq[Reports])) => Map[NodeId, NodeStatusReport] =
+    (getNodeStatusReportsByRule _).tupled
+  val one:                 NodeId                                                                              = NodeId("one")
 
   /*
    * Test the general run information (do we have a run, is it an expected version, etc)

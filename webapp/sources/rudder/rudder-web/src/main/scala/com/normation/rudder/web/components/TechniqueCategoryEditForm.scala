@@ -69,7 +69,7 @@ class TechniqueCategoryEditForm(
   private[this] val activeTechniqueCategoryRepository = RudderConfig.woDirectiveRepository
   private[this] val uuidGen                           = RudderConfig.stringUuidGenerator
 
-  def dispatch: PartialFunction[String,NodeSeq => NodeSeq] = { case "showForm" => { _ => showForm() } }
+  def dispatch: PartialFunction[String, NodeSeq => NodeSeq] = { case "showForm" => { _ => showForm() } }
 
   private[this] var currentCategory = givenCategory
   def getCategory                   = currentCategory

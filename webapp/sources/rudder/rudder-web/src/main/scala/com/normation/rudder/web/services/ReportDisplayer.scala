@@ -79,7 +79,7 @@ class ReportDisplayer(
 ) extends Loggable {
 
   def reportByNodeTemplate: NodeSeq = ChooseTemplate(List("templates-hidden", "reports_server"), "batches-list")
-  def directiveDetails: NodeSeq     = ChooseTemplate(List("templates-hidden", "reports_server"), "directive:foreach")
+  def directiveDetails:     NodeSeq = ChooseTemplate(List("templates-hidden", "reports_server"), "directive:foreach")
 
   /**
    * Main entry point to display the tab with reports of a node.

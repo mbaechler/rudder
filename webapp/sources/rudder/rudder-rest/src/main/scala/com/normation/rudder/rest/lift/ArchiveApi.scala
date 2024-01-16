@@ -106,11 +106,11 @@ import net.liftweb.http.FileParamHolder
 import net.liftweb.http.LiftResponse
 import net.liftweb.http.OutputStreamResponse
 import net.liftweb.http.Req
+import scala.util.matching.Regex
 import scala.xml.XML
 import zio._
 import zio.json._
 import zio.syntax._
-import scala.util.matching.Regex
 
 /*
  * Machinery to enable/disable the API given the value of the feature switch in config service.
@@ -148,7 +148,7 @@ object ArchiveScope       {
   final case object Techniques extends ArchiveScope { val value = "techniques" }
   final case object Groups     extends ArchiveScope { val value = "groups"     }
 
-  def values: List[ArchiveScope] = ca.mrvisser.sealerate.values[ArchiveScope].toList.sortBy(_.value)
+  def values:           List[ArchiveScope]           = ca.mrvisser.sealerate.values[ArchiveScope].toList.sortBy(_.value)
   def parse(s: String): Either[String, ArchiveScope] = {
     values.find(_.value == s.toLowerCase.strip()) match {
       case None    =>
@@ -729,12 +729,12 @@ class ZipArchiveReaderImpl(
 
   // we must avoid to eagerly match "ncf_techniques" as "techniques" but still accept when it starts by "techniques" without /
   val techniqueRegex: Regex = """(.*/|)techniques/(.+)""".r
-  val yamlRegex: Regex      = s"""(.+)/${TechniqueType.Yaml.name}""".r
-  val jsonRegex: Regex      = s"""(.+)/${TechniqueType.Json.name}""".r
-  val metadataRegex: Regex  = s"""(.+)/${TechniqueType.Metadata.name}""".r
+  val yamlRegex:      Regex = s"""(.+)/${TechniqueType.Yaml.name}""".r
+  val jsonRegex:      Regex = s"""(.+)/${TechniqueType.Json.name}""".r
+  val metadataRegex:  Regex = s"""(.+)/${TechniqueType.Metadata.name}""".r
   val directiveRegex: Regex = """(.*/|)directives/(.+.json)""".r
-  val groupRegex: Regex     = """(.*/|)groups/(.+.json)""".r
-  val ruleRegex: Regex      = """(.*/|)rules/(.+.json)""".r
+  val groupRegex:     Regex = """(.*/|)groups/(.+.json)""".r
+  val ruleRegex:      Regex = """(.*/|)rules/(.+.json)""".r
 
   /*
    * For technique, we are parsing metadata.xml.

@@ -1164,7 +1164,7 @@ sealed trait ComplianceFormat {
 object ComplianceFormat {
   case object CSV  extends ComplianceFormat { val value = "csv"  }
   case object JSON extends ComplianceFormat { val value = "json" }
-  def allValues: Set[ComplianceFormat] = ca.mrvisser.sealerate.values[ComplianceFormat]
+  def allValues:                Set[ComplianceFormat]            = ca.mrvisser.sealerate.values[ComplianceFormat]
   def fromValue(value: String): Either[String, ComplianceFormat] = {
     allValues.find(_.value == value) match {
       case None         =>

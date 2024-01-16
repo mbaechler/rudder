@@ -48,9 +48,9 @@ import net.liftweb.http.js.JE._
 import net.liftweb.http.js.JsCmds._
 import net.liftweb.util.BaseField
 import net.liftweb.util.Helpers
+import org.slf4j
 import org.slf4j.LoggerFactory
 import scala.xml._
-import org.slf4j
 
 /**
  * A displayable field has 2 methods :
@@ -123,8 +123,8 @@ trait DirectiveField extends BaseField with SectionChildField {
   def parseClient(s: String): Unit
 
   // reference to other fields used by that field
-  protected var _usedFields: Seq[DirectiveField] = Seq[DirectiveField]()
-  def usedFields_=(fields: Seq[DirectiveField]): Unit = {
+  protected var _usedFields:                     Seq[DirectiveField] = Seq[DirectiveField]()
+  def usedFields_=(fields: Seq[DirectiveField]): Unit                = {
     _usedFields = fields
   }
   def usedFields = _usedFields
@@ -419,7 +419,7 @@ final case class MultivaluedSectionField(
     ()
   }
 
-  def size: Int     = synchronized(allSections.size)
+  def size:     Int                    = synchronized(allSections.size)
   def iterator: Iterator[SectionField] = synchronized(allSections.iterator)
 
   /**

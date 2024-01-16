@@ -56,12 +56,12 @@ import org.apache.commons.io.FileUtils
 import org.bouncycastle.jce.provider.BouncyCastleProvider
 import org.joda.time.DateTime
 import org.junit.runner._
+import org.specs2.matcher.MatchResult
 import org.specs2.mutable._
 import org.specs2.runner._
 import org.specs2.specification.BeforeAfterAll
 import scala.annotation.nowarn
 import zio._
-import org.specs2.matcher.MatchResult
 
 /**
  *
@@ -92,7 +92,7 @@ class TestCoreNodeFactInventory extends Specification with BeforeAfterAll {
 
   // a fact storage that keeps a trace of all call to it, so that we can debug/set expectation
   object factStorage extends NodeFactStorage {
-    val backend   = MockLdapFactStorage.nodeFactStorage
+    val backend = MockLdapFactStorage.nodeFactStorage
     val callStack: Ref[List[String]] = Ref.make(List.empty[String]).runNow
 
     def clearCallStack: Unit = callStack.set(Nil).runNow
@@ -144,7 +144,7 @@ class TestCoreNodeFactInventory extends Specification with BeforeAfterAll {
   }
 
   implicit class RunThing[E, T](thing: ZIO[Any, E, T]) {
-    def testRun: Either[E,T] = ZioRuntime.unsafeRun(thing.either)
+    def testRun: Either[E, T] = ZioRuntime.unsafeRun(thing.either)
   }
 
   implicit class RunOptThing[A](thing: IOResult[Option[A]]) {
@@ -156,7 +156,7 @@ class TestCoreNodeFactInventory extends Specification with BeforeAfterAll {
   }
 
   implicit class TestIsOK[E, T](thing: ZIO[Any, E, T]) {
-    def isOK: MatchResult[Either[E,T]] = thing.testRun must beRight
+    def isOK: MatchResult[Either[E, T]] = thing.testRun must beRight
   }
 
   implicit class ForceGetE[E, A](opt: Either[E, A]) {
@@ -179,8 +179,8 @@ class TestCoreNodeFactInventory extends Specification with BeforeAfterAll {
   }
 
   val callbackLog: Ref[Chunk[NodeFactChangeEvent]] = Ref.make(Chunk.empty[NodeFactChangeEvent]).runNow
-  def resetLog: Unit    = callbackLog.set(Chunk.empty).runNow
-  def getLogName: Chunk[String]  = callbackLog.get.map(_.map(_.name)).runNow
+  def resetLog:    Unit                            = callbackLog.set(Chunk.empty).runNow
+  def getLogName:  Chunk[String]                   = callbackLog.get.map(_.map(_.name)).runNow
 
   val nodeBySoftwareName = new SoftDaoGetNodesbySofwareName(
     new ReadOnlySoftwareDAOImpl(
@@ -208,7 +208,7 @@ class TestCoreNodeFactInventory extends Specification with BeforeAfterAll {
   // - one mount point
   // - machine2 (physical)
   // - a bios
-  val node7id: NodeId   = NodeId("node7")
+  val node7id:   NodeId      = NodeId("node7")
   val machineId: MachineUuid = MachineUuid("machine2")
 
   implicit val cc: ChangeContext = ChangeContext.newForRudder()

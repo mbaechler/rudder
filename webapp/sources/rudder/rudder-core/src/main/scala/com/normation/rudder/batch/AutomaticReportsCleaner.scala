@@ -350,7 +350,7 @@ class AutomaticReportsCleaning(
 
   // cleaning log info is special, it's not a cron but an "every NN minutes"
   val deleteLogReportPropertyName = "rudder.batch.reportsCleaner.deleteLogReport.TTL"
-  val deleteLogttl: ZIO[Any,Nothing,Int]                = {
+  val deleteLogttl: ZIO[Any, Nothing, Int] = {
     def toInt(s: String, orig: String): Option[Int] = {
       try {
         Some(s.toInt)
@@ -485,7 +485,7 @@ class AutomaticReportsCleaning(
       }
     }
 
-    override protected def messageHandler: PartialFunction[DatabaseCleanerMessage,Unit] = {
+    override protected def messageHandler: PartialFunction[DatabaseCleanerMessage, Unit] = {
       /*
        * Ask to check if need to be launched
        * If idle   => check

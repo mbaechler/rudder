@@ -65,7 +65,7 @@ object MockLdapFactStorage {
   val ldifLogger = new DefaultLDIFFileLogger("TestQueryProcessor", "/tmp/normation/rudder/ldif")
 
   // init of in memory LDAP directory
-  val schemaLDIFs: List[String]    = {
+  val schemaLDIFs:    List[String] = {
     val schemaDir = tmp / "schema"
     schemaDir.createDirectories()
 

@@ -78,12 +78,12 @@ class RuleValServiceTest extends Specification {
   /**
    * Create the objects for tests
    */
-  val techniqueId: TechniqueId = TechniqueId(
+  val techniqueId: TechniqueId  = TechniqueId(
     TechniqueName("techniqueName"),
     TechniqueVersionHelper("1.0")
   )
   val directiveId: DirectiveUid = DirectiveUid("dirId")
-  val ruleId: RuleId      = RuleId(RuleUid("ruleId"))
+  val ruleId:      RuleId       = RuleId(RuleUid("ruleId"))
 
   /* create representation of meta techniques */
   def makePredefinedSectionSpec(name: String, providedValues: (String, Seq[String])): PredefinedValuesVariableSpec = {
@@ -94,7 +94,7 @@ class RuleValServiceTest extends Specification {
       id = None
     )
   }
-  def makeComponentSectionSpec(name: String): SectionSpec                                         = {
+  def makeComponentSectionSpec(name: String):                                         SectionSpec                  = {
     SectionSpec(
       name,
       true,

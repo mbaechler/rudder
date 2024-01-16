@@ -50,18 +50,18 @@ import com.normation.rudder.domain.queries.Or
 import com.normation.rudder.web.ChooseTemplate
 import net.liftweb.common._
 import net.liftweb.http.DispatchSnippet
+import net.liftweb.http.GUIDJsExp
 import net.liftweb.http.S
 import net.liftweb.http.SHtml
 import net.liftweb.http.js._
 import net.liftweb.http.js.JE._
 import net.liftweb.http.js.JsCmds._
 import net.liftweb.util.Helpers._
+import scala.collection.mutable
 import scala.collection.mutable.{Map => MutMap}
 import scala.collection.mutable.ArrayBuffer
 import scala.collection.mutable.Buffer
 import scala.xml._
-import net.liftweb.http.GUIDJsExp
-import scala.collection.mutable
 
 /**
  * The Search Nodes component
@@ -146,7 +146,7 @@ class SearchNodeComponent(
   // activate the global save button
   var searchFormHasError = false
 
-  val errors: mutable.Map[CriterionLine,String] = MutMap[CriterionLine, String]()
+  val errors: mutable.Map[CriterionLine, String] = MutMap[CriterionLine, String]()
 
   def buildQuery(isGroupsPage: Boolean): NodeSeq = {
 
@@ -281,9 +281,8 @@ class SearchNodeComponent(
           .radio(
             Seq("AND", "OR"),
             Full(if (comp == Or) "OR" else "AND"),
-            { (value: String) =>
-              composition = CriterionComposition.parse(value).getOrElse(And)
-            } // default to AND on unknown composition string
+            (value: String) => composition = CriterionComposition.parse(value).getOrElse(And)
+            // default to AND on unknown composition string
           )
           .flatMap(radio => <label>
             {radio.xhtml}
@@ -582,7 +581,7 @@ object SearchNodeComponent {
     )
   }
   // expect "newCompValue,valueSelectEltId"
-  def ajaxVal(lines: Buffer[CriterionLine], i: Int): GUIDJsExp  = {
+  def ajaxVal(lines: Buffer[CriterionLine], i: Int):  GUIDJsExp = {
     SHtml.ajaxCall(JE.JsRaw("this.value+',v_%s'".format(i)), s => After(TimeSpan(200), replaceValue(s)))
   }
 

@@ -445,7 +445,7 @@ trait AuthBackendsProvider {
 }
 
 final case class AuthenticationMethods(name: String) {
-  val path: String       = s"applicationContext-security-auth-${name}.xml"
+  val path:       String = s"applicationContext-security-auth-${name}.xml"
   val configFile: String = s"classpath:${path}"
   val springBean: String = s"${name}AuthenticationProvider"
 }

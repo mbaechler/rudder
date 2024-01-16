@@ -131,7 +131,7 @@ class TechniqueEditForm(
 
   //////////////////////////// public methods ////////////////////////////
 
-  def dispatch: PartialFunction[String,NodeSeq => NodeSeq] = { case "showForm" => { (_: NodeSeq) => showForm() } }
+  def dispatch: PartialFunction[String, NodeSeq => NodeSeq] = { case "showForm" => { (_: NodeSeq) => showForm() } }
 
   def showForm(): NodeSeq = {
     (

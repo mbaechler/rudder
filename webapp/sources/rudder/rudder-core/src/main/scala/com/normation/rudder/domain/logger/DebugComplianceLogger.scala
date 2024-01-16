@@ -39,6 +39,7 @@ package com.normation.rudder.domain.logger
 
 import com.github.benmanes.caffeine.cache.CacheLoader
 import com.github.benmanes.caffeine.cache.Caffeine
+import com.github.benmanes.caffeine.cache.LoadingCache
 import com.normation.NamedZioLogger
 import com.normation.inventory.domain.NodeId
 import com.normation.rudder.domain.reports.NodeConfigIdInfo
@@ -50,9 +51,8 @@ import com.normation.rudder.services.reports._
 import com.normation.utils.Utils.DateToIsoString
 import java.util.concurrent.TimeUnit
 import net.liftweb.common.Logger
-import org.slf4j.LoggerFactory
-import com.github.benmanes.caffeine.cache.LoadingCache
 import org.slf4j
+import org.slf4j.LoggerFactory
 
 /**
  * Log information about compliance.
@@ -70,7 +70,7 @@ object ComplianceDebugLogger extends Logger {
   // we have one logger defined by node.
   // they automatically expires after some time.
 
-  val nodeCache: LoadingCache[String,Logger] = Caffeine
+  val nodeCache: LoadingCache[String, Logger] = Caffeine
     .newBuilder()
     .maximumSize(1000)
     .expireAfterWrite(10, TimeUnit.MINUTES)

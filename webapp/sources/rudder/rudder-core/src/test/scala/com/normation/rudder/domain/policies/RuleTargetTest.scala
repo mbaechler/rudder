@@ -33,8 +33,8 @@ class RuleTargetTest extends Specification with Loggable {
   def newNode(id: NodeId): Node =
     Node(id, "", "", NodeState.Enabled, false, false, DateTime.now, ReportingConfiguration(None, None, None), List(), None, None)
 
-  val allNodeIds: Set[NodeId] = nodeIds + NodeId("root")
-  val nodes: Map[NodeId,NodeInfo]      = allNodeIds.map { id =>
+  val allNodeIds: Set[NodeId]           = nodeIds + NodeId("root")
+  val nodes:      Map[NodeId, NodeInfo] = allNodeIds.map { id =>
     (
       id,
       NodeInfo(
@@ -55,7 +55,7 @@ class RuleTargetTest extends Specification with Loggable {
     )
   }.toMap
 
-  val nodeArePolicyServers: MapView[NodeId,Boolean] = nodes.map { case (id, n) => (id, n.isPolicyServer) }.view
+  val nodeArePolicyServers: MapView[NodeId, Boolean] = nodes.map { case (id, n) => (id, n.isPolicyServer) }.view
 
   val g1: NodeGroup = NodeGroup(
     NodeGroupId(NodeGroupUid("1")),
@@ -134,7 +134,7 @@ class RuleTargetTest extends Specification with Loggable {
     }))
     .toList
 
-  val unionTargets: Set[(TargetUnion, Set[NodeId])] = groups
+  val unionTargets: Set[(TargetUnion, Set[NodeId])]        = groups
     .subsets()
     .map { gs =>
       val union      = TargetUnion(gs.map(g => GroupTarget(g.id)))

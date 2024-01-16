@@ -223,7 +223,7 @@ object ParameterType {
       }
     }
 
-    def value(parameterType: ParameterType): PureResult[String] = {
+    def value(parameterType: ParameterType):                                      PureResult[String] = {
       parameterType match {
         case StringParameter => Right("string")
         case Raw             => Right("raw")
@@ -247,7 +247,7 @@ object ParameterType {
 
   class PlugableParameterTypeService extends ParameterTypeService {
 
-    def create(value: String): PureResult[ParameterType]               = {
+    def create(value: String):               PureResult[ParameterType] = {
       (innerServices foldRight (Left(Unexpected(s"'${value}' is not a valid method parameter type")): PureResult[
         ParameterType
       ])) {
@@ -255,7 +255,7 @@ object ParameterType {
         case (service, _)        => service.create(value)
       }
     }
-    def value(parameterType: ParameterType): PureResult[String] = {
+    def value(parameterType: ParameterType): PureResult[String]        = {
       (innerServices foldRight (Left(Unexpected(s"parameter type '${parameterType}' has no value defined")): PureResult[
         String
       ])) {
@@ -271,8 +271,8 @@ object ParameterType {
       }
     }
 
-    def addNewParameterService(service: ParameterTypeService): Unit = innerServices = service :: innerServices
-    private[this] var innerServices: List[ParameterTypeService] = new BasicParameterTypeService :: Nil
+    def addNewParameterService(service: ParameterTypeService): Unit                       = innerServices = service :: innerServices
+    private[this] var innerServices:                           List[ParameterTypeService] = new BasicParameterTypeService :: Nil
   }
 }
 

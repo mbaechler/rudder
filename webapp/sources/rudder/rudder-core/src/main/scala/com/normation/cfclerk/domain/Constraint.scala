@@ -161,19 +161,19 @@ final case class TextareaVType(regex: Option[RegexConstraint] = None)    extends
 
 sealed trait FixedRegexVType extends StringVType
 object IpVType               extends FixedRegexVType {
-  override val name  = "ip"
+  override val name = "ip"
   override val regex: Some[IpRegex.type] = Some(IpRegex)
 }
 object Ipv4VType             extends FixedRegexVType {
-  override val name  = "ipv4"
+  override val name = "ipv4"
   override val regex: Some[Ipv4Regex.type] = Some(Ipv4Regex)
 }
 object Ipv6VType             extends FixedRegexVType {
-  override val name  = "ipv6"
+  override val name = "ipv6"
   override val regex: Some[Ipv6Regex.type] = Some(Ipv6Regex)
 }
 object MailVType             extends FixedRegexVType {
-  override val name  = "mail"
+  override val name = "mail"
   override val regex: Some[MailRegex.type] = Some(MailRegex)
 }
 

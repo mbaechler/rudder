@@ -217,14 +217,14 @@ object AuthorizationType {
    */
   def allKind: Set[AuthorizationType] = allKindsMap
 
-  private[this] var allKindsMap: Set[AuthorizationType] = {
+  private[this] var allKindsMap:                     Set[AuthorizationType] = {
     Set(
       AnyRights
     ) ++ Administration.values ++ Compliance.values ++ Configuration.values ++ Deployer.values ++ Deployment.values ++
     Directive.values ++ Group.values ++ Node.values ++ Rule.values ++ Parameter.values ++ Technique.values ++
     UserAccount.values ++ Validator.values
   }
-  def addAuthKind(newKinds: Set[AuthorizationType]): Unit = allKindsMap = allKindsMap ++ newKinds
+  def addAuthKind(newKinds: Set[AuthorizationType]): Unit                   = allKindsMap = allKindsMap ++ newKinds
 
   /*
    * Parse a right string (ie: object_operation) as a set of authorization type, taking care of the special keyword "all"
@@ -400,12 +400,12 @@ object Role       {
     ).map(r => (r._name, r)).toMap
   }
 
-  def forRight(right: AuthorizationType): Custom        = Custom(Rights.forAuthzs(right))
+  def forRight(right: AuthorizationType):        Custom = Custom(Rights.forAuthzs(right))
   def forRights(rights: Set[AuthorizationType]): Custom = Custom(Rights(rights))
 
   // this is the named custom roles defined in <custom-roles> tag
   final case class NamedCustom(name: String, permissions: Seq[Role]) extends Role {
-    def rights: Rights               = Rights(permissions.flatMap(_.rights.authorizationTypes))
+    def rights:               Rights = Rights(permissions.flatMap(_.rights.authorizationTypes))
     override def debugString: String = s"customRole[${permissions.map(_.debugString).mkString(",")}]"
   }
 
@@ -437,7 +437,7 @@ object RudderRoles {
   private val builtInCoreRoles = SortedMap[String, Role](Role.allBuiltInRoles.toList: _*)
 
   // this is the actual set of currently knowed builin roles
-  val builtInRoles: Ref[SortedMap[String,Role]] = Ref.make(builtInCoreRoles).runNow
+  val builtInRoles: Ref[SortedMap[String, Role]] = Ref.make(builtInCoreRoles).runNow
 
   private val customRoles = Ref.make(SortedMap.empty[String, Role]).runNow
   private val allRoles: Ref[SortedMap[String, Role]] = ZioRuntime.unsafeRun(for {

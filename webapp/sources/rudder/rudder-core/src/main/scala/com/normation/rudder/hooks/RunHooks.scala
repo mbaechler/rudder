@@ -47,11 +47,11 @@ import net.liftweb.common.Box
 import net.liftweb.common.Failure
 import net.liftweb.common.Full
 import net.liftweb.common.Logger
+import org.slf4j
 import org.slf4j.LoggerFactory
 import scala.util.control.NonFatal
 import zio._
 import zio.syntax._
-import org.slf4j
 
 /*
  * The goal of that file is to give a simple abstraction to run hooks in
@@ -84,7 +84,7 @@ final case class HookEnvPair(name: String, value: String) {
 }
 final case class HookEnvPairs(values: List[HookEnvPair]) extends AnyVal {
   // shortcut to view envVariables as a Map[String, String]
-  def toMap: Map[String,String] = values.map(p => (p.name, p.value)).toMap
+  def toMap: Map[String, String] = values.map(p => (p.name, p.value)).toMap
 
   def add(other: HookEnvPairs): HookEnvPairs = HookEnvPairs(this.values ::: other.values)
 

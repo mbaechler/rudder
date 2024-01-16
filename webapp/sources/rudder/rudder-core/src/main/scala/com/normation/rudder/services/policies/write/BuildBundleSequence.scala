@@ -151,8 +151,8 @@ object BuildBundleSequence {
         case (false, PolicyMode.Enforce) => enforce
       }
     }
-    val audit: Bundle                                                 = Bundle.apply(None, BundleName("""set_dry_run_mode"""), BundleParam.DoubleQuote("true", "mode") :: Nil)
-    val enforce: Bundle                                               = Bundle.apply(None, BundleName("""set_dry_run_mode"""), BundleParam.DoubleQuote("false", "mode") :: Nil)
+    val audit:                                                 Bundle = Bundle.apply(None, BundleName("""set_dry_run_mode"""), BundleParam.DoubleQuote("true", "mode") :: Nil)
+    val enforce:                                               Bundle = Bundle.apply(None, BundleName("""set_dry_run_mode"""), BundleParam.DoubleQuote("false", "mode") :: Nil)
   }
 
   /*

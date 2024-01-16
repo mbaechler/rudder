@@ -145,7 +145,7 @@ object Certificate {
 final case class PublicKey(value: String) extends SecurityToken {
 
   // Value of the key may be stored (with old fusion inventory version) as one line and without rsa header and footer, we should add them if missing and format the key
-  val key: String = {
+  val key:       String                            = {
     if (value.startsWith("-----BEGIN RSA PUBLIC KEY-----")) {
       value
     } else {
@@ -170,7 +170,7 @@ final case class PublicKey(value: String) extends SecurityToken {
 final case class Certificate(value: String) extends SecurityToken {
 
   // Value of the key may be stored (with old fusion inventory version) as one line and without rsa header and footer, we should add them if missing and format the key
-  val key: String = {
+  val key:  String                                    = {
     if (value.startsWith("-----BEGIN CERTIFICATE-----")) {
       value
     } else {

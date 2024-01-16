@@ -84,8 +84,8 @@ class Section2FieldServiceTest extends Specification {
   // </sections>
   object Sections {
     val rootSectField: SectionField = RootSectionField()
-    val multSect: SectionField      = rootSectField.getAllSectionFields(1)
-    val innerSect: SectionField     = multSect.getAllSectionFields(2)
+    val multSect:      SectionField = rootSectField.getAllSectionFields(1)
+    val innerSect:     SectionField = multSect.getAllSectionFields(2)
   }
 
   "multSect" should {
@@ -107,7 +107,7 @@ class Section2FieldServiceTest extends Specification {
     }
   }
 
-  def beMultivalued(implicit section: SectionField): Fragment          = {
+  def beMultivalued(implicit section: SectionField):          Fragment = {
     "be multivalued" in {
       section.isMultivalued
     }

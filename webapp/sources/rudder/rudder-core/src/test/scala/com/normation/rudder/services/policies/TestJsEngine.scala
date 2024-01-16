@@ -37,6 +37,7 @@
 
 package com.normation.rudder.services.policies
 
+import com.normation.cfclerk.domain.InputVariable
 import com.normation.cfclerk.domain.InputVariableSpec
 import com.normation.cfclerk.domain.Variable
 import com.normation.errors.IOResult
@@ -54,7 +55,6 @@ import scala.concurrent.duration.FiniteDuration
 import scala.util.matching.Regex
 import zio._
 import zio.syntax._
-import com.normation.cfclerk.domain.InputVariable
 
 /*
  * This class test the JsEngine.
@@ -66,11 +66,11 @@ import com.normation.cfclerk.domain.InputVariable
 @RunWith(classOf[JUnitRunner])
 class TestJsEngine extends Specification {
 
-  val hashPrefix   = "test"
+  val hashPrefix = "test"
   val variableSpec: InputVariableSpec = InputVariableSpec(hashPrefix, "", id = None)
 
-  val noscriptVariable: InputVariable     = variableSpec.toVariable(Seq("simple ${rudder} value"))
-  val get4scriptVariable: InputVariable   = variableSpec.toVariable(Seq(s"${JsEngine.EVALJS} 2+2"))
+  val noscriptVariable:     InputVariable = variableSpec.toVariable(Seq("simple ${rudder} value"))
+  val get4scriptVariable:   InputVariable = variableSpec.toVariable(Seq(s"${JsEngine.EVALJS} 2+2"))
   val infiniteloopVariable: InputVariable = variableSpec.toVariable(Seq(s"${JsEngine.EVALJS}while(true){}"))
 
   /**
@@ -86,17 +86,18 @@ class TestJsEngine extends Specification {
     )
   }
 
-  def beVariableValue[T](cond: String => Boolean): Matcher[Either[RudderError, Variable]] = { (b: Either[RudderError, Variable]) =>
-    (
-      b match {
-        case Right(v) if (v.values.size == 1 && cond(v.values(0))) => true
-        case Right(v)                                              => false
-        case Left(err)                                             =>
-          println(err.fullMsg)
-          false
-      },
-      s"${b} is not a Full(InputVariable) that matches condition ${cond} but a '${b}'"
-    )
+  def beVariableValue[T](cond: String => Boolean): Matcher[Either[RudderError, Variable]] = {
+    (b: Either[RudderError, Variable]) =>
+      (
+        b match {
+          case Right(v) if (v.values.size == 1 && cond(v.values(0))) => true
+          case Right(v)                                              => false
+          case Left(err)                                             =>
+            println(err.fullMsg)
+            false
+        },
+        s"${b} is not a Full(InputVariable) that matches condition ${cond} but a '${b}'"
+      )
   }
 
   def runSandboxed[T](maxThread: Int = 1)(script: SandboxedJsEngine => IOResult[T]): Either[RudderError, T] =

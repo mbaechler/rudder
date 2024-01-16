@@ -104,7 +104,7 @@ class PurgeOldInventoryData(
   } yield ()
 
   // the part for inventory data in jdbc
-  val cleanHistoricalInventories: ZIO[Any,Nothing,Unit] = {
+  val cleanHistoricalInventories: ZIO[Any, Nothing, Unit] = {
     val now            = DateTime.now()
     val deleteAccepted = (for {
       ids <- inventoryHistory.deleteFactCreatedBefore(now.minus(deleteLogAccepted.toMillis))
@@ -154,7 +154,7 @@ class PurgeOldInventoryData(
   }
 
   // start cron
-  def start(): Fiber.Runtime[Nothing,Unit] = {
+  def start(): Fiber.Runtime[Nothing, Unit] = {
     ZioRuntime.unsafeRun(prog.forkDaemon)
   }
 }

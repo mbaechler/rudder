@@ -40,8 +40,8 @@ package com.normation.inventory.domain
 import com.normation.errors.Inconsistency
 import com.normation.errors.IOResult
 import java.security.MessageDigest
-import zio.syntax.ToZio
 import scala.util.matching.Regex
+import zio.syntax.ToZio
 
 trait Uuid extends Any {
   def value: String

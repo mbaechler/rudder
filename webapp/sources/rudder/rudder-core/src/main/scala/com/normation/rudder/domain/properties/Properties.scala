@@ -99,7 +99,7 @@ object InheritMode {
     final case object Override extends ObjectMode { override val value = 'o' }
     final case object Merge    extends ObjectMode { override val value = 'm' }
 
-    def all: List[ObjectMode]            = ca.mrvisser.sealerate.values[ObjectMode].toList
+    def all:            List[ObjectMode]   = ca.mrvisser.sealerate.values[ObjectMode].toList
     def parse(c: Char): Option[ObjectMode] = all.find(c == _.value)
   }
   sealed trait ArrayMode       { def value: Char }
@@ -108,7 +108,7 @@ object InheritMode {
     final case object Append   extends ArrayMode { override val value = 'a' }
     final case object Prepend  extends ArrayMode { override val value = 'p' }
 
-    def all: List[ArrayMode]            = ca.mrvisser.sealerate.values[ArrayMode].toList
+    def all:            List[ArrayMode]   = ca.mrvisser.sealerate.values[ArrayMode].toList
     def parse(c: Char): Option[ArrayMode] = all.find(c == _.value)
   }
   sealed trait StringMode      { def value: Char }
@@ -117,7 +117,7 @@ object InheritMode {
     final case object Append   extends StringMode { override val value = 'a' }
     final case object Prepend  extends StringMode { override val value = 'p' }
 
-    def all: List[StringMode]            = ca.mrvisser.sealerate.values[StringMode].toList
+    def all:            List[StringMode]   = ca.mrvisser.sealerate.values[StringMode].toList
     def parse(c: Char): Option[StringMode] = all.find(c == _.value)
   }
 
@@ -140,7 +140,7 @@ object PropertyProvider {
    * System property provider. These properties should never
    * be updated/deleted by things other than rudder.
    */
-  final val systemPropertyProvider: PropertyProvider  = PropertyProvider("system")
+  final val systemPropertyProvider:  PropertyProvider = PropertyProvider("system")
   final val defaultPropertyProvider: PropertyProvider = PropertyProvider("default")
 }
 

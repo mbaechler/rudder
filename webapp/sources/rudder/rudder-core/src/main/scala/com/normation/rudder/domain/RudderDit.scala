@@ -203,9 +203,9 @@ class RudderDit(val BASE_DN: DN) extends AbstractDit {
 
     val rootCategoryId: ActiveTechniqueCategoryId = ActiveTechniqueCategoryId(this.uuid)
 
-    def isACategory(e: LDAPEntry): Boolean         = e.isA(OC_TECHNIQUE_CATEGORY)
+    def isACategory(e: LDAPEntry):         Boolean = e.isA(OC_TECHNIQUE_CATEGORY)
     def isAnActiveTechnique(e: LDAPEntry): Boolean = e.isA(OC_ACTIVE_TECHNIQUE)
-    def isADirective(e: LDAPEntry): Boolean        = e.isA(OC_DIRECTIVE)
+    def isADirective(e: LDAPEntry):        Boolean = e.isA(OC_DIRECTIVE)
 
     /**
      * From a DN of a category, return the value of the rdn (uuid)
@@ -359,8 +359,8 @@ class RudderDit(val BASE_DN: DN) extends AbstractDit {
 
     val rootCategoryId: NodeGroupCategoryId = NodeGroupCategoryId(this.uuid)
 
-    def isACategory(e: LDAPEntry): Boolean      = e.isA(OC_GROUP_CATEGORY)
-    def isAGroup(e: LDAPEntry): Boolean         = e.isA(OC_RUDDER_NODE_GROUP)
+    def isACategory(e: LDAPEntry):      Boolean = e.isA(OC_GROUP_CATEGORY)
+    def isAGroup(e: LDAPEntry):         Boolean = e.isA(OC_RUDDER_NODE_GROUP)
     def isASpecialTarget(e: LDAPEntry): Boolean = e.isA(OC_SPECIAL_TARGET)
 
     /**
@@ -446,7 +446,7 @@ class RudderDit(val BASE_DN: DN) extends AbstractDit {
       principal =>
 
       // get id from dn
-      def idFromDn(dn: DN): Option[ApiAccountId] = buildId(dn, principals.dn, { (x: String) => ApiAccountId(x) })
+      def idFromDn(dn: DN): Option[ApiAccountId] = buildId(dn, principals.dn, (x: String) => ApiAccountId(x))
 
       // build the dn from an UUID
       def dn(id: ApiAccountId) = new DN(this.rdn(id.value), principals.dn)
