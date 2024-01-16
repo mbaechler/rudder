@@ -265,7 +265,7 @@ class SearchNodeComponent(
       val checkBox                             = {
         SHtml.checkbox(
           rType == NodeAndRootServerReturnType,
-          { value: Boolean =>
+          { (value: Boolean) =>
             if (value)
               rType = NodeAndRootServerReturnType
             else
@@ -281,7 +281,7 @@ class SearchNodeComponent(
           .radio(
             Seq("AND", "OR"),
             Full(if (comp == Or) "OR" else "AND"),
-            { value: String =>
+            { (value: String) =>
               composition = CriterionComposition.parse(value).getOrElse(And)
             } // default to AND on unknown composition string
           )
@@ -294,7 +294,7 @@ class SearchNodeComponent(
       val transformCheckbox = {
         SHtml.checkbox(
           transform == ResultTransformation.Invert,
-          { value: Boolean =>
+          { (value: Boolean) =>
             if (value)
               transform = ResultTransformation.Invert
             else
@@ -340,7 +340,7 @@ class SearchNodeComponent(
      */
     def showQueryAndGridContent(): NodeSeq = {
       (
-        "content-query" #> { x: NodeSeq => displayQuery(x, false) }
+        "content-query" #> { (x: NodeSeq) => displayQuery(x, false) }
         & "update-gridresult" #> srvGrid.displayAndInit(Some(Seq()), "serverGrid") // we need to set something, or IE moans
       )(searchNodes)
     }
