@@ -38,7 +38,7 @@ class CampaignApi(
     stringUuidGenerator:     StringUuidGenerator
 ) extends LiftApiModuleProvider[API] {
 
-  def schemas = API
+  def schemas: com.normation.rudder.rest.CampaignApi.type = API
 
   def getLiftEndpoints(): List[LiftApiModule] = {
     API.endpoints.map(e => {
@@ -57,7 +57,7 @@ class CampaignApi(
     })
   }
   object GetCampaigns extends LiftApiModule0 {
-    val schema = API.GetCampaigns
+    val schema: com.normation.rudder.rest.CampaignApi.GetCampaigns.type = API.GetCampaigns
 
     def process0(version: ApiVersion, path: ApiPath, req: Req, params: DefaultParams, authzToken: AuthzToken): LiftResponse = {
       val campaignType     = req.params.get("campaignType").getOrElse(Nil).map(campaignSerializer.campaignType)
@@ -197,8 +197,8 @@ class CampaignApi(
   }
 
   object SaveCampaign extends LiftApiModule0 {
-    val schema = API.SaveCampaign
-    def process0(version: ApiVersion, path: ApiPath, req: Req, params: DefaultParams, authzToken: AuthzToken): LiftResponse = {
+    val schema:                                                                                                com.normation.rudder.rest.CampaignApi.SaveCampaign.type = API.SaveCampaign
+    def process0(version: ApiVersion, path: ApiPath, req: Req, params: DefaultParams, authzToken: AuthzToken): LiftResponse                                            = {
 
       // copied from `Req.forcedBodyAsJson`
       def r  = """; *charset=(.*)""".r
@@ -224,7 +224,7 @@ class CampaignApi(
   }
 
   object GetCampaignEvents extends LiftApiModule0 {
-    val schema = API.GetCampaignEvents
+    val schema: com.normation.rudder.rest.CampaignApi.GetCampaignEvents.type = API.GetCampaignEvents
 
     def process0(version: ApiVersion, path: ApiPath, req: Req, params: DefaultParams, authzToken: AuthzToken): LiftResponse = {
       val states       = req.params.get("state").getOrElse(Nil)

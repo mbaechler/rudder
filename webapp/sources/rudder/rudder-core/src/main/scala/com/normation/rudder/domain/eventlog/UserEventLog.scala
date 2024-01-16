@@ -43,19 +43,19 @@ import com.normation.eventlog.EventLogFilter
 import com.normation.eventlog.EventLogType
 
 sealed trait UserEventLog extends EventLog {
-  final override val details          = EventLog.emptyDetails
-  final override val eventLogCategory = UserLogCategory
+  final override val details = EventLog.emptyDetails
+  final override val eventLogCategory: com.normation.rudder.domain.eventlog.UserLogCategory.type = UserLogCategory
 }
 
 final case class LoginEventLog(
     override val eventDetails: EventLogDetails
 ) extends UserEventLog {
 
-  override val eventType = LoginEventLog.eventType
+  override val eventType: com.normation.rudder.domain.eventlog.LoginEventType.type = LoginEventLog.eventType
 }
 
 object LoginEventLog extends EventLogFilter {
-  override val eventType = LoginEventType
+  override val eventType: com.normation.rudder.domain.eventlog.LoginEventType.type = LoginEventType
 
   override def apply(x: (EventLogType, EventLogDetails)): LoginEventLog = LoginEventLog(x._2)
 }
@@ -64,11 +64,11 @@ final case class BadCredentialsEventLog(
     override val eventDetails: EventLogDetails
 ) extends UserEventLog {
 
-  override val eventType = BadCredentialsEventLog.eventType
+  override val eventType: com.normation.rudder.domain.eventlog.BadCredentialsEventType.type = BadCredentialsEventLog.eventType
 }
 
 object BadCredentialsEventLog extends EventLogFilter {
-  override val eventType = BadCredentialsEventType
+  override val eventType: com.normation.rudder.domain.eventlog.BadCredentialsEventType.type = BadCredentialsEventType
 
   override def apply(x: (EventLogType, EventLogDetails)): BadCredentialsEventLog = BadCredentialsEventLog(x._2)
 }
@@ -77,11 +77,11 @@ final case class LogoutEventLog(
     override val eventDetails: EventLogDetails
 ) extends UserEventLog {
 
-  override val eventType = LogoutEventLog.eventType
+  override val eventType: com.normation.rudder.domain.eventlog.LogoutEventType.type = LogoutEventLog.eventType
 }
 
 object LogoutEventLog extends EventLogFilter {
-  override val eventType = LogoutEventType
+  override val eventType: com.normation.rudder.domain.eventlog.LogoutEventType.type = LogoutEventType
 
   override def apply(x: (EventLogType, EventLogDetails)): LogoutEventLog = LogoutEventLog(x._2)
 }
@@ -91,18 +91,18 @@ object LogoutEventLog extends EventLogFilter {
 ///////////////////////////////
 
 sealed trait APIAccountEventLog extends EventLog {
-  final override val eventLogCategory = APIAccountCategory
+  final override val eventLogCategory: com.normation.rudder.domain.eventlog.APIAccountCategory.type = APIAccountCategory
 }
 
 final case class CreateAPIAccountEventLog(
     override val eventDetails: EventLogDetails
 ) extends APIAccountEventLog {
 
-  override val eventType = CreateAPIAccountEventLog.eventType
+  override val eventType: com.normation.rudder.domain.eventlog.CreateAPIAccountEventType.type = CreateAPIAccountEventLog.eventType
 }
 
 object CreateAPIAccountEventLog extends EventLogFilter {
-  override val eventType = CreateAPIAccountEventType
+  override val eventType: com.normation.rudder.domain.eventlog.CreateAPIAccountEventType.type = CreateAPIAccountEventType
 
   override def apply(x: (EventLogType, EventLogDetails)): CreateAPIAccountEventLog = CreateAPIAccountEventLog(x._2)
 }
@@ -111,11 +111,11 @@ final case class DeleteAPIAccountEventLog(
     override val eventDetails: EventLogDetails
 ) extends APIAccountEventLog {
 
-  override val eventType = DeleteAPIAccountEventLog.eventType
+  override val eventType: com.normation.rudder.domain.eventlog.DeleteAPIAccountEventType.type = DeleteAPIAccountEventLog.eventType
 }
 
 object DeleteAPIAccountEventLog extends EventLogFilter {
-  override val eventType = DeleteAPIAccountEventType
+  override val eventType: com.normation.rudder.domain.eventlog.DeleteAPIAccountEventType.type = DeleteAPIAccountEventType
 
   override def apply(x: (EventLogType, EventLogDetails)): DeleteAPIAccountEventLog = DeleteAPIAccountEventLog(x._2)
 }
@@ -124,11 +124,11 @@ final case class ModifyAPIAccountEventLog(
     override val eventDetails: EventLogDetails
 ) extends APIAccountEventLog {
 
-  override val eventType = ModifyAPIAccountEventLog.eventType
+  override val eventType: com.normation.rudder.domain.eventlog.ModifyAPITokenEventType.type = ModifyAPIAccountEventLog.eventType
 }
 
 object ModifyAPIAccountEventLog extends EventLogFilter {
-  override val eventType = ModifyAPITokenEventType
+  override val eventType: com.normation.rudder.domain.eventlog.ModifyAPITokenEventType.type = ModifyAPITokenEventType
 
   override def apply(x: (EventLogType, EventLogDetails)): ModifyAPIAccountEventLog = ModifyAPIAccountEventLog(x._2)
 }

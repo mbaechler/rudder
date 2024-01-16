@@ -181,12 +181,12 @@ trait EventLog {
 final case class UnspecializedEventLog(
     override val eventDetails: EventLogDetails
 ) extends EventLog {
-  override val eventType        = UnspecializedEventLog.eventType
-  override val eventLogCategory = UnknownLogCategory
+  override val eventType:        com.normation.eventlog.UnknownEventLogType.type = UnspecializedEventLog.eventType
+  override val eventLogCategory: com.normation.eventlog.UnknownLogCategory.type  = UnknownLogCategory
 }
 
 object UnspecializedEventLog extends EventLogFilter {
-  override val eventType = UnknownEventLogType
+  override val eventType: com.normation.eventlog.UnknownEventLogType.type = UnknownEventLogType
 
   override def apply(x: (EventLogType, EventLogDetails)): UnspecializedEventLog = UnspecializedEventLog(x._2)
 }

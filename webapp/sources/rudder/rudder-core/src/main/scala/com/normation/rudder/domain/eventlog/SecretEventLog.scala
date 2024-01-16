@@ -45,17 +45,19 @@ import com.normation.rudder.domain.secret.Secret
 
 //final case class Secret(name: String, value: String, description: String)
 
-sealed trait SecretEventLog extends EventLog { final override val eventLogCategory = SecretLogCategory }
+sealed trait SecretEventLog extends EventLog {
+  final override val eventLogCategory: com.normation.rudder.domain.eventlog.SecretLogCategory.type = SecretLogCategory
+}
 
 final case class AddSecret(
     override val eventDetails: EventLogDetails
 ) extends SecretEventLog {
-  override val cause     = None
-  override val eventType = AddSecret.eventType
+  override val cause:     None.type                                                    = None
+  override val eventType: com.normation.rudder.domain.eventlog.AddSecretEventType.type = AddSecret.eventType
 }
 
 object AddSecret extends EventLogFilter {
-  override val eventType = AddSecretEventType
+  override val eventType: com.normation.rudder.domain.eventlog.AddSecretEventType.type = AddSecretEventType
 
   override def apply(x: (EventLogType, EventLogDetails)): AddSecret = AddSecret(x._2)
 }
@@ -63,12 +65,12 @@ object AddSecret extends EventLogFilter {
 final case class ModifySecret(
     override val eventDetails: EventLogDetails
 ) extends SecretEventLog {
-  override val cause     = None
-  override val eventType = ModifySecret.eventType
+  override val cause:     None.type                                                       = None
+  override val eventType: com.normation.rudder.domain.eventlog.ModifySecretEventType.type = ModifySecret.eventType
 }
 
 object ModifySecret extends EventLogFilter {
-  override val eventType = ModifySecretEventType
+  override val eventType: com.normation.rudder.domain.eventlog.ModifySecretEventType.type = ModifySecretEventType
 
   override def apply(x: (EventLogType, EventLogDetails)): ModifySecret = ModifySecret(x._2)
 }
@@ -76,12 +78,12 @@ object ModifySecret extends EventLogFilter {
 final case class DeleteSecret(
     override val eventDetails: EventLogDetails
 ) extends SecretEventLog {
-  override val cause     = None
-  override val eventType = DeleteSecret.eventType
+  override val cause:     None.type                                                       = None
+  override val eventType: com.normation.rudder.domain.eventlog.DeleteSecretEventType.type = DeleteSecret.eventType
 }
 
 object DeleteSecret extends EventLogFilter {
-  override val eventType = DeleteSecretEventType
+  override val eventType: com.normation.rudder.domain.eventlog.DeleteSecretEventType.type = DeleteSecretEventType
 
   override def apply(x: (EventLogType, EventLogDetails)): DeleteSecret = DeleteSecret(x._2)
 }

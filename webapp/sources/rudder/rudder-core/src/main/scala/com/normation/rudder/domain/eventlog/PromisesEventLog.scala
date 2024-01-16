@@ -38,16 +38,20 @@
 package com.normation.rudder.domain.eventlog
 
 import com.normation.eventlog._
-sealed trait PromiseEventLog extends EventLog { final override val eventLogCategory = DeploymentLogCategory }
+sealed trait PromiseEventLog extends EventLog {
+  final override val eventLogCategory: com.normation.rudder.domain.eventlog.DeploymentLogCategory.type = DeploymentLogCategory
+}
 
 final case class AutomaticStartDeployement(
     override val eventDetails: EventLogDetails
 ) extends PromiseEventLog {
-  override val eventType = AutomaticStartDeployement.eventType
+  override val eventType: com.normation.rudder.domain.eventlog.AutomaticStartDeployementEventType.type =
+    AutomaticStartDeployement.eventType
 }
 
 object AutomaticStartDeployement extends EventLogFilter {
-  override val eventType = AutomaticStartDeployementEventType
+  override val eventType: com.normation.rudder.domain.eventlog.AutomaticStartDeployementEventType.type =
+    AutomaticStartDeployementEventType
 
   override def apply(x: (EventLogType, EventLogDetails)): AutomaticStartDeployement = AutomaticStartDeployement(x._2)
 }
@@ -55,11 +59,13 @@ object AutomaticStartDeployement extends EventLogFilter {
 final case class ManualStartDeployement(
     override val eventDetails: EventLogDetails
 ) extends PromiseEventLog {
-  override val eventType = ManualStartDeployement.eventType
+  override val eventType: com.normation.rudder.domain.eventlog.ManualStartDeployementEventType.type =
+    ManualStartDeployement.eventType
 }
 
 object ManualStartDeployement extends EventLogFilter {
-  override val eventType = ManualStartDeployementEventType
+  override val eventType: com.normation.rudder.domain.eventlog.ManualStartDeployementEventType.type =
+    ManualStartDeployementEventType
 
   override def apply(x: (EventLogType, EventLogDetails)): ManualStartDeployement = ManualStartDeployement(x._2)
 }
@@ -67,11 +73,11 @@ object ManualStartDeployement extends EventLogFilter {
 final case class SuccessfulDeployment(
     override val eventDetails: EventLogDetails
 ) extends PromiseEventLog {
-  override val eventType = SuccessfulDeployment.eventType
+  override val eventType: com.normation.rudder.domain.eventlog.SuccessfulDeploymentEventType.type = SuccessfulDeployment.eventType
 }
 
 object SuccessfulDeployment extends EventLogFilter {
-  override val eventType = SuccessfulDeploymentEventType
+  override val eventType: com.normation.rudder.domain.eventlog.SuccessfulDeploymentEventType.type = SuccessfulDeploymentEventType
 
   override def apply(x: (EventLogType, EventLogDetails)): SuccessfulDeployment = SuccessfulDeployment(x._2)
 }
@@ -79,11 +85,11 @@ object SuccessfulDeployment extends EventLogFilter {
 final case class FailedDeployment(
     override val eventDetails: EventLogDetails
 ) extends PromiseEventLog {
-  override val eventType = FailedDeployment.eventType
+  override val eventType: com.normation.rudder.domain.eventlog.FailedDeploymentEventType.type = FailedDeployment.eventType
 }
 
 object FailedDeployment extends EventLogFilter {
-  override val eventType = FailedDeploymentEventType
+  override val eventType: com.normation.rudder.domain.eventlog.FailedDeploymentEventType.type = FailedDeploymentEventType
 
   override def apply(x: (EventLogType, EventLogDetails)): FailedDeployment = FailedDeployment(x._2)
 }

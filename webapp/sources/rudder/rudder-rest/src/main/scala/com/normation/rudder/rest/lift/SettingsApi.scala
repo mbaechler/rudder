@@ -145,7 +145,7 @@ class SettingsApi(
 
   val kind = "settings"
 
-  def schemas = API
+  def schemas: com.normation.rudder.rest.SettingsApi.type = API
 
   def getLiftEndpoints(): List[LiftApiModule] = {
     API.endpoints.map(e => {
@@ -163,7 +163,7 @@ class SettingsApi(
   }
 
   object GetAllSettings extends LiftApiModule0 {
-    val schema        = API.GetAllSettings
+    val schema: com.normation.rudder.rest.SettingsApi.GetAllSettings.type = API.GetAllSettings
     val restExtractor = restExtractorService
     def process0(version: ApiVersion, path: ApiPath, req: Req, params: DefaultParams, authzToken: AuthzToken): LiftResponse = {
       val settings = for {
@@ -198,7 +198,7 @@ class SettingsApi(
   }
 
   object ModifySettings extends LiftApiModule0 {
-    val schema        = API.ModifySettings
+    val schema: com.normation.rudder.rest.SettingsApi.ModifySettings.type = API.ModifySettings
     val restExtractor = restExtractorService
     def process0(version: ApiVersion, path: ApiPath, req: Req, params: DefaultParams, authzToken: AuthzToken): LiftResponse = {
       var generate = false
@@ -710,7 +710,8 @@ class SettingsApi(
   case object RestChangeRequestUnexpectedUnboundVarValues extends RestChangeUnexpectedReportInterpretation {
     val startPolicyGeneration = false
     val key                   = "unexpected_unbound_var_values"
-    val prop                  = UnexpectedReportBehavior.UnboundVarValues
+    val prop: com.normation.rudder.services.reports.UnexpectedReportBehavior.UnboundVarValues.type =
+      UnexpectedReportBehavior.UnboundVarValues
   }
 
   def startNewPolicyGeneration(actor: EventActor): Unit = {
@@ -863,8 +864,8 @@ class SettingsApi(
       }
     }
 
-    override val schema = API.GetAllAllowedNetworks
-    val restExtractor   = restExtractorService
+    override val schema: com.normation.rudder.rest.SettingsApi.GetAllAllowedNetworks.type = API.GetAllAllowedNetworks
+    val restExtractor = restExtractorService
     def process0(version: ApiVersion, path: ApiPath, req: Req, params: DefaultParams, authzToken: AuthzToken): LiftResponse = {
       implicit val action = "getAllAllowedNetworks"
       RestUtils.response(restExtractorService, getRootNameForVersion(version), None)(

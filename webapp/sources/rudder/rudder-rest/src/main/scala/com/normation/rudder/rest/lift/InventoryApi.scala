@@ -63,7 +63,7 @@ class InventoryApi(
     incomingInventoryDir: File
 ) extends LiftApiModuleProvider[API] {
 
-  def schemas = API
+  def schemas: com.normation.rudder.rest.InventoryApi.type = API
 
   def getLiftEndpoints(): List[LiftApiModule] = {
     API.endpoints
@@ -80,10 +80,10 @@ class InventoryApi(
   }
 
   object QueueInformation extends LiftApiModule0 {
-    val tooManyRequestError: RestError = new RestError {
+    val tooManyRequestError: RestError                                                    = new RestError {
       override def code: Int = 429 // too many requests
     }
-    val schema = API.QueueInformation
+    val schema:              com.normation.rudder.rest.InventoryApi.QueueInformation.type = API.QueueInformation
     val restExtractor = restExtractorService
     val actionName    = "queueInformation"
     def process0(version: ApiVersion, path: ApiPath, req: Req, params: DefaultParams, authzToken: AuthzToken): LiftResponse = {
@@ -105,7 +105,7 @@ class InventoryApi(
    * Signature file mandatory now
    */
   object UploadInventory extends LiftApiModule0 {
-    val schema       = API.UploadInventory
+    val schema: com.normation.rudder.rest.InventoryApi.UploadInventory.type = API.UploadInventory
     val FILE         = "file"
     val SIG          = "signature"
     val sigExtension = ".sign"
@@ -154,7 +154,7 @@ class InventoryApi(
   }
 
   object FileWatcherStart extends LiftApiModule0 {
-    val schema        = API.FileWatcherStart
+    val schema: com.normation.rudder.rest.InventoryApi.FileWatcherStart.type = API.FileWatcherStart
     val restExtractor = restExtractorService
     implicit val actionName:                                                                                   String       = "fileWatcherStart"
     def process0(version: ApiVersion, path: ApiPath, req: Req, params: DefaultParams, authzToken: AuthzToken): LiftResponse = {
@@ -172,7 +172,7 @@ class InventoryApi(
   }
 
   object FileWatcherStop extends LiftApiModule0 {
-    val schema        = API.FileWatcherStop
+    val schema: com.normation.rudder.rest.InventoryApi.FileWatcherStop.type = API.FileWatcherStop
     val restExtractor = restExtractorService
     implicit val actionName:                                                                                   String       = "fileWatcherStop"
     def process0(version: ApiVersion, path: ApiPath, req: Req, params: DefaultParams, authzToken: AuthzToken): LiftResponse = {
@@ -190,7 +190,7 @@ class InventoryApi(
   }
 
   object FileWatcherRestart extends LiftApiModule0 {
-    val schema        = API.FileWatcherRestart
+    val schema: com.normation.rudder.rest.InventoryApi.FileWatcherRestart.type = API.FileWatcherRestart
     val restExtractor = restExtractorService
     implicit val actionName:                                                                                   String       = "frileWatcherRestart"
     def process0(version: ApiVersion, path: ApiPath, req: Req, params: DefaultParams, authzToken: AuthzToken): LiftResponse = {

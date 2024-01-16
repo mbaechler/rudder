@@ -230,7 +230,7 @@ class RuleCategoryTree(
 
     override val attrs = ("data-jstree" -> """{ "type" : "category" }""") :: ("id", category.id.value) :: Nil
 
-    override def body = {
+    override def body: scala.xml.Elem = {
 
       val applyCheckBox = {
         directive match {

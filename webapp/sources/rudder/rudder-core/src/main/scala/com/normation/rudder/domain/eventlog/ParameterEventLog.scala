@@ -38,17 +38,19 @@
 package com.normation.rudder.domain.eventlog
 
 import com.normation.eventlog._
-sealed trait ParameterEventLog extends EventLog { final override val eventLogCategory = ParameterLogCategory }
+sealed trait ParameterEventLog extends EventLog {
+  final override val eventLogCategory: com.normation.rudder.domain.eventlog.ParameterLogCategory.type = ParameterLogCategory
+}
 
 final case class AddGlobalParameter(
     override val eventDetails: EventLogDetails
 ) extends ParameterEventLog {
-  override val cause     = None
-  override val eventType = AddGlobalParameter.eventType
+  override val cause:     None.type                                                             = None
+  override val eventType: com.normation.rudder.domain.eventlog.AddGlobalParameterEventType.type = AddGlobalParameter.eventType
 }
 
 object AddGlobalParameter extends EventLogFilter {
-  override val eventType = AddGlobalParameterEventType
+  override val eventType: com.normation.rudder.domain.eventlog.AddGlobalParameterEventType.type = AddGlobalParameterEventType
 
   override def apply(x: (EventLogType, EventLogDetails)): AddGlobalParameter = AddGlobalParameter(x._2)
 }
@@ -56,12 +58,14 @@ object AddGlobalParameter extends EventLogFilter {
 final case class ModifyGlobalParameter(
     override val eventDetails: EventLogDetails
 ) extends ParameterEventLog {
-  override val cause     = None
-  override val eventType = ModifyGlobalParameter.eventType
+  override val cause:     None.type                                                                = None
+  override val eventType: com.normation.rudder.domain.eventlog.ModifyGlobalParameterEventType.type =
+    ModifyGlobalParameter.eventType
 }
 
 object ModifyGlobalParameter extends EventLogFilter {
-  override val eventType = ModifyGlobalParameterEventType
+  override val eventType: com.normation.rudder.domain.eventlog.ModifyGlobalParameterEventType.type =
+    ModifyGlobalParameterEventType
 
   override def apply(x: (EventLogType, EventLogDetails)): ModifyGlobalParameter = ModifyGlobalParameter(x._2)
 }
@@ -69,12 +73,14 @@ object ModifyGlobalParameter extends EventLogFilter {
 final case class DeleteGlobalParameter(
     override val eventDetails: EventLogDetails
 ) extends ParameterEventLog {
-  override val cause     = None
-  override val eventType = DeleteGlobalParameter.eventType
+  override val cause:     None.type                                                                = None
+  override val eventType: com.normation.rudder.domain.eventlog.DeleteGlobalParameterEventType.type =
+    DeleteGlobalParameter.eventType
 }
 
 object DeleteGlobalParameter extends EventLogFilter {
-  override val eventType = DeleteGlobalParameterEventType
+  override val eventType: com.normation.rudder.domain.eventlog.DeleteGlobalParameterEventType.type =
+    DeleteGlobalParameterEventType
 
   override def apply(x: (EventLogType, EventLogDetails)): DeleteGlobalParameter = DeleteGlobalParameter(x._2)
 }

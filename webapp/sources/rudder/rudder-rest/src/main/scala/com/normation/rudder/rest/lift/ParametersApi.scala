@@ -87,7 +87,7 @@ class ParameterApi(
     serviceV14:           ParameterApiService14
 ) extends LiftApiModuleProvider[API] {
 
-  def schemas = API
+  def schemas: com.normation.rudder.rest.ParameterApi.type = API
 
   def getLiftEndpoints(): List[LiftApiModule] = {
     API.endpoints
@@ -104,7 +104,7 @@ class ParameterApi(
   }
 
   object ListParameters extends LiftApiModule0 {
-    val schema        = API.ListParameters
+    val schema: com.normation.rudder.rest.ParameterApi.ListParameters.type = API.ListParameters
     val restExtractor = restExtractorService
     def process0(version: ApiVersion, path: ApiPath, req: Req, params: DefaultParams, authzToken: AuthzToken): LiftResponse = {
       serviceV2.listParameters(req)
@@ -112,7 +112,7 @@ class ParameterApi(
   }
 
   object CreateParameter extends LiftApiModule0 {
-    val schema        = API.CreateParameter
+    val schema: com.normation.rudder.rest.ParameterApi.CreateParameter.type = API.CreateParameter
     val restExtractor = restExtractorService
     implicit val action:                                                                                       String       = "createParameter"
     def process0(version: ApiVersion, path: ApiPath, req: Req, params: DefaultParams, authzToken: AuthzToken): LiftResponse = {
@@ -148,7 +148,7 @@ class ParameterApi(
   }
 
   object ParameterDetails extends LiftApiModuleString {
-    val schema        = API.ParameterDetails
+    val schema: com.normation.rudder.rest.ParameterApi.ParameterDetails.type = API.ParameterDetails
     val restExtractor = restExtractorService
     def process(
         version:    ApiVersion,
@@ -163,7 +163,7 @@ class ParameterApi(
   }
 
   object DeleteParameter extends LiftApiModuleString {
-    val schema        = API.DeleteParameter
+    val schema: com.normation.rudder.rest.ParameterApi.DeleteParameter.type = API.DeleteParameter
     val restExtractor = restExtractorService
     def process(
         version:    ApiVersion,
@@ -178,7 +178,7 @@ class ParameterApi(
   }
 
   object UpdateParameter extends LiftApiModuleString {
-    val schema        = API.UpdateParameter
+    val schema: com.normation.rudder.rest.ParameterApi.UpdateParameter.type = API.UpdateParameter
     val restExtractor = restExtractorService
     def process(
         version:    ApiVersion,
@@ -206,14 +206,14 @@ class ParameterApi(
   }
 
   object ListParametersV14 extends LiftApiModule0 {
-    val schema = API.ListParameters
-    def process0(version: ApiVersion, path: ApiPath, req: Req, params: DefaultParams, authzToken: AuthzToken): LiftResponse = {
+    val schema:                                                                                                com.normation.rudder.rest.ParameterApi.ListParameters.type = API.ListParameters
+    def process0(version: ApiVersion, path: ApiPath, req: Req, params: DefaultParams, authzToken: AuthzToken): LiftResponse                                               = {
       serviceV14.listParameters().toLiftResponseList(params, schema)
     }
   }
 
   object ParameterDetailsV14 extends LiftApiModuleString {
-    val schema = API.ParameterDetails
+    val schema: com.normation.rudder.rest.ParameterApi.ParameterDetails.type = API.ParameterDetails
     def process(
         version:    ApiVersion,
         path:       ApiPath,
@@ -227,8 +227,8 @@ class ParameterApi(
   }
 
   object CreateParameterV14 extends LiftApiModule0 {
-    val schema = API.CreateParameter
-    def process0(version: ApiVersion, path: ApiPath, req: Req, params: DefaultParams, authzToken: AuthzToken): LiftResponse = {
+    val schema:                                                                                                com.normation.rudder.rest.ParameterApi.CreateParameter.type = API.CreateParameter
+    def process0(version: ApiVersion, path: ApiPath, req: Req, params: DefaultParams, authzToken: AuthzToken): LiftResponse                                                = {
 
       (for {
         restParam <-
@@ -241,7 +241,7 @@ class ParameterApi(
   }
 
   object DeleteParameterV14 extends LiftApiModuleString {
-    val schema = API.DeleteParameter
+    val schema: com.normation.rudder.rest.ParameterApi.DeleteParameter.type = API.DeleteParameter
     def process(
         version:    ApiVersion,
         path:       ApiPath,
@@ -255,7 +255,7 @@ class ParameterApi(
   }
 
   object UpdateParameterV14 extends LiftApiModuleString {
-    val schema = API.UpdateParameter
+    val schema: com.normation.rudder.rest.ParameterApi.UpdateParameter.type = API.UpdateParameter
     def process(
         version:    ApiVersion,
         path:       ApiPath,

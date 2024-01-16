@@ -621,13 +621,13 @@ class UpdatePiOnActiveTechniqueEvent(
       ptName:     TechniqueName,
       getParents: List[ActiveTechniqueCategoryId],
       gitCommit:  Option[(ModificationId, PersonIdent, Option[String])]
-  ) = ZIO.unit
+  ): zio.UIO[Unit] = ZIO.unit
   override def onMove(
       activeTechnique: ActiveTechnique,
       oldParents:      List[ActiveTechniqueCategoryId],
       newParents:      List[ActiveTechniqueCategoryId],
       gitCommit:       Option[(ModificationId, PersonIdent, Option[String])]
-  ) = ZIO.unit
+  ): zio.UIO[Unit] = ZIO.unit
 }
 
 /**

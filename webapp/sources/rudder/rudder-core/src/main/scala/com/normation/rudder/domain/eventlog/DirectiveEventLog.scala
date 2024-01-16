@@ -38,17 +38,19 @@
 package com.normation.rudder.domain.eventlog
 
 import com.normation.eventlog._
-sealed trait DirectiveEventLog extends EventLog { final override val eventLogCategory = DirectiveLogCategory }
+sealed trait DirectiveEventLog extends EventLog {
+  final override val eventLogCategory: com.normation.rudder.domain.eventlog.DirectiveLogCategory.type = DirectiveLogCategory
+}
 
 final case class AddDirective(
     override val eventDetails: EventLogDetails
 ) extends DirectiveEventLog {
-  override val cause     = None
-  override val eventType = AddDirective.eventType
+  override val cause:     None.type                                                       = None
+  override val eventType: com.normation.rudder.domain.eventlog.AddDirectiveEventType.type = AddDirective.eventType
 }
 
 object AddDirective extends EventLogFilter {
-  override val eventType = AddDirectiveEventType
+  override val eventType: com.normation.rudder.domain.eventlog.AddDirectiveEventType.type = AddDirectiveEventType
 
   override def apply(x: (EventLogType, EventLogDetails)): AddDirective = AddDirective(x._2)
 }
@@ -56,12 +58,12 @@ object AddDirective extends EventLogFilter {
 final case class DeleteDirective(
     override val eventDetails: EventLogDetails
 ) extends DirectiveEventLog {
-  override val cause     = None
-  override val eventType = DeleteDirective.eventType
+  override val cause:     None.type                                                          = None
+  override val eventType: com.normation.rudder.domain.eventlog.DeleteDirectiveEventType.type = DeleteDirective.eventType
 }
 
 object DeleteDirective extends EventLogFilter {
-  override val eventType = DeleteDirectiveEventType
+  override val eventType: com.normation.rudder.domain.eventlog.DeleteDirectiveEventType.type = DeleteDirectiveEventType
 
   override def apply(x: (EventLogType, EventLogDetails)): DeleteDirective = DeleteDirective(x._2)
 }
@@ -69,12 +71,12 @@ object DeleteDirective extends EventLogFilter {
 final case class ModifyDirective(
     override val eventDetails: EventLogDetails
 ) extends DirectiveEventLog {
-  override val cause     = None
-  override val eventType = ModifyDirective.eventType
+  override val cause:     None.type                                                          = None
+  override val eventType: com.normation.rudder.domain.eventlog.ModifyDirectiveEventType.type = ModifyDirective.eventType
 }
 
 object ModifyDirective extends EventLogFilter {
-  override val eventType = ModifyDirectiveEventType
+  override val eventType: com.normation.rudder.domain.eventlog.ModifyDirectiveEventType.type = ModifyDirectiveEventType
 
   override def apply(x: (EventLogType, EventLogDetails)): ModifyDirective = ModifyDirective(x._2)
 }

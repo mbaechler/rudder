@@ -48,7 +48,7 @@ import net.liftweb.util.Helpers
 import scala.xml.NodeSeq
 
 trait PluginEnableImpl extends PluginStatus {
-  override val current     = PluginStatusInfo.EnabledNoLicense
+  override val current: com.normation.plugins.PluginStatusInfo.EnabledNoLicense.type = PluginStatusInfo.EnabledNoLicense
   override def isEnabled() = true
 }
 

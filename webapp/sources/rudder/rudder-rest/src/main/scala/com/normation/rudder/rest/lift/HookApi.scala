@@ -18,7 +18,7 @@ class HookApi(
     apiVService: HookApiService
 ) extends LiftApiModuleProvider[API] {
 
-  def schemas = API
+  def schemas: com.normation.rudder.rest.HookApi.type = API
 
   override def getLiftEndpoints(): List[LiftApiModule] = {
 
@@ -30,7 +30,7 @@ class HookApi(
   }
 
   object GetHooks extends LiftApiModule0 {
-    val schema = API.GetHooks
+    val schema: com.normation.rudder.rest.HookApi.GetHooks.type = API.GetHooks
 
     def process0(version: ApiVersion, path: ApiPath, req: Req, params: DefaultParams, authzToken: AuthzToken): LiftResponse = {
       apiVService.listHooks().toLiftResponseList(params, schema)

@@ -255,10 +255,12 @@ sealed trait DerivedPasswordVType extends AbstactPassword {
 }
 
 case object AixDerivedPasswordVType   extends DerivedPasswordVType {
-  override val tpe = HashAlgoConstraint.DerivedPasswordType.AIX
+  override val tpe: com.normation.cfclerk.domain.HashAlgoConstraint.DerivedPasswordType.AIX.type =
+    HashAlgoConstraint.DerivedPasswordType.AIX
 }
 case object LinuxDerivedPasswordVType extends DerivedPasswordVType {
-  override val tpe = HashAlgoConstraint.DerivedPasswordType.Linux
+  override val tpe: com.normation.cfclerk.domain.HashAlgoConstraint.DerivedPasswordType.Linux.type =
+    HashAlgoConstraint.DerivedPasswordType.Linux
 }
 
 case object BooleanVType extends VTypeConstraint with STBoolean {

@@ -30,7 +30,7 @@ class RulesInternalApi(
     ruleApiService:         RuleApiService14
 ) extends LiftApiModuleProvider[API] {
 
-  def schemas = API
+  def schemas: com.normation.rudder.rest.RuleInternalApi.type = API
 
   def getLiftEndpoints(): List[LiftApiModule] = {
     API.endpoints.map(e => {
@@ -42,7 +42,7 @@ class RulesInternalApi(
   }
 
   object GetRuleNodesAndDirectives extends LiftApiModuleString {
-    val schema = API.GetRuleNodesAndDirectives
+    val schema: com.normation.rudder.rest.RuleInternalApi.GetRuleNodesAndDirectives.type = API.GetRuleNodesAndDirectives
 
     def process(
         version:    ApiVersion,
@@ -63,7 +63,7 @@ class RulesInternalApi(
   }
 
   object GetGroupRelatedRules extends LiftApiModule0 {
-    val schema = API.GetGroupRelatedRules
+    val schema: com.normation.rudder.rest.RuleInternalApi.GetGroupRelatedRules.type = API.GetGroupRelatedRules
 
     /**
       * Request takes an optional query parameter list to filter rules in the tree

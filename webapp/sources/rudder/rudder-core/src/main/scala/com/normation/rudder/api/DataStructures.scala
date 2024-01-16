@@ -304,13 +304,15 @@ object ApiAccountType       {
 
 sealed trait ApiAccountKind { def kind: ApiAccountType }
 object ApiAccountKind       {
-  final case object System extends ApiAccountKind { val kind = ApiAccountType.System }
-  final case object User   extends ApiAccountKind { val kind = ApiAccountType.User   }
+  final case object System extends ApiAccountKind {
+    val kind: com.normation.rudder.api.ApiAccountType.System.type = ApiAccountType.System
+  }
+  final case object User   extends ApiAccountKind { val kind = ApiAccountType.User }
   final case class PublicApi(
       authorizations: ApiAuthorization,
       expirationDate: Option[DateTime]
   ) extends ApiAccountKind {
-    val kind = ApiAccountType.PublicApi
+    val kind: com.normation.rudder.api.ApiAccountType.PublicApi.type = ApiAccountType.PublicApi
   }
 }
 

@@ -248,8 +248,8 @@ class NodeGroupCategoryForm(
     override def className             = "form-control"
     override def labelClassName        = ""
     override def subContainerClassName = ""
-    override def validations           = Nil
-    override def errorClassName        = "field_errors paddscala"
+    override def validations: scala.collection.immutable.Nil.type = Nil
+    override def errorClassName = "field_errors paddscala"
   }
 
   /**

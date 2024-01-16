@@ -260,7 +260,7 @@ class CreateOrUpdateGlobalParameterPopup(
         case _                           => super.inputField
       }) % ("style" -> "height:4em") % ("tabindex" -> "2")
       override def errorClassName = "col-lg-12 errors-container"
-      override def validations    = Nil
+      override def validations: scala.collection.immutable.Nil.type = Nil
     }
   }
 
@@ -272,7 +272,7 @@ class CreateOrUpdateGlobalParameterPopup(
         case _                           => super.inputField
       }) % ("tabindex" -> "3")
       override def errorClassName = "col-lg-12 errors-container"
-      override def validations    = Nil
+      override def validations: scala.collection.immutable.Nil.type = Nil
     }
   }
 
@@ -285,8 +285,8 @@ class CreateOrUpdateGlobalParameterPopup(
         case _                           => super.inputField
       }) % ("tabindex" -> "4"))
       override def errorClassName = "col-lg-12 errors-container"
-      override def validations    = Nil
-      override val helpAsHtml     = Full(
+      override def validations: scala.collection.immutable.Nil.type     = Nil
+      override val helpAsHtml:  net.liftweb.common.Full[scala.xml.Elem] = Full(
         <div class="text-muted small">Define inheritance behavior for the value with 3 chars: first for
       json object (m=merge, o=override), 2nd for array and 3rd for string (o=override, a=append, p=prepend). Default to 'moo'.</div>
       )

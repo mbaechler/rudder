@@ -42,7 +42,10 @@ import com.normation.rudder.domain.Constants
 import com.normation.rudder.git.GitArchiveId
 import com.normation.rudder.git.GitCommitId
 import scala.xml._
-sealed trait ImportExportEventLog extends EventLog { final override val eventLogCategory = ImportExportItemsLogCategory }
+sealed trait ImportExportEventLog extends EventLog {
+  final override val eventLogCategory: com.normation.rudder.domain.eventlog.ImportExportItemsLogCategory.type =
+    ImportExportItemsLogCategory
+}
 
 sealed trait ImportEventLog extends ImportExportEventLog
 sealed trait ExportEventLog extends ImportExportEventLog
@@ -87,7 +90,7 @@ object ImportExportEventLog {
 final case class ExportGroupsArchive(
     override val eventDetails: EventLogDetails
 ) extends ExportEventLog {
-  override val eventType = ExportGroupsArchive.eventType
+  override val eventType: com.normation.rudder.domain.eventlog.ExportGroupsEventType.type = ExportGroupsArchive.eventType
 
   def this(actor: EventActor, gitArchiveId: GitArchiveId, reason: Option[String]) = this(
     EventLogDetails(
@@ -100,7 +103,7 @@ final case class ExportGroupsArchive(
 }
 
 object ExportGroupsArchive extends EventLogFilter {
-  override val eventType = ExportGroupsEventType
+  override val eventType: com.normation.rudder.domain.eventlog.ExportGroupsEventType.type = ExportGroupsEventType
 
   override def apply(x: (EventLogType, EventLogDetails)): ExportGroupsArchive = ExportGroupsArchive(x._2)
 
@@ -113,7 +116,7 @@ object ExportGroupsArchive extends EventLogFilter {
 final case class ImportGroupsArchive(
     override val eventDetails: EventLogDetails
 ) extends ImportEventLog {
-  override val eventType = ImportGroupsArchive.eventType
+  override val eventType: com.normation.rudder.domain.eventlog.ImportGroupsEventType.type = ImportGroupsArchive.eventType
 
   def this(actor: EventActor, gitCommitId: GitCommitId, reason: Option[String]) = this(
     EventLogDetails(
@@ -126,7 +129,7 @@ final case class ImportGroupsArchive(
 }
 
 object ImportGroupsArchive extends EventLogFilter {
-  override val eventType = ImportGroupsEventType
+  override val eventType: com.normation.rudder.domain.eventlog.ImportGroupsEventType.type = ImportGroupsEventType
 
   override def apply(x: (EventLogType, EventLogDetails)): ImportGroupsArchive = ImportGroupsArchive(x._2)
 
@@ -139,7 +142,8 @@ object ImportGroupsArchive extends EventLogFilter {
 final case class ExportTechniqueLibraryArchive(
     override val eventDetails: EventLogDetails
 ) extends ExportEventLog {
-  override val eventType = ExportTechniqueLibraryArchive.eventType
+  override val eventType: com.normation.rudder.domain.eventlog.ExportTechniqueLibraryEventType.type =
+    ExportTechniqueLibraryArchive.eventType
 
   def this(actor: EventActor, gitArchiveId: GitArchiveId, reason: Option[String]) = this(
     EventLogDetails(
@@ -152,7 +156,8 @@ final case class ExportTechniqueLibraryArchive(
 }
 
 object ExportTechniqueLibraryArchive extends EventLogFilter {
-  override val eventType = ExportTechniqueLibraryEventType
+  override val eventType: com.normation.rudder.domain.eventlog.ExportTechniqueLibraryEventType.type =
+    ExportTechniqueLibraryEventType
 
   override def apply(x: (EventLogType, EventLogDetails)): ExportTechniqueLibraryArchive = ExportTechniqueLibraryArchive(x._2)
 
@@ -165,7 +170,8 @@ object ExportTechniqueLibraryArchive extends EventLogFilter {
 final case class ImportTechniqueLibraryArchive(
     override val eventDetails: EventLogDetails
 ) extends ImportEventLog {
-  override val eventType = ImportTechniqueLibraryArchive.eventType
+  override val eventType: com.normation.rudder.domain.eventlog.ImportTechniqueLibraryEventType.type =
+    ImportTechniqueLibraryArchive.eventType
 
   def this(actor: EventActor, gitCommitId: GitCommitId, reason: Option[String]) = this(
     EventLogDetails(
@@ -178,7 +184,8 @@ final case class ImportTechniqueLibraryArchive(
 }
 
 object ImportTechniqueLibraryArchive extends EventLogFilter {
-  override val eventType = ImportTechniqueLibraryEventType
+  override val eventType: com.normation.rudder.domain.eventlog.ImportTechniqueLibraryEventType.type =
+    ImportTechniqueLibraryEventType
 
   override def apply(x: (EventLogType, EventLogDetails)): ImportTechniqueLibraryArchive = ImportTechniqueLibraryArchive(x._2)
 
@@ -191,7 +198,7 @@ object ImportTechniqueLibraryArchive extends EventLogFilter {
 final case class ExportRulesArchive(
     override val eventDetails: EventLogDetails
 ) extends ExportEventLog {
-  override val eventType = ExportRulesArchive.eventType
+  override val eventType: com.normation.rudder.domain.eventlog.ExportRulesEventType.type = ExportRulesArchive.eventType
 
   def this(actor: EventActor, gitArchiveId: GitArchiveId, reason: Option[String]) = this(
     EventLogDetails(
@@ -204,7 +211,7 @@ final case class ExportRulesArchive(
 }
 
 object ExportRulesArchive extends EventLogFilter {
-  override val eventType = ExportRulesEventType
+  override val eventType: com.normation.rudder.domain.eventlog.ExportRulesEventType.type = ExportRulesEventType
 
   override def apply(x: (EventLogType, EventLogDetails)): ExportRulesArchive = ExportRulesArchive(x._2)
 
@@ -217,7 +224,7 @@ object ExportRulesArchive extends EventLogFilter {
 final case class ImportRulesArchive(
     override val eventDetails: EventLogDetails
 ) extends ImportEventLog {
-  override val eventType = ImportRulesArchive.eventType
+  override val eventType: com.normation.rudder.domain.eventlog.ImportRulesEventType.type = ImportRulesArchive.eventType
 
   def this(actor: EventActor, gitCommitId: GitCommitId, reason: Option[String]) = this(
     EventLogDetails(
@@ -230,7 +237,7 @@ final case class ImportRulesArchive(
 }
 
 object ImportRulesArchive extends EventLogFilter {
-  override val eventType = ImportRulesEventType
+  override val eventType: com.normation.rudder.domain.eventlog.ImportRulesEventType.type = ImportRulesEventType
 
   override def apply(x: (EventLogType, EventLogDetails)): ImportRulesArchive = ImportRulesArchive(x._2)
 
@@ -243,7 +250,7 @@ object ImportRulesArchive extends EventLogFilter {
 final case class ExportParametersArchive(
     override val eventDetails: EventLogDetails
 ) extends ExportEventLog {
-  override val eventType = ExportParametersArchive.eventType
+  override val eventType: com.normation.rudder.domain.eventlog.ExportParametersEventType.type = ExportParametersArchive.eventType
 
   def this(actor: EventActor, gitArchiveId: GitArchiveId, reason: Option[String]) = this(
     EventLogDetails(
@@ -256,7 +263,7 @@ final case class ExportParametersArchive(
 }
 
 object ExportParametersArchive extends EventLogFilter {
-  override val eventType = ExportParametersEventType
+  override val eventType: com.normation.rudder.domain.eventlog.ExportParametersEventType.type = ExportParametersEventType
 
   override def apply(x: (EventLogType, EventLogDetails)): ExportParametersArchive = ExportParametersArchive(x._2)
 
@@ -269,7 +276,7 @@ object ExportParametersArchive extends EventLogFilter {
 final case class ImportParametersArchive(
     override val eventDetails: EventLogDetails
 ) extends ImportEventLog {
-  override val eventType = ImportParametersArchive.eventType
+  override val eventType: com.normation.rudder.domain.eventlog.ImportParametersEventType.type = ImportParametersArchive.eventType
 
   def this(actor: EventActor, gitCommitId: GitCommitId, reason: Option[String]) = this(
     EventLogDetails(
@@ -282,7 +289,7 @@ final case class ImportParametersArchive(
 }
 
 object ImportParametersArchive extends EventLogFilter {
-  override val eventType = ImportParametersEventType
+  override val eventType: com.normation.rudder.domain.eventlog.ImportParametersEventType.type = ImportParametersEventType
 
   override def apply(x: (EventLogType, EventLogDetails)): ImportParametersArchive = ImportParametersArchive(x._2)
 
@@ -295,7 +302,7 @@ object ImportParametersArchive extends EventLogFilter {
 final case class ExportFullArchive(
     override val eventDetails: EventLogDetails
 ) extends ExportEventLog {
-  override val eventType = ExportFullArchive.eventType
+  override val eventType: com.normation.rudder.domain.eventlog.ExportFullArchiveEventType.type = ExportFullArchive.eventType
 
   def this(actor: EventActor, gitArchiveId: GitArchiveId, reason: Option[String]) = this(
     EventLogDetails(
@@ -308,7 +315,7 @@ final case class ExportFullArchive(
 }
 
 object ExportFullArchive extends EventLogFilter {
-  override val eventType = ExportFullArchiveEventType
+  override val eventType: com.normation.rudder.domain.eventlog.ExportFullArchiveEventType.type = ExportFullArchiveEventType
 
   override def apply(x: (EventLogType, EventLogDetails)): ExportFullArchive = ExportFullArchive(x._2)
 
@@ -321,7 +328,7 @@ object ExportFullArchive extends EventLogFilter {
 final case class ImportFullArchive(
     override val eventDetails: EventLogDetails
 ) extends ImportEventLog {
-  override val eventType = ImportFullArchive.eventType
+  override val eventType: com.normation.rudder.domain.eventlog.ImportFullArchiveEventType.type = ImportFullArchive.eventType
 
   def this(actor: EventActor, gitCommitId: GitCommitId, reason: Option[String]) = this(
     EventLogDetails(
@@ -334,7 +341,7 @@ final case class ImportFullArchive(
 }
 
 object ImportFullArchive extends EventLogFilter {
-  override val eventType = ImportFullArchiveEventType
+  override val eventType: com.normation.rudder.domain.eventlog.ImportFullArchiveEventType.type = ImportFullArchiveEventType
 
   override def apply(x: (EventLogType, EventLogDetails)): ImportFullArchive = ImportFullArchive(x._2)
 
@@ -347,7 +354,7 @@ object ImportFullArchive extends EventLogFilter {
 final case class Rollback(
     override val eventDetails: EventLogDetails
 ) extends ImportEventLog {
-  override val eventType = RollbackEventType
+  override val eventType: com.normation.rudder.domain.eventlog.RollbackEventType.type = RollbackEventType
 
   def this(
       actor:           EventActor,
@@ -366,7 +373,7 @@ final case class Rollback(
 }
 
 object Rollback extends EventLogFilter {
-  override val eventType = RollbackEventType
+  override val eventType: com.normation.rudder.domain.eventlog.RollbackEventType.type = RollbackEventType
 
   override def apply(x: (EventLogType, EventLogDetails)): Rollback = Rollback(x._2)
 

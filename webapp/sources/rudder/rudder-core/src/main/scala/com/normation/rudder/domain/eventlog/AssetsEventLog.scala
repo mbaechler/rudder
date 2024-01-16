@@ -56,7 +56,9 @@ final case class InventoryLogDetails(
     actorIp:          String
 )
 
-sealed trait AssetEventLog extends EventLog { final override val eventLogCategory = AssetLogCategory }
+sealed trait AssetEventLog extends EventLog {
+  final override val eventLogCategory: com.normation.rudder.domain.eventlog.AssetLogCategory.type = AssetLogCategory
+}
 
 sealed trait InventoryEventLog extends AssetEventLog
 
@@ -86,11 +88,11 @@ final case class AcceptNodeEventLog(
     override val eventDetails: EventLogDetails
 ) extends InventoryEventLog {
 
-  override val eventType = AcceptNodeEventLog.eventType
+  override val eventType: com.normation.rudder.domain.eventlog.AcceptNodeEventType.type = AcceptNodeEventLog.eventType
 }
 
 object AcceptNodeEventLog extends EventLogFilter {
-  override val eventType = AcceptNodeEventType
+  override val eventType: com.normation.rudder.domain.eventlog.AcceptNodeEventType.type = AcceptNodeEventType
 
   override def apply(x: (EventLogType, EventLogDetails)): AcceptNodeEventLog = AcceptNodeEventLog(x._2)
 
@@ -116,12 +118,12 @@ object AcceptNodeEventLog extends EventLogFilter {
 final case class RefuseNodeEventLog(
     override val eventDetails: EventLogDetails
 ) extends InventoryEventLog {
-  override val eventType = RefuseNodeEventLog.eventType
+  override val eventType: com.normation.rudder.domain.eventlog.RefuseNodeEventType.type = RefuseNodeEventLog.eventType
 }
 
 object RefuseNodeEventLog extends EventLogFilter {
 
-  override val eventType = RefuseNodeEventType
+  override val eventType: com.normation.rudder.domain.eventlog.RefuseNodeEventType.type = RefuseNodeEventType
 
   override def apply(x: (EventLogType, EventLogDetails)): RefuseNodeEventLog = RefuseNodeEventLog(x._2)
 
@@ -153,12 +155,12 @@ final case class NodeLogDetails(
 final case class DeleteNodeEventLog(
     override val eventDetails: EventLogDetails
 ) extends InventoryEventLog {
-  override val eventType = DeleteNodeEventLog.eventType
+  override val eventType: com.normation.rudder.domain.eventlog.DeleteNodeEventType.type = DeleteNodeEventLog.eventType
 
 }
 
 object DeleteNodeEventLog extends EventLogFilter {
-  override val eventType = DeleteNodeEventType
+  override val eventType: com.normation.rudder.domain.eventlog.DeleteNodeEventType.type = DeleteNodeEventType
 
   override def apply(x: (EventLogType, EventLogDetails)): DeleteNodeEventLog = DeleteNodeEventLog(x._2)
 

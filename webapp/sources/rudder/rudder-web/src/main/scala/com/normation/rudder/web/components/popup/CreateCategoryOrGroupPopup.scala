@@ -162,7 +162,7 @@ class CreateCategoryOrGroupPopup(
     override def setFilter      = notNull _ :: trim _ :: Nil
     override def inputField     = super.inputField % ("style" -> "height:5em") % ("tabindex" -> "4")
     override def errorClassName = "col-lg-12 errors-container"
-    override def validations    = Nil
+    override def validations: scala.collection.immutable.Nil.type = Nil
 
   }
 

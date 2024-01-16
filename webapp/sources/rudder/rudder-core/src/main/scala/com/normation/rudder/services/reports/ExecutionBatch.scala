@@ -225,7 +225,7 @@ final case class UnexpectedNoVersion(
     expectedExpiration: DateTime,
     expirationDateTime: DateTime
 ) extends Unexpected with LastRunAvailable {
-  val lastRunConfigInfo = None
+  val lastRunConfigInfo: None.type = None
 }
 
 /**
@@ -241,7 +241,7 @@ final case class UnexpectedUnknownVersion(
     expectedExpiration: DateTime,
     expirationDateTime: DateTime
 ) extends Unexpected with LastRunAvailable {
-  val lastRunConfigInfo = None
+  val lastRunConfigInfo: None.type = None
 }
 
 final case class ComputeCompliance(

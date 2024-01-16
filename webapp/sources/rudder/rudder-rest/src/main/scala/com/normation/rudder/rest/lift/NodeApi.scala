@@ -169,7 +169,7 @@ class NodeApi(
     deleteDefaultMode:    DeleteMode
 ) extends LiftApiModuleProvider[API] {
 
-  def schemas = API
+  def schemas: com.normation.rudder.rest.NodeApi.type = API
 
   def getLiftEndpoints(): List[LiftApiModule] = {
     API.endpoints.map(e => {
@@ -205,7 +205,7 @@ class NodeApi(
    * enabled ones.
    */
   object CreateNodes extends LiftApiModule0 { //
-    val schema        = API.CreateNodes
+    val schema: com.normation.rudder.rest.NodeApi.CreateNodes.type = API.CreateNodes
     val restExtractor = restExtractorService
 
     import ResultHolder._
@@ -396,7 +396,7 @@ class NodeApi(
   }
 
   object ChangePendingNodeStatus extends LiftApiModule0 {
-    val schema        = API.ChangePendingNodeStatus
+    val schema: com.normation.rudder.rest.NodeApi.ChangePendingNodeStatus.type = API.ChangePendingNodeStatus
     val restExtractor = restExtractorService
     def process0(version: ApiVersion, path: ApiPath, req: Req, params: DefaultParams, authzToken: AuthzToken): LiftResponse = {
       implicit val prettify     = params.prettify
@@ -439,7 +439,7 @@ class NodeApi(
   }
 
   object ListAcceptedNodes extends LiftApiModule0 {
-    val schema        = API.ListAcceptedNodes
+    val schema: com.normation.rudder.rest.NodeApi.ListAcceptedNodes.type = API.ListAcceptedNodes
     val restExtractor = restExtractorService
     def process0(version: ApiVersion, path: ApiPath, req: Req, params: DefaultParams, authzToken: AuthzToken): LiftResponse = {
       implicit val prettify = params.prettify
@@ -464,7 +464,7 @@ class NodeApi(
   }
 
   object ListPendingNodes extends LiftApiModule0 {
-    val schema        = API.ListPendingNodes
+    val schema: com.normation.rudder.rest.NodeApi.ListPendingNodes.type = API.ListPendingNodes
     val restExtractor = restExtractorService
 
     def process0(version: ApiVersion, path: ApiPath, req: Req, params: DefaultParams, authzToken: AuthzToken): LiftResponse = {
@@ -489,7 +489,7 @@ class NodeApi(
   }
 
   object ApplyPolicyAllNodes extends LiftApiModule0 {
-    val schema        = API.ApplyPolicyAllNodes
+    val schema: com.normation.rudder.rest.NodeApi.ApplyPolicyAllNodes.type = API.ApplyPolicyAllNodes
     val restExtractor = restExtractorService
     def process0(version: ApiVersion, path: ApiPath, req: Req, params: DefaultParams, authzToken: AuthzToken): LiftResponse = {
       implicit val prettify = params.prettify
@@ -555,7 +555,7 @@ class NodeApi(
   }
 
   object GetNodesStatus extends LiftApiModule0 {
-    val schema        = API.GetNodesStatus
+    val schema: com.normation.rudder.rest.NodeApi.GetNodesStatus.type = API.GetNodesStatus
     val restExtractor = restExtractorService
     def process0(version: ApiVersion, path: ApiPath, req: Req, params: DefaultParams, authzToken: AuthzToken): LiftResponse = {
       implicit val action             = "getNodeStatus"
@@ -584,7 +584,7 @@ class NodeApi(
   }
 
   object GetNodeGlobalScore extends LiftApiModule {
-    val schema        = API.NodeGlobalScore
+    val schema: com.normation.rudder.rest.NodeApi.NodeGlobalScore.type = API.NodeGlobalScore
     val restExtractor = restExtractorService
 
     def process(
@@ -606,7 +606,7 @@ class NodeApi(
   }
 
   object GetNodeScoreDetails extends LiftApiModule {
-    val schema        = API.NodeScoreDetails
+    val schema: com.normation.rudder.rest.NodeApi.NodeScoreDetails.type = API.NodeScoreDetails
     val restExtractor = restExtractorService
 
     def process(
@@ -624,7 +624,7 @@ class NodeApi(
   }
 
   object GetNodeScoreDetail extends LiftApiModuleString2 {
-    val schema        = API.NodeScoreDetail
+    val schema: com.normation.rudder.rest.NodeApi.NodeScoreDetail.type = API.NodeScoreDetail
     val restExtractor = restExtractorService
 
     def process(
@@ -652,7 +652,7 @@ class NodeApi(
   //   No modifications will be performed
   //   read_only user can access this endpoint
   object NodeDetailsTable extends LiftApiModule0 {
-    val schema        = API.NodeDetailsTable
+    val schema: com.normation.rudder.rest.NodeApi.NodeDetailsTable.type = API.NodeDetailsTable
     val restExtractor = restExtractorService
     def process0(version: ApiVersion, path: ApiPath, req: Req, params: DefaultParams, authzToken: AuthzToken): LiftResponse = {
       implicit val qc: QueryContext = authzToken.qc

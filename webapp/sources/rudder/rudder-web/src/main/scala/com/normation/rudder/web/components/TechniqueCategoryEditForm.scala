@@ -147,7 +147,7 @@ class TechniqueCategoryEditForm(
     override def setFilter  = notNull _ :: trim _ :: Nil
     override def inputField = super.inputField % ("style" -> "height:10em")
 
-    override def validations = Nil
+    override def validations: scala.collection.immutable.Nil.type = Nil
 
     override def toForm_! = (
       "field-label" #> displayHtml

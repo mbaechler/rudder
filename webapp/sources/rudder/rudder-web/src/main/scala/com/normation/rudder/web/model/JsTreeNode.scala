@@ -70,7 +70,7 @@ trait JsTreeNode {
  * An empty JsTreeNode - display nothing
  */
 object EmptyJsTreeNode extends JsTreeNode {
-  override val body     = NodeSeq.Empty
-  override val children = Nil
-  override val toXml    = NodeSeq.Empty
+  override val body = NodeSeq.Empty
+  override val children: collection.immutable.Nil.type = Nil
+  override val toXml = NodeSeq.Empty
 }

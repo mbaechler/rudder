@@ -282,7 +282,9 @@ object Validation {
     }
   }
   object Machine       {
-    case object MPhysical      extends Machine { val tpe = PhysicalMachineType                                   }
+    case object MPhysical      extends Machine {
+      val tpe: com.normation.inventory.domain.PhysicalMachineType.type = PhysicalMachineType
+    }
     case object MUnknownVmType extends Machine { val tpe: VirtualMachineType = VirtualMachineType(UnknownVmType) }
     case object MSolarisZone   extends Machine { val tpe: VirtualMachineType = VirtualMachineType(SolarisZone)   }
     case object MVirtualBox    extends Machine { val tpe: VirtualMachineType = VirtualMachineType(VirtualBox)    }

@@ -4,17 +4,20 @@ import com.normation.eventlog._
 import com.normation.rudder.domain.policies.SimpleDiff
 import com.normation.rudder.domain.workflows.ChangeRequest
 
-sealed trait ChangeRequestEventLog extends EventLog { final override val eventLogCategory = ChangeRequestLogCategory }
+sealed trait ChangeRequestEventLog extends EventLog {
+  final override val eventLogCategory: com.normation.rudder.domain.eventlog.ChangeRequestLogCategory.type =
+    ChangeRequestLogCategory
+}
 
 final case class AddChangeRequest(
     override val eventDetails: EventLogDetails
 ) extends ChangeRequestEventLog {
-  override val cause     = None
-  override val eventType = AddChangeRequest.eventType
+  override val cause:     None.type                                                           = None
+  override val eventType: com.normation.rudder.domain.eventlog.AddChangeRequestEventType.type = AddChangeRequest.eventType
 }
 
 object AddChangeRequest extends EventLogFilter {
-  override val eventType = AddChangeRequestEventType
+  override val eventType: com.normation.rudder.domain.eventlog.AddChangeRequestEventType.type = AddChangeRequestEventType
 
   override def apply(x: (EventLogType, EventLogDetails)): AddChangeRequest = AddChangeRequest(x._2)
 }
@@ -22,12 +25,12 @@ object AddChangeRequest extends EventLogFilter {
 final case class DeleteChangeRequest(
     override val eventDetails: EventLogDetails
 ) extends ChangeRequestEventLog {
-  override val cause     = None
-  override val eventType = DeleteChangeRequest.eventType
+  override val cause:     None.type                                                              = None
+  override val eventType: com.normation.rudder.domain.eventlog.DeleteChangeRequestEventType.type = DeleteChangeRequest.eventType
 }
 
 object DeleteChangeRequest extends EventLogFilter {
-  override val eventType = DeleteChangeRequestEventType
+  override val eventType: com.normation.rudder.domain.eventlog.DeleteChangeRequestEventType.type = DeleteChangeRequestEventType
 
   override def apply(x: (EventLogType, EventLogDetails)): DeleteChangeRequest = DeleteChangeRequest(x._2)
 }
@@ -35,12 +38,12 @@ object DeleteChangeRequest extends EventLogFilter {
 final case class ModifyChangeRequest(
     override val eventDetails: EventLogDetails
 ) extends ChangeRequestEventLog {
-  override val cause     = None
-  override val eventType = ModifyChangeRequest.eventType
+  override val cause:     None.type                                                              = None
+  override val eventType: com.normation.rudder.domain.eventlog.ModifyChangeRequestEventType.type = ModifyChangeRequest.eventType
 }
 
 object ModifyChangeRequest extends EventLogFilter {
-  override val eventType = ModifyChangeRequestEventType
+  override val eventType: com.normation.rudder.domain.eventlog.ModifyChangeRequestEventType.type = ModifyChangeRequestEventType
 
   override def apply(x: (EventLogType, EventLogDetails)): ModifyChangeRequest = ModifyChangeRequest(x._2)
 }

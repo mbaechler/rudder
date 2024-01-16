@@ -164,7 +164,7 @@ class RuleCategoryPopup(
     override def setFilter             = notNull _ :: trim _ :: Nil
     override def inputField            = super.inputField % ("tabindex" -> "4")
     override def errorClassName        = "col-lg-12 errors-container"
-    override def validations           = Nil
+    override def validations: scala.collection.immutable.Nil.type = Nil
 
   }
 

@@ -96,7 +96,7 @@ class ComplianceApi(
   import CsvCompliance._
   import JsonCompliance._
 
-  def schemas = API
+  def schemas: com.normation.rudder.rest.ComplianceApi.type = API
 
   /*
    * The actual builder for the compliance API.
@@ -126,7 +126,7 @@ class ComplianceApi(
   }
 
   object GetRules extends LiftApiModule0 {
-    val schema        = API.GetRulesCompliance
+    val schema: com.normation.rudder.rest.ComplianceApi.GetRulesCompliance.type = API.GetRulesCompliance
     val restExtractor = restExtractorService
     def process0(version: ApiVersion, path: ApiPath, req: Req, params: DefaultParams, authzToken: AuthzToken): LiftResponse = {
       implicit val action   = schema.name
@@ -213,7 +213,7 @@ class ComplianceApi(
   }
 
   object GetDirectiveId extends LiftApiModule {
-    val schema        = API.GetDirectiveComplianceId
+    val schema: com.normation.rudder.rest.ComplianceApi.GetDirectiveComplianceId.type = API.GetDirectiveComplianceId
     val restExtractor = restExtractorService
 
     def process(
@@ -262,7 +262,7 @@ class ComplianceApi(
   }
 
   object GetDirectives extends LiftApiModule0 {
-    val schema        = API.GetDirectivesCompliance
+    val schema: com.normation.rudder.rest.ComplianceApi.GetDirectivesCompliance.type = API.GetDirectivesCompliance
     val restExtractor = restExtractorService
 
     def process0(
@@ -375,7 +375,7 @@ class ComplianceApi(
   }
 
   object GetNodes extends LiftApiModule0 {
-    val schema        = API.GetNodesCompliance
+    val schema: com.normation.rudder.rest.ComplianceApi.GetNodesCompliance.type = API.GetNodesCompliance
     val restExtractor = restExtractorService
     def process0(version: ApiVersion, path: ApiPath, req: Req, params: DefaultParams, authzToken: AuthzToken): LiftResponse = {
       implicit val action   = schema.name
@@ -474,7 +474,7 @@ class ComplianceApi(
   }
 
   object GetGlobal extends LiftApiModule0 {
-    val schema        = API.GetGlobalCompliance
+    val schema: com.normation.rudder.rest.ComplianceApi.GetGlobalCompliance.type = API.GetGlobalCompliance
     val restExtractor = restExtractorService
     def process0(version: ApiVersion, path: ApiPath, req: Req, params: DefaultParams, authzToken: AuthzToken): LiftResponse = {
       implicit val action   = schema.name

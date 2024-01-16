@@ -16,9 +16,9 @@ sealed trait PolicyServerEventLog extends EventLog
 final case class UpdatePolicyServer(
     override val eventDetails: EventLogDetails
 ) extends PolicyServerEventLog {
-  override val cause            = None
-  override val eventType        = UpdatePolicyServer.eventType
-  override val eventLogCategory = PolicyServerLogCategory
+  override val cause:            None.type                                                             = None
+  override val eventType:        com.normation.rudder.domain.eventlog.UpdatePolicyServerEventType.type = UpdatePolicyServer.eventType
+  override val eventLogCategory: com.normation.rudder.domain.eventlog.PolicyServerLogCategory.type     = PolicyServerLogCategory
 }
 
 final case class AuthorizedNetworkModification(
@@ -27,7 +27,7 @@ final case class AuthorizedNetworkModification(
 )
 
 object UpdatePolicyServer extends EventLogFilter {
-  override val eventType = UpdatePolicyServerEventType
+  override val eventType: com.normation.rudder.domain.eventlog.UpdatePolicyServerEventType.type = UpdatePolicyServerEventType
 
   override def apply(x: (EventLogType, EventLogDetails)): UpdatePolicyServer = UpdatePolicyServer(x._2)
 

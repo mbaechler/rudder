@@ -38,16 +38,18 @@
 package com.normation.rudder.domain.eventlog
 
 import com.normation.eventlog._
-sealed trait RuleEventLog extends EventLog { final override val eventLogCategory = RuleLogCategory }
+sealed trait RuleEventLog extends EventLog {
+  final override val eventLogCategory: com.normation.rudder.domain.eventlog.RuleLogCategory.type = RuleLogCategory
+}
 
 final case class AddRule(
     override val eventDetails: EventLogDetails
 ) extends RuleEventLog {
-  override val eventType = AddRule.eventType
+  override val eventType: com.normation.rudder.domain.eventlog.AddRuleEventType.type = AddRule.eventType
 }
 
 object AddRule extends EventLogFilter {
-  override val eventType = AddRuleEventType
+  override val eventType: com.normation.rudder.domain.eventlog.AddRuleEventType.type = AddRuleEventType
 
   override def apply(x: (EventLogType, EventLogDetails)): AddRule = AddRule(x._2)
 }
@@ -55,11 +57,11 @@ object AddRule extends EventLogFilter {
 final case class DeleteRule(
     override val eventDetails: EventLogDetails
 ) extends RuleEventLog {
-  override val eventType = DeleteRule.eventType
+  override val eventType: com.normation.rudder.domain.eventlog.DeleteRuleEventType.type = DeleteRule.eventType
 }
 
 object DeleteRule extends EventLogFilter {
-  override val eventType = DeleteRuleEventType
+  override val eventType: com.normation.rudder.domain.eventlog.DeleteRuleEventType.type = DeleteRuleEventType
 
   override def apply(x: (EventLogType, EventLogDetails)): DeleteRule = DeleteRule(x._2)
 }
@@ -67,11 +69,11 @@ object DeleteRule extends EventLogFilter {
 final case class ModifyRule(
     override val eventDetails: EventLogDetails
 ) extends RuleEventLog {
-  override val eventType = ModifyRule.eventType
+  override val eventType: com.normation.rudder.domain.eventlog.ModifyRuleEventType.type = ModifyRule.eventType
 }
 
 object ModifyRule extends EventLogFilter {
-  override val eventType = ModifyRuleEventType
+  override val eventType: com.normation.rudder.domain.eventlog.ModifyRuleEventType.type = ModifyRuleEventType
 
   override def apply(x: (EventLogType, EventLogDetails)): ModifyRule = ModifyRule(x._2)
 }
