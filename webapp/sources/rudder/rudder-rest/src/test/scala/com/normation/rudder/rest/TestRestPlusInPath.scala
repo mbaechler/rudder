@@ -48,6 +48,7 @@ import org.junit.runner.RunWith
 import org.specs2.mutable._
 import org.specs2.runner.JUnitRunner
 import org.specs2.specification.BeforeAfterAll
+import com.normation.rudder.domain.policies.Rule
 
 // test that the "+" in path is correctly kept as a "+", not changed into " "
 // See: https://issues.rudder.io/issues/20943
@@ -62,7 +63,7 @@ class TestRestPlusInPath extends Specification with BeforeAfterAll {
     .setLevel(ch.qos.logback.classic.Level.OFF)
   val env  = RestTestSetUp.newEnv
   import com.softwaremill.quicklens._
-  val rule = env.mockRules.ruleRepo
+  val rule: Rule = env.mockRules.ruleRepo
     .get(RuleId(RuleUid("ff44fb97-b65e-43c4-b8c2-0df8d5e8549f")))
     .runNow
     .modify(_.id.rev)

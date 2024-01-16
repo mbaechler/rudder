@@ -37,7 +37,7 @@ final case class ArchiveAction(dbManager: DatabaseManager, dbCleaner: AutomaticR
   val name                                                                                        = "archive"
   val past                                                                                        = "archived"
   val continue                                                                                    = "archiving"
-  def act(reports: DeleteCommand.Reports, complianceLevel: Option[DeleteCommand.ComplianceLevel]) =
+  def act(reports: DeleteCommand.Reports, complianceLevel: Option[DeleteCommand.ComplianceLevel]): Box[Int] =
     dbManager.archiveEntries(reports.date)
   lazy val actor                                                                                  = dbCleaner.archiver
 }
@@ -46,7 +46,7 @@ final case class DeleteAction(dbManager: DatabaseManager, dbCleaner: AutomaticRe
   val name                                                                                        = "delete"
   val past                                                                                        = "deleted"
   val continue                                                                                    = "deleting"
-  def act(reports: DeleteCommand.Reports, complianceLevel: Option[DeleteCommand.ComplianceLevel]) =
+  def act(reports: DeleteCommand.Reports, complianceLevel: Option[DeleteCommand.ComplianceLevel]): Box[Int] =
     dbManager.deleteEntries(reports, complianceLevel)
   lazy val actor                                                                                  = dbCleaner.deleter
 }

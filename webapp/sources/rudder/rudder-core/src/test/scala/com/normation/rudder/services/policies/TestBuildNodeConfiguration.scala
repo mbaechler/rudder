@@ -66,6 +66,11 @@ import org.specs2.mutable._
 import org.specs2.runner._
 import scala.collection.SortedMap
 import scala.concurrent.duration._
+import ch.qos.logback.classic.Logger
+import com.normation.rudder.domain.policies.{ Directive, DirectiveId }
+import com.normation.rudder.domain.reports.NodeModeConfig
+import com.normation.rudder.facts.nodes.CoreNodeFact
+import scala.collection.MapView
 
 /*
  * This class test the JsEngine. 6.0
@@ -77,34 +82,34 @@ import scala.concurrent.duration._
 class TestBuildNodeConfiguration extends Specification {
 
   // a logger for timing information
-  val logger = org.slf4j.LoggerFactory.getLogger("timing-test").asInstanceOf[ch.qos.logback.classic.Logger]
+  val logger: Logger = org.slf4j.LoggerFactory.getLogger("timing-test").asInstanceOf[ch.qos.logback.classic.Logger]
   // set to trace to see timing
   logger.setLevel(ch.qos.logback.classic.Level.OFF)
 
   sequential
 
-  val t0 = System.currentTimeMillis()
+  val t0: Long = System.currentTimeMillis()
 
   import NodeConfigData._
   val data = new TestNodeConfiguration()
-  val t0_1 = System.currentTimeMillis()
+  val t0_1: Long = System.currentTimeMillis()
   logger.trace(s"Test node configuration   : ${t0_1 - t0} ms")
 
-  def newNode(i: Int) =
+  def newNode(i: Int): CoreNodeFact =
     fact1.modify(_.id).setTo(NodeId("node" + i)).modify(_.fqdn).setTo(s"node$i.localhost")
 
-  val allNodes     = ((1 to 1000).map(newNode) :+ factRoot).map(n => (n.id, n)).toMap.view
+  val allNodes: MapView[NodeId,CoreNodeFact]     = ((1 to 1000).map(newNode) :+ factRoot).map(n => (n.id, n)).toMap.view
   // only one group with all nodes
-  val group        = NodeGroup(NodeGroupId(NodeGroupUid("allnodes")), "allnodes", "", Nil, None, false, allNodes.keySet.toSet, true)
-  val groupLib     = FullNodeGroupCategory(
+  val group: NodeGroup        = NodeGroup(NodeGroupId(NodeGroupUid("allnodes")), "allnodes", "", Nil, None, false, allNodes.keySet.toSet, true)
+  val groupLib: FullNodeGroupCategory     = FullNodeGroupCategory(
     NodeGroupCategoryId("test_root"),
     "",
     "",
     Nil,
     List(FullRuleTargetInfo(FullGroupTarget(GroupTarget(group.id), group), "", "", true, false))
   )
-  val directives   = (1 to 1000).map(i => data.rpmDirective("rpm" + i, "somepkg" + i)).map(d => (d.id, d)).toMap
-  val directiveLib = FullActiveTechniqueCategory(
+  val directives: Map[DirectiveId,Directive]   = (1 to 1000).map(i => data.rpmDirective("rpm" + i, "somepkg" + i)).map(d => (d.id, d)).toMap
+  val directiveLib: FullActiveTechniqueCategory = FullActiveTechniqueCategory(
     ActiveTechniqueCategoryId("root"),
     "root",
     "",
@@ -132,7 +137,7 @@ class TestBuildNodeConfiguration extends Specification {
     true
   )
 
-  val rule                      = Rule(
+  val rule: Rule                      = Rule(
     RuleId(RuleUid("rule")),
     "rule",
     RuleCategoryId("rootcat"),
@@ -146,16 +151,16 @@ class TestBuildNodeConfiguration extends Specification {
   val propertyEngineService     = new PropertyEngineServiceImpl(List.empty)
   val valueCompiler             = new InterpolatedValueCompilerImpl(propertyEngineService)
   val ruleValService            = new RuleValServiceImpl(valueCompiler)
-  val buildContext              = new PromiseGeneration_BuildNodeContext {
+  val buildContext: PromiseGeneration_BuildNodeContext              = new PromiseGeneration_BuildNodeContext {
     override def interpolatedValueCompiler: InterpolatedValueCompiler = valueCompiler
     override def systemVarService:          SystemVariableService     = data.systemVariableService
   }
-  val globalPolicyMode          = GlobalPolicyMode(PolicyMode.Enforce, PolicyModeOverrides.Always)
-  val activeNodeIds             = Set(rootId, node1Node.id, node2Node.id)
-  val allNodeModes              = allNodes.map { case (id, _) => (id, defaultModesConfig) }.toMap
+  val globalPolicyMode: GlobalPolicyMode          = GlobalPolicyMode(PolicyMode.Enforce, PolicyModeOverrides.Always)
+  val activeNodeIds: Set[NodeId]             = Set(rootId, node1Node.id, node2Node.id)
+  val allNodeModes: Map[NodeId,NodeModeConfig]              = allNodes.map { case (id, _) => (id, defaultModesConfig) }.toMap
   val scriptEngineEnabled       = FeatureSwitch.Disabled
   val maxParallelism            = 8
-  val jsTimeout                 = FiniteDuration(5, "minutes")
+  val jsTimeout: FiniteDuration                 = FiniteDuration(5, "minutes")
   val generationContinueOnError = false
 
   // you can debug detail timing by setting "TRACE" level below:

@@ -374,7 +374,7 @@ class GenericConfigService(
    * Create a cache for values that should never fail
    */
 
-  val defaultConfig = {
+  val defaultConfig: String = {
     s"""rudder.ui.changeMessage.enabled=true
        rudder.ui.changeMessage.mandatory=false
        rudder.ui.changeMessage.explanation=Please enter a reason explaining this change.
@@ -423,7 +423,7 @@ class GenericConfigService(
     """
   }
 
-  val configWithFallback = configFile.withFallback(ConfigFactory.parseString(defaultConfig))
+  val configWithFallback: Config = configFile.withFallback(ConfigFactory.parseString(defaultConfig))
 
   /*
    * Get the value, default to the default value defined above in `defaultConfig` if not available in base.
@@ -555,23 +555,23 @@ class GenericConfigService(
       FeatureSwitch.Disabled
   }
 
-  def rudder_ui_changeMessage_enabled()     = get("rudder_ui_changeMessage_enabled")
-  def rudder_ui_changeMessage_mandatory()   = get("rudder_ui_changeMessage_mandatory")
-  def rudder_ui_changeMessage_explanation() = get("rudder_ui_changeMessage_explanation")
+  def rudder_ui_changeMessage_enabled(): IOResult[Boolean]     = get("rudder_ui_changeMessage_enabled")
+  def rudder_ui_changeMessage_mandatory(): IOResult[Boolean]   = get("rudder_ui_changeMessage_mandatory")
+  def rudder_ui_changeMessage_explanation(): IOResult[String] = get("rudder_ui_changeMessage_explanation")
   def set_rudder_ui_changeMessage_enabled(value: Boolean):    IOResult[Unit] = save("rudder_ui_changeMessage_enabled", value)
   def set_rudder_ui_changeMessage_mandatory(value: Boolean):  IOResult[Unit] = save("rudder_ui_changeMessage_mandatory", value)
   def set_rudder_ui_changeMessage_explanation(value: String): IOResult[Unit] = save("rudder_ui_changeMessage_explanation", value)
 
   ///// workflows /////
-  def rudder_workflow_enabled()         = {
+  def rudder_workflow_enabled(): IOResult[Boolean]         = {
     if (workflowLevel.workflowLevelAllowsEnable) {
       get("rudder_workflow_enabled")
     } else {
       false.succeed
     }
   }
-  def rudder_workflow_self_validation() = get("rudder_workflow_self_validation")
-  def rudder_workflow_self_deployment() = get("rudder_workflow_self_deployment")
+  def rudder_workflow_self_validation(): IOResult[Boolean] = get("rudder_workflow_self_validation")
+  def rudder_workflow_self_deployment(): IOResult[Boolean] = get("rudder_workflow_self_deployment")
   def set_rudder_workflow_enabled(value: Boolean):         IOResult[Unit] = {
     if (workflowLevel.workflowLevelAllowsEnable) {
       save("rudder_workflow_enabled", value) <*

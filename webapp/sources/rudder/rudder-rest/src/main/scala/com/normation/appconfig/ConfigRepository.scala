@@ -93,7 +93,7 @@ class LdapConfigRepository(
     }
   }
 
-  def saveConfigParameter(property: RudderWebProperty, modifyGlobalPropertyInfo: Option[ModifyGlobalPropertyInfo]) = {
+  def saveConfigParameter(property: RudderWebProperty, modifyGlobalPropertyInfo: Option[ModifyGlobalPropertyInfo]): ZIO[Any,RudderError,RudderWebProperty] = {
     for {
       allProperties          <- getConfigParameters()
       // Find our old property, and if we need to save

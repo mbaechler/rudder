@@ -42,6 +42,7 @@ import com.normation.rudder.domain.policies.DirectiveId
 import com.normation.rudder.domain.policies.RuleId
 import org.joda.time.DateTime
 import org.slf4j.LoggerFactory
+import org.slf4j.Logger
 
 /**
  * Define one "line" of reports from an agent execution
@@ -304,7 +305,7 @@ final case class RudderJsonReport(
 }
 object Reports {
 
-  val logger = LoggerFactory.getLogger(classOf[Reports])
+  val logger: Logger = LoggerFactory.getLogger(classOf[Reports])
 
   def factory(
       executionDate:      DateTime,
@@ -555,7 +556,7 @@ object Reports {
     )
   }
 
-  def unapply(report: Reports) = Some(
+  def unapply(report: Reports): Some[(DateTime, RuleId, DirectiveId, NodeId, String, String, String, DateTime, String, String)] = Some(
     (
       report.executionDate,
       report.ruleId,

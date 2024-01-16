@@ -51,6 +51,8 @@ import com.normation.utils.Utils.DateToIsoString
 import java.util.concurrent.TimeUnit
 import net.liftweb.common.Logger
 import org.slf4j.LoggerFactory
+import com.github.benmanes.caffeine.cache.LoadingCache
+import org.slf4j
 
 /**
  * Log information about compliance.
@@ -63,12 +65,12 @@ object ComplianceDebugLoggerPure extends NamedZioLogger {
 }
 
 object ComplianceDebugLogger extends Logger {
-  override protected def _logger = LoggerFactory.getLogger("explain_compliance")
+  override protected def _logger: slf4j.Logger = LoggerFactory.getLogger("explain_compliance")
 
   // we have one logger defined by node.
   // they automatically expires after some time.
 
-  val nodeCache = Caffeine
+  val nodeCache: LoadingCache[String,Logger] = Caffeine
     .newBuilder()
     .maximumSize(1000)
     .expireAfterWrite(10, TimeUnit.MINUTES)
@@ -143,7 +145,7 @@ object ComplianceDebugLogger extends Logger {
 
     }
 
-    def logName = c match {
+    def logName: String = c match {
       case NoRunNoExpectedReport => "NoRunNoExpectedReport"
       case _: NoExpectedReport          => "NoRunNoExpectedReport"
       case _: NoReportInInterval        => "NoReportInInterval"

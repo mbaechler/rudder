@@ -87,22 +87,22 @@ class RuleCategoryPopup(
   private[this] val categoryHierarchyDisplayer = RudderConfig.categoryHierarchyDisplayer
   private[this] val uuidGen                    = RudderConfig.stringUuidGenerator
 
-  def dispatch = { case "popupContent" => { _ => popupContent() } }
+  def dispatch: PartialFunction[String,NodeSeq => NodeSeq] = { case "popupContent" => { _ => popupContent() } }
 
-  val title         = {
+  val title: String         = {
     targetCategory match {
       case None    => "Create new Rule category"
       case Some(c) => s"Update category '${c.name}'"
     }
   }
-  val TextForButton = {
+  val TextForButton: String = {
     targetCategory match {
       case None    => "Create"
       case Some(c) => s"Update"
     }
   }
 
-  val parentCategory = targetCategory.flatMap(rootCategory.findParent(_)).map(_.id.value)
+  val parentCategory: Option[String] = targetCategory.flatMap(rootCategory.findParent(_)).map(_.id.value)
   def popupContent(): NodeSeq = {
     (
       "#creationForm *" #> { (xml: NodeSeq) => SHtml.ajaxForm(xml) } andThen
@@ -168,7 +168,7 @@ class RuleCategoryPopup(
 
   }
 
-  val categories = targetCategory.map(rootCategory.filter(_)).getOrElse(rootCategory)
+  val categories: RuleCategory = targetCategory.map(rootCategory.filter(_)).getOrElse(rootCategory)
 
   private[this] val categoryParent = {
     new WBSelectField(

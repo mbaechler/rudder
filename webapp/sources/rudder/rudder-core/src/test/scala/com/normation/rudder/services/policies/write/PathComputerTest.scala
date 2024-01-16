@@ -41,13 +41,15 @@ import com.normation.rudder.domain.Constants
 import org.junit.runner.RunWith
 import org.specs2.mutable.Specification
 import org.specs2.runner.JUnitRunner
+import com.normation.inventory.domain.NodeId
+import com.normation.rudder.services.policies.NodeConfiguration
 
 @RunWith(classOf[JUnitRunner])
 class PathComputerTest extends Specification {
 
   import com.normation.rudder.services.policies.NodeConfigData._
 
-  val allNodeConfig = Map(root.id -> rootNodeConfig, node1.id -> node1NodeConfig, node2.id -> node2NodeConfig)
+  val allNodeConfig: Map[NodeId,NodeConfiguration] = Map(root.id -> rootNodeConfig, node1.id -> node1NodeConfig, node2.id -> node2NodeConfig)
 
   val pathComputer = new PathComputerImpl(
     Constants.NODE_PROMISES_PARENT_DIR_BASE,

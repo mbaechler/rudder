@@ -48,6 +48,8 @@ import net.liftweb.http.DispatchSnippet
 import net.liftweb.http.js.JE._
 import net.liftweb.http.js.JsCmds._
 import scala.xml._
+import com.normation.errors
+import com.normation.rudder.repository.FullNodeGroupCategory
 
 /**
  * A component to display a tree based on a
@@ -68,9 +70,9 @@ class TechniqueTree(
   val activeTechniqueRepository = RudderConfig.roDirectiveRepository
   val dependencyService         = RudderConfig.dependencyAndDeletionService
   val ruleRepository            = RudderConfig.roRuleRepository
-  val getGrouLib                = RudderConfig.roNodeGroupRepository.getFullGroupLibrary _
+  val getGrouLib: () => errors.IOResult[FullNodeGroupCategory]                = RudderConfig.roNodeGroupRepository.getFullGroupLibrary _
 
-  def dispatch = { case "tree" => { _ => tree() } }
+  def dispatch: PartialFunction[String,NodeSeq => NodeSeq] = { case "tree" => { _ => tree() } }
 
   def tree(): NodeSeq = {
 

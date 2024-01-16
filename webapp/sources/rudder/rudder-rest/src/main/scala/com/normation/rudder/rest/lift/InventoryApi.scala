@@ -80,7 +80,7 @@ class InventoryApi(
   }
 
   object QueueInformation extends LiftApiModule0 {
-    val tooManyRequestError = new RestError {
+    val tooManyRequestError: RestError = new RestError {
       override def code: Int = 429 // too many requests
     }
     val schema              = API.QueueInformation

@@ -47,6 +47,7 @@ import doobie._
 import doobie.implicits._
 import net.liftweb.common._
 import zio.syntax._
+import com.normation.errors
 
 class EventLogDeploymentService(
     val repository:             EventLogRepository,
@@ -88,7 +89,7 @@ class EventLogDeploymentService(
    * Return the list of event corresponding at a modification since last successful deployement
    *
    */
-  def getListOfModificationEvents(lastSuccess: EventLog) = {
+  def getListOfModificationEvents(lastSuccess: EventLog): errors.IOResult[Seq[EventLog]] = {
     ModificationWatchList.events.toList.map(_.serialize) match {
       case Nil    => Nil.succeed
       case h :: t =>

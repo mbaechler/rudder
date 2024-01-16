@@ -118,7 +118,7 @@ object PasswordEncoder {
     }
   }
 
-  val PlainText = new PasswordEncoder() {
+  val PlainText: PasswordEncoder = new PasswordEncoder() {
     override def encode(rawPassword: CharSequence):                           String  = rawPassword.toString
     override def matches(rawPassword: CharSequence, encodedPassword: String): Boolean = rawPassword.toString == encodedPassword
   }
@@ -128,7 +128,7 @@ object PasswordEncoder {
   val SHA256    = new DigestEncoder("SHA-256")
   val SHA512    = new DigestEncoder("SHA-512")
   // Salted hash functions :
-  val BCRYPT    = new PasswordEncoder() {
+  val BCRYPT: PasswordEncoder    = new PasswordEncoder() {
     override def encode(rawPassword: CharSequence):                           String  = {
       val salt: Array[Byte] = new Array(16)
       random.nextBytes(salt)
@@ -262,7 +262,7 @@ final case class RudderAuthorizationFileReloadCallback(name: String, exec: Valid
  * A callback that is in charge of updating the list of UserInfo managed by the file authenticator.
  */
 object UserRepositoryUpdateOnFileReload {
-  def createCallback(userRepository: UserRepository) = RudderAuthorizationFileReloadCallback(
+  def createCallback(userRepository: UserRepository): RudderAuthorizationFileReloadCallback = RudderAuthorizationFileReloadCallback(
     "update-pg-users-on-xml-file-reload",
     userList => {
       userRepository.setExistingUsers(

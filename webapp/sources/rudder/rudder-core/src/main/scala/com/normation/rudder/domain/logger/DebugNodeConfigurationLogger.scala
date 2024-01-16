@@ -46,6 +46,7 @@ import net.liftweb.common._
 import net.liftweb.json.Serialization.writePretty
 import org.joda.time.DateTime
 import org.slf4j.LoggerFactory
+import org.slf4j
 
 trait NodeConfigurationLogger {
 
@@ -65,7 +66,7 @@ class NodeConfigurationLoggerImpl(
     path: String
 ) extends NodeConfigurationLogger {
 
-  val logger = LoggerFactory.getLogger("rudder.debug.nodeconfiguration")
+  val logger: slf4j.Logger = LoggerFactory.getLogger("rudder.debug.nodeconfiguration")
   def isDebugEnabled: Boolean = logger.isDebugEnabled
 
   {

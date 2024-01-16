@@ -58,6 +58,7 @@ import org.apache.commons.io.FileUtils
 import org.joda.time.DateTime
 import zio._
 import zio.interop.catz._
+import com.normation.errors
 
 /*
  * Before Rudder 8.0, we used to save the state of node when accepted in an LDIF file under
@@ -86,7 +87,7 @@ class MigrateNodeAcceptationInventories(
 
   val msg = "old inventory accept/refuse facts to 'NodeFacts' database table"
 
-  val migrationActor = EventActor("rudder-migration")
+  val migrationActor: EventActor = EventActor("rudder-migration")
 
   override def description: String =
     "Check if table 'NodeFacts' exists and if data from /var/rudder/inventories/historical are migrated"
@@ -114,7 +115,7 @@ class MigrateNodeAcceptationInventories(
   /*
    * Save a full inventory as a node fact in postgresql.
    */
-  def saveInDB(id: NodeId, date: DateTime, data: FullInventory, deleted: Boolean) = {
+  def saveInDB(id: NodeId, date: DateTime, data: FullInventory, deleted: Boolean): ZIO[Any,errors.RudderError,Option[Unit]] = {
     jdbcLogRepository.save(
       id,
       FactLogData(NodeFact.newFromFullInventory(data, None), migrationActor, data.node.main.status),
@@ -165,7 +166,7 @@ class MigrateNodeAcceptationInventories(
     } *> purgeLogFile(nodeId)
   }
 
-  def migrateAll(now: DateTime) = {
+  def migrateAll(now: DateTime): ZIO[Any,errors.RudderError,Unit] = {
     for {
       ids <- fileLogRepository.getIds
       _   <- BootstrapLogger.info(s"Migrating '${ids.size}' ${msg}")

@@ -82,7 +82,7 @@ trait GitRepositoryProvider {
  */
 class GitRepositoryProviderImpl(override val db: Repository, override val rootDirectory: File) extends GitRepositoryProvider { // we expect to have a .git here
   override val git       = new Git(db)
-  override val semaphore = Semaphore.make(1).runNow
+  override val semaphore: Semaphore = Semaphore.make(1).runNow
 }
 
 object GitRepositoryProviderImpl {

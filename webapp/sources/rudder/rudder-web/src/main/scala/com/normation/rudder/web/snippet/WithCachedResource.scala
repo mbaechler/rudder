@@ -50,6 +50,7 @@ import scala.xml.MetaData
 import scala.xml.NodeSeq
 import scala.xml.Null
 import scala.xml.UnprefixedAttribute
+import scala.util.matching.Regex
 
 /**
  *
@@ -63,7 +64,7 @@ import scala.xml.UnprefixedAttribute
 object WithCachedResource extends DispatchSnippet {
   def dispatch: DispatchIt = { case _ => render }
 
-  val pluginResourceRegex = """/?toserve/([\w-]+)/.+""".r
+  val pluginResourceRegex: Regex = """/?toserve/([\w-]+)/.+""".r
 
   private def attrStr(attrs: MetaData, attr: String): Box[String] = (attrs.get(attr) match {
     case None      => Empty

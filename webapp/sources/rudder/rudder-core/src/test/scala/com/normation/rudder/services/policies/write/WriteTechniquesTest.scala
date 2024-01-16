@@ -81,6 +81,9 @@ import org.specs2.specification.AfterAll
 import org.specs2.text.LinesContent
 import scala.collection.MapView
 import zio.syntax._
+import com.normation.rudder.services.policies.NodeConfiguration
+import java.util.regex.Pattern
+import org.specs2.matcher.MatchResult
 
 /**
  * Details of tests executed in each instances of
@@ -90,7 +93,7 @@ import zio.syntax._
  */
 class TestSystemData {
   // make tests more similar than default rudder install
-  val hookIgnore = """.swp, ~, .bak,
+  val hookIgnore: List[String] = """.swp, ~, .bak,
  .cfnew   , .cfsaved  , .cfedited, .cfdisabled, .cfmoved,
  .dpkg-old, .dpkg-dist, .dpkg-new, .dpkg-tmp,
  .disable , .disabled , _disable , _disabled,
@@ -117,7 +120,7 @@ class TestSystemData {
    * We parametrize the output of file writing with a sub-directory name,
    * so that we can keep each write in it's own directory for debug.
    */
-  def getPromiseWriter(label: String) = {
+  def getPromiseWriter(label: String): (File, PolicyWriterServiceImpl) = {
 
     // where the "/var/rudder/share" file is for tests:
     val SHARE = abstractRoot / s"share-${label}"
@@ -152,13 +155,13 @@ class TestSystemData {
   //////////// end init ////////////
 
   // Allows override in policy mode, but default to audit
-  val globalPolicyMode = GlobalPolicyMode(PolicyMode.Audit, PolicyModeOverrides.Always)
+  val globalPolicyMode: GlobalPolicyMode = GlobalPolicyMode(PolicyMode.Audit, PolicyModeOverrides.Always)
 
   /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   // actual tests
   /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-  def getSystemVars(nodeInfo: CoreNodeFact, allNodeInfos: MapView[NodeId, CoreNodeFact], allGroups: FullNodeGroupCategory) = {
+  def getSystemVars(nodeInfo: CoreNodeFact, allNodeInfos: MapView[NodeId, CoreNodeFact], allGroups: FullNodeGroupCategory): Map[String,Variable] = {
     systemVariableService
       .getSystemVariables(
         nodeInfo,
@@ -179,14 +182,14 @@ class TestSystemData {
 
   /// For root, we are using the same system variable and base root node config
   // the root node configuration
-  val baseRootDrafts     = List(common(root.id, allNodesInfo_rootOnly)) ++ allRootPolicies
-  val baseRootNodeConfig = rootNodeConfig.copy(
+  val baseRootDrafts: List[BoundPolicyDraft]     = List(common(root.id, allNodesInfo_rootOnly)) ++ allRootPolicies
+  val baseRootNodeConfig: NodeConfiguration = rootNodeConfig.copy(
     policies = policies(rootNodeConfig.nodeInfo, baseRootDrafts),
     nodeContext = getSystemVars(factRoot, allNodeFacts_rootOnly, groupLib),
     parameters = Set(ParameterForConfiguration("rudder_file_edit_header", "### Managed by Rudder, edit with care ###"))
   )
 
-  val cfeNodeConfig = NodeConfigData.node1NodeConfig.copy(
+  val cfeNodeConfig: NodeConfiguration = NodeConfigData.node1NodeConfig.copy(
     nodeInfo = cfeNode,
     parameters = Set(ParameterForConfiguration("rudder_file_edit_header", "### Managed by Rudder, edit with care ###"))
   )
@@ -208,13 +211,13 @@ class TestSystemData {
 //an utility class for filtering file lines given a regex,
 //used in the file content matcher
 final private case class RegexFileContent(regex: List[String]) extends LinesContent[File] {
-  val patterns = regex.map(_.r.pattern)
+  val patterns: List[Pattern] = regex.map(_.r.pattern)
 
   override def lines(f: File): Seq[String] = {
     FileLinesContent.lines(f).filter(line => !patterns.exists(_.matcher(line).matches()))
   }
 
-  override def name(f: File) = FileLinesContent.name(f)
+  override def name(f: File): String = FileLinesContent.name(f)
 }
 
 trait TechniquesTest extends Specification with Loggable with BoxSpecMatcher with ContentMatchers with AfterAll {
@@ -241,7 +244,7 @@ trait TechniquesTest extends Specification with Loggable with BoxSpecMatcher wit
   //////////// end set-up ////////////
 
   // utility to assert the content of a resource equals some string
-  def assertResourceContent(id: TechniqueResourceId, isTemplate: Boolean, expectedContent: String) = {
+  def assertResourceContent(id: TechniqueResourceId, isTemplate: Boolean, expectedContent: String): MatchResult[Any] = {
     val ext = if (isTemplate) Some(TechniqueTemplate.templateExtension) else None
     reader
       .getResourceContent(id, ext) {
@@ -251,7 +254,7 @@ trait TechniquesTest extends Specification with Loggable with BoxSpecMatcher wit
       .runNow
   }
 
-  def compareWith(path: File, expectedPath: String, ignoreRegex: List[String] = Nil) = {
+  def compareWith(path: File, expectedPath: String, ignoreRegex: List[String] = Nil): MatchResult[File] = {
     /*
      * And compare them with expected, modulo the configId and the name
      * of the (temp) directory where we wrote them
@@ -275,7 +278,7 @@ class WriteSystemTechniquesTest extends TechniquesTest {
   import testSystemData._
   import testSystemData.data._
 
-  val parallelism = Integer.max(1, java.lang.Runtime.getRuntime.availableProcessors() / 2)
+  val parallelism: Int = Integer.max(1, java.lang.Runtime.getRuntime.availableProcessors() / 2)
 
   // uncomment to have timing information
   org.slf4j.LoggerFactory
@@ -540,7 +543,7 @@ class WriteSystemTechniques500Test extends TechniquesTest {
   import testSystemData._
   import testSystemData.data._
 
-  val parallelism = Integer.max(1, java.lang.Runtime.getRuntime.availableProcessors() / 2)
+  val parallelism: Int = Integer.max(1, java.lang.Runtime.getRuntime.availableProcessors() / 2)
 
   // uncomment to have timing information
 //  org.slf4j.LoggerFactory.getLogger("policy.generation").asInstanceOf[ch.qos.logback.classic.Logger].setLevel(ch.qos.logback.classic.Level.DEBUG)
@@ -635,14 +638,14 @@ class WriteSystemTechniqueWithRevisionTest extends TechniquesTest {
   import testSystemData._
   import testSystemData.data._
 
-  val parallelism = Integer.max(1, java.lang.Runtime.getRuntime.availableProcessors() / 2)
-  val rnc         = rootNodeConfig.copy(
+  val parallelism: Int = Integer.max(1, java.lang.Runtime.getRuntime.availableProcessors() / 2)
+  val rnc: NodeConfiguration         = rootNodeConfig.copy(
     policies = policies(rootNodeConfig.nodeInfo, List(common(root.id, allNodesInfo_cfeNode)) ++ allRootPolicies),
     nodeContext = getSystemVars(factRoot, allNodeFacts_cfeNode, groupLib),
     parameters = Set(ParameterForConfiguration("rudder_file_edit_header", "### Managed by Rudder, edit with care ###"))
   )
 
-  val cfeNC = cfeNodeConfig.copy(
+  val cfeNC: NodeConfiguration = cfeNodeConfig.copy(
     nodeInfo = cfeNode,
     policies = policies(cfeNodeConfig.nodeInfo, List(common(cfeNode.id, allNodesInfo_cfeNode), inventoryAll, gvd1, gvd2)),
     nodeContext = getSystemVars(factCfe, allNodeFacts_cfeNode, groupLib)

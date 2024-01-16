@@ -270,7 +270,7 @@ object UserRepository {
 }
 
 object InMemoryUserRepository {
-  def make() = {
+  def make(): ZIO[Any,Nothing,InMemoryUserRepository] = {
     for {
       users    <- Ref.make(Map[String, UserInfo]())
       sessions <- Ref.make(List[UserSession]())

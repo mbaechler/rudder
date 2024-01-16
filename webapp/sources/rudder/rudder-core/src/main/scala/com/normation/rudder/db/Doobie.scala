@@ -66,6 +66,7 @@ import zio.interop.catz._
 import zio.json.JsonDecoder
 import zio.json.JsonEncoder
 import zio.json.ast.Json
+import doobie.util.transactor
 
 /**
  *
@@ -75,7 +76,7 @@ import zio.json.ast.Json
  */
 class Doobie(datasource: DataSource) {
 
-  val xa = (for {
+  val xa: transactor.Transactor.Aux[Task,DataSource] = (for {
     // zio.interop.catz._ provides a `zioContextShift`
     // our transaction EC: wait for aquire/release connections, must accept blocking operations
     te <- ZIO.blockingExecutor.map(_.asExecutionContext)
@@ -155,14 +156,14 @@ object Doobie {
     case Right(a) => Full(a)
   }
   implicit class XorToBox[A](val res: Either[Throwable, A]) extends AnyVal {
-    def box = xorToBox(res)
+    def box: Box[A] = xorToBox(res)
   }
   implicit def xorBoxToBox[A](res: Either[Throwable, Box[A]]): Box[A] = res match {
     case Left(e)  => Failure(e.getMessage, Full(e), Empty)
     case Right(a) => a
   }
   implicit class XorBoxToBox[A](val res: Either[Throwable, Box[A]]) extends AnyVal {
-    def box = xorBoxToBox(res)
+    def box: Box[A] = xorBoxToBox(res)
   }
 
   /*

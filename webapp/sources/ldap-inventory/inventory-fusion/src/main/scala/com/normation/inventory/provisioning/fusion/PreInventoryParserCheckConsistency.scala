@@ -47,12 +47,13 @@ import scala.xml.Elem
 import scala.xml.NodeSeq
 import zio._
 import zio.syntax._
+import scala.xml.Node
 
 class PreInventoryParserCheckConsistency extends PreInventoryParser {
   override val name = "post_process_inventory:check_consistency"
 
   implicit class ToInconsistency(msg: String) {
-    def inconsistency = InventoryError.Inconsistency(msg).fail
+    def inconsistency: IO[InventoryError.Inconsistency,Nothing] = InventoryError.Inconsistency(msg).fail
   }
 
   /**
@@ -236,7 +237,7 @@ class PreInventoryParserCheckConsistency extends PreInventoryParser {
 
   // for check kernel version
   private[this] class AddChildrenTo(label: String, newChild: scala.xml.Node) extends scala.xml.transform.RewriteRule {
-    override def transform(n: scala.xml.Node) = n match {
+    override def transform(n: scala.xml.Node): scala.collection.Seq[Node] = n match {
       case Elem(prefix, "OPERATINGSYSTEM", attribs, scope, child @ _*) =>
         Elem(prefix, label, attribs, scope, false, child ++ newChild: _*)
       case other                                                       => other

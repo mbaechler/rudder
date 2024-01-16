@@ -105,7 +105,7 @@ object TraitTestApiFromYamlFiles {
       modules:     List[A],
       versions:    List[ApiVersion],
       userService: Option[UserService]
-  ) = {
+  ): (LiftHandler, LiftRules) = {
     implicit val userServiceImp = userService match {
       case None    =>
         new UserService {
@@ -293,7 +293,7 @@ trait TraitTestApiFromYamlFiles extends Specification with BoxSpecMatcher with J
     (response.code, resp)
   }
 // a way to only test some files in do test. Let it empty to ex on all.
-  def doTest(limitToFiles: List[String] = Nil, semanticJson: Boolean = false) = {
+  def doTest(limitToFiles: List[String] = Nil, semanticJson: Boolean = false): Fragments = {
     ///// tests ////
     val restTest = new RestTest(liftRules)
 

@@ -3,6 +3,7 @@ package com.normation.rudder.web.snippet
 import net.liftweb.http.DispatchSnippet
 import net.liftweb.http.LiftRules
 import net.liftweb.http.S
+import scala.xml.NodeBuffer
 
 /**
   * We need to provide both lift.js and page js to the client since the scripts appended by lift is hard to intercept.
@@ -16,7 +17,7 @@ class CustomPageJs extends DispatchSnippet {
 
   def dispatch: DispatchIt = { case "pageScript" => _ => pageScript }
 
-  def pageScript = {
+  def pageScript: NodeBuffer = {
     <script data-lift="with-nonce" src="/classpath/lift.js"></script>
     <script type="text/javascript" data-lift="with-nonce" src={scriptUrl(s"page/${S.renderVersion}.js")}></script>
   }

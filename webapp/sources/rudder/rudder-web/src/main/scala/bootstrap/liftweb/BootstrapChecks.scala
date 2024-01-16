@@ -41,6 +41,7 @@ import com.normation.NamedZioLogger
 import javax.servlet.UnavailableException
 import org.joda.time.Duration
 import org.joda.time.format.PeriodFormatterBuilder
+import org.joda.time.format.PeriodFormatter
 
 /**
  *
@@ -76,7 +77,7 @@ class SequentialImmediateBootStrapChecks(_checkActions: BootstrapChecks*) extend
   }
 
   override val description = "Sequence of bootstrap checks"
-  val formatter            = new PeriodFormatterBuilder()
+  val formatter: PeriodFormatter            = new PeriodFormatterBuilder()
     .appendMinutes()
     .appendSuffix(" m")
     .appendSeparator(" ")

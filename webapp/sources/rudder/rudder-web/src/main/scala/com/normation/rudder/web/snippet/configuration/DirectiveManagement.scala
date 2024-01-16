@@ -72,6 +72,8 @@ import net.liftweb.util.Helpers._
 import net.liftweb.util.Helpers.TimeSpan
 import org.joda.time.DateTime
 import scala.xml._
+import com.normation.errors
+import com.normation.rudder.domain.policies.Rule
 
 final case class JsonDirectiveRId(directiveId: String, rev: Option[String])
 
@@ -96,7 +98,7 @@ class DirectiveManagement extends DispatchSnippet with Loggable {
   private[this] val configService       = RudderConfig.configService
   private[this] val configRepo          = RudderConfig.configurationRepository
 
-  def dispatch = {
+  def dispatch: PartialFunction[String,NodeSeq => NodeSeq] = {
     case "head"                 => { _ => head() }
     case "userLibrary"          => { _ => displayDirectiveLibrary() }
     case "showDirectiveDetails" => { _ => initDirectiveDetails() }
@@ -114,13 +116,13 @@ class DirectiveManagement extends DispatchSnippet with Loggable {
 
   // we specify here what is the technique we are working on
   // technique version must be in the map of techniques in the fullActiveTechnique
-  var currentTechnique = Option.empty[(FullActiveTechnique, TechniqueVersion)]
+  var currentTechnique: Option[(FullActiveTechnique, TechniqueVersion)] = None
 
   // the state of the directive library.
   // must be reloaded "updateDirectiveLibrary()"
   // when information change (directive added/removed/modified, etc)
-  var directiveLibrary = getDirectiveLib()
-  var rules            = getRules()
+  var directiveLibrary: errors.IOResult[FullActiveTechniqueCategory] = getDirectiveLib()
+  var rules: errors.IOResult[Seq[Rule]]            = getRules()
 
   private[this] val directiveId: Box[String] = S.param("directiveId")
 
@@ -577,7 +579,7 @@ class DirectiveManagement extends DispatchSnippet with Loggable {
   def updateDirectiveForm(
       directiveInfo: Either[Directive, DirectiveId],
       oldDirective:  Option[Directive]
-  ) = {
+  ): JsCmd = {
     val directiveId = directiveInfo match {
       case Left(directive)    => directive.id
       case Right(directiveId) => directiveId

@@ -9,10 +9,11 @@ import net.liftweb.http.js.JsCmds._
 import net.liftweb.util._
 import net.liftweb.util.CanBind._
 import scala.xml.NodeSeq
+import scala.xml.Elem
 
 class CommonLayout extends DispatchSnippet with DefaultExtendableSnippet[CommonLayout] {
 
-  def mainDispatch = Map(
+  def mainDispatch: Map[String,NodeSeq => NodeSeq] = Map(
     "display" -> init
   )
 
@@ -41,7 +42,7 @@ class CommonLayout extends DispatchSnippet with DefaultExtendableSnippet[CommonL
     "#toggleMenuButton" #> toggleMenuElement
   }
 
-  val toggleMenuElement = {
+  val toggleMenuElement: Elem = {
     <a href="#" class="sidebar-toggle p-3" role="button">
       <i class="fa fa-bars"></i>
       <span class="visually-hidden">Toggle navigation</span>

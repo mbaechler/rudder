@@ -48,26 +48,27 @@ import net.liftweb.common._
 import org.junit.runner.RunWith
 import org.specs2.mutable._
 import org.specs2.runner._
+import com.typesafe.config.ConfigValue
 
 @RunWith(classOf[JUnitRunner])
 class NodePropertiesTest extends Specification with Loggable with BoxSpecMatcher {
   implicit class ForceGet(json: String) {
-    def forceParse = GenericProperty.parseValue(json) match {
+    def forceParse: ConfigValue = GenericProperty.parseValue(json) match {
       case Right(value) => value
       case Left(err)    => throw new IllegalArgumentException(s"Error in parsing value: ${err.fullMsg}")
     }
   }
 
-  val RudderP = Some(PropertyProvider.defaultPropertyProvider)
-  val P1      = Some(PropertyProvider("p1"))
-  val P2      = Some(PropertyProvider("p2"))
+  val RudderP: Some[PropertyProvider] = Some(PropertyProvider.defaultPropertyProvider)
+  val P1: Some[PropertyProvider]      = Some(PropertyProvider("p1"))
+  val P2: Some[PropertyProvider]      = Some(PropertyProvider("p2"))
 
   // just to have sequence in same order
   implicit val ord: Ordering[NodeProperty] = new Ordering[NodeProperty] {
     override def compare(x: NodeProperty, y: NodeProperty): Int = x.name.compareTo(y.name)
   }
 
-  val baseProps = List(
+  val baseProps: List[NodeProperty] = List(
     NodeProperty("none", "node".toConfigValue, None, None),
     NodeProperty("default", "default".toConfigValue, None, RudderP),
     NodeProperty("p1", "p1".toConfigValue, None, P1),

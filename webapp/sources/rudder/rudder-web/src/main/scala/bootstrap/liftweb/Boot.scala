@@ -85,6 +85,7 @@ import org.springframework.security.core.context.SecurityContextHolder
 import scala.concurrent.duration.DAYS
 import scala.concurrent.duration.Duration
 import scala.xml.NodeSeq
+import scala.util.matching.Regex
 
 /*
  * Utilities about rights
@@ -99,7 +100,7 @@ object Boot {
      * 
      * This will apply our custom CSP headers for all html tags within the page with the `with-nonce` snippet directive.
      */
-    val customCSPUrisRegexList = List(
+    val customCSPUrisRegexList: List[Regex] = List(
       "^.*/secure/utilities/healthcheck$" // healthcheck: main page
     ).map(_.r)
 
@@ -119,7 +120,7 @@ object Boot {
     implicit override def vend: List[(String, String)] = addCspHeaders(defaultHeaders)
 
     // Prevent search engine indexation
-    val defaultHeaders = ("X-Robots-Tag", "noindex, nofollow") :: LiftRules.securityRules().headers
+    val defaultHeaders: List[(String, String)] = ("X-Robots-Tag", "noindex, nofollow") :: LiftRules.securityRules().headers
 
     private val cspHeaderNames = List("Content-Security-Policy", "X-Content-Security-Policy")
 
@@ -149,7 +150,7 @@ object Boot {
       }
     }
 
-    val cspDirectives = List( // copied from lift ContentSecurityPolicy source
+    val cspDirectives: List[(String, String)] = List( // copied from lift ContentSecurityPolicy source
       "default-src" -> csp.defaultSources,
       "connect-src" -> csp.connectSources,
       "font-src"    -> csp.fontSources,
@@ -182,7 +183,7 @@ object Boot {
     }
   }
 
-  val redirection =
+  val redirection: RedirectState =
     RedirectState(() => (), "You are not authorized to access that page, please contact your administrator." -> NoticeType.Error)
 
   def userIsAllowed(redirectTo: String, requiredAuthz: AuthorizationType*): Box[LiftResponse] = {
@@ -206,7 +207,7 @@ object PluginsInfo {
 
   private[this] var _plugins = Map[PluginName, RudderPluginDef]()
 
-  def registerPlugin(plugin: RudderPluginDef) = {
+  def registerPlugin(plugin: RudderPluginDef): Unit = {
     _plugins = _plugins + (plugin.name -> plugin)
   }
 
@@ -237,7 +238,7 @@ object PluginsInfo {
 //////////
 object StaticResourceRewrite extends RestHelper {
   // prefix added to signal that the resource is cached
-  val prefix = s"cache-${RudderConfig.rudderFullVersion}"
+  val prefix: String = s"cache-${RudderConfig.rudderFullVersion}"
   def headers(others: List[(String, String)]): List[(String, String)] = {
     ("Cache-Control", "max-age=31556926, public") ::
     ("Pragma", "") ::
@@ -246,7 +247,7 @@ object StaticResourceRewrite extends RestHelper {
   }
 
   // the resource directory we want to server that way
-  val resources = Set("javascript", "style", "images", "toserve")
+  val resources: Set[String] = Set("javascript", "style", "images", "toserve")
   serve {
     case Get(prefix :: resource :: tail, req) if (resources.contains(resource)) =>
       val resourcePath = req.uri.replaceFirst(prefix + "/", "")
@@ -283,7 +284,7 @@ object FatalException {
    * UncaughtExceptionHandler.
    * Termination should be () => System.exit(1) safe in tests.
    */
-  def init(exceptions: Set[String]) = {
+  def init(exceptions: Set[String]): Unit = {
     this.fatalException = exceptions + "java.lang.Error"
 
     Thread.setDefaultUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {
@@ -322,7 +323,7 @@ object FatalException {
  */
 object UserLogout {
 
-  def cleanUpSession(session: LiftSession, endCause: String) = {
+  def cleanUpSession(session: LiftSession, endCause: String): Unit = {
     SecurityContextHolder.getContext.getAuthentication match {
       case null => // impossible to know who is login out
         ApplicationLogger.debug("Logout called for a null authentication, can not log user out")

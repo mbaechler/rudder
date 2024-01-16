@@ -43,11 +43,12 @@ import com.normation.rudder.migration.MigrableEntity
 import net.liftweb.common.Failure
 import net.liftweb.common.Logger
 import org.slf4j.LoggerFactory
+import org.slf4j
 
 final case class MigrationLogger(
     goal: Int = XML_CURRENT_FILE_FORMAT
 ) extends Logger {
-  override protected def _logger = LoggerFactory.getLogger("migration")
+  override protected def _logger: slf4j.Logger = LoggerFactory.getLogger("migration")
 
   val defaultErrorLogger:   Failure => Unit             = { f =>
     _logger.error(f.messageChain)

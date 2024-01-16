@@ -99,7 +99,7 @@ class ControlXmlFileFormatMigration_5_6(
     override val previousMigrationController: Option[ControlXmlFileFormatMigration],
     val batchSize:                            Int = 1000
 ) extends ControlXmlFileFormatMigration with Migration_5_6_Definition {
-  override val batchMigrators = (
+  override val batchMigrators: List[BatchElementMigration[_ <: MigrableEntity] with Migration_5_6_Definition] = (
     new EventLogsMigration_5_6(doobie, batchSize)
       :: new ChangeRequestsMigration_5_6(doobie, batchSize)
       :: Nil
@@ -116,7 +116,7 @@ class EventLogsMigration_5_6(
     override val doobie:    Doobie,
     override val batchSize: Int = 1000
 ) extends EventLogsMigration with Migration_5_6_Definition {
-  override val individualMigration = new IndividualElementMigration[MigrationEventLog] with Migration_5_6_Definition {
+  override val individualMigration: IndividualElementMigration[MigrationEventLog] with Migration_5_6_Definition = new IndividualElementMigration[MigrationEventLog] with Migration_5_6_Definition {
 
     def migrate(eventLog: MigrationEventLog): Box[MigrationEventLog] = {
       val MigrationEventLog(id, eventType, data) = eventLog
@@ -157,7 +157,7 @@ class ChangeRequestsMigration_5_6(
     override val doobie:    Doobie,
     override val batchSize: Int = 1000
 ) extends ChangeRequestsMigration with Migration_5_6_Definition {
-  override val individualMigration = new IndividualElementMigration[MigrationChangeRequest] with Migration_5_6_Definition {
+  override val individualMigration: IndividualElementMigration[MigrationChangeRequest] with Migration_5_6_Definition = new IndividualElementMigration[MigrationChangeRequest] with Migration_5_6_Definition {
     def migrate(cr: MigrationChangeRequest): Box[MigrationChangeRequest] = {
 
       val MigrationChangeRequest(id, name, content) = cr

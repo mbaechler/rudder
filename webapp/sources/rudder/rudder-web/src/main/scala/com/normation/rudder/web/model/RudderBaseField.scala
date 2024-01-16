@@ -69,13 +69,13 @@ class FormTracker(private[this] var _fields: List[RudderBaseField] = Nil) extend
 
   def formErrors: List[FormError] = _formErrors
 
-  def addFormError(error: FormError) = _formErrors ::= error
+  def addFormError(error: FormError): Unit = _formErrors ::= error
 
   /**
    * A form has error if it has global error or one of the registered
    * fields has error
    */
-  def hasErrors = {
+  def hasErrors: Boolean = {
     _formErrors.nonEmpty || _fields.exists(_.hasErrors)
   }
 
@@ -132,7 +132,7 @@ abstract class RudderBaseField extends BaseField {
   def labelExtensions: NodeSeq = NodeSeq.Empty
 
   ///// fields errors //////
-  protected var _errors = List.empty[FieldError]
+  protected var _errors: List[FieldError] = Nil
   def errors            = _errors
   def hasErrors         = _errors.nonEmpty
   def cleanErrors: Unit = _errors = Nil
@@ -163,22 +163,22 @@ abstract class RudderBaseField extends BaseField {
     }
   }
   // optionnaly override validate to add validation functions
-  override def validations = List.empty[ValueType => List[FieldError]]
+  override def validations: List[ValueType => List[FieldError]] = Nil
   // override to add setFilter
-  override def setFilter = List.empty[ValueType => ValueType]
+  override def setFilter: List[ValueType => ValueType] = Nil
 
   ////// other method //////
 
   protected lazy val id = Helpers.nextFuncName
   override lazy val uniqueFieldId: Box[String]     = Full(id)
   override lazy val fieldId:       Option[NodeSeq] = Some(Text(id))
-  override def toString = "[%s:%s]".format(name, get.toString)
-  override def validate = {
+  override def toString: String = "[%s:%s]".format(name, get.toString)
+  override def validate: List[FieldError] = {
     _errors = validations.flatMap(v => v(this.get))
     _errors
   }
 
-  override def toForm = Full(toForm_!)
+  override def toForm: Full[NodeSeq] = Full(toForm_!)
   def toForm_!        = {
     (
       "field-label" #> displayHtml
@@ -212,7 +212,7 @@ abstract class RudderBaseField extends BaseField {
     )
   }
 
-  def readOnlyValue = {
+  def readOnlyValue: Elem = {
     <div class="row wbBaseField form-group readonly-field">
       <label class={s"${labelClassName} wbBaseFieldLabel"}>{displayHtml}</label>
       <div>
@@ -315,7 +315,7 @@ class WBRadioField(
     else
       Empty
   }
-  val parameters = ("class", "radio") :: {
+  val parameters: List[(String, String)] = ("class", "radio") :: {
     tabindex match {
       case Some(i) => ("tabindex", i.toString) :: Nil
       case None    => Nil

@@ -49,6 +49,7 @@ import org.specs2.mutable._
 import org.specs2.runner.JUnitRunner
 import zio.{System => _, _}
 import zio.test._
+import com.normation.errors
 
 @RunWith(classOf[JUnitRunner])
 class NodeCountHistorizationTest extends Specification with BeforeAfter {
@@ -60,10 +61,10 @@ class NodeCountHistorizationTest extends Specification with BeforeAfter {
     }
   }
 
-  lazy val startDate = DateTime.now()
-  lazy val rootDir   = s"/tmp/rudder-test-nodecount/${startDate.toString(ISODateTimeFormat.dateTime())}"
+  lazy val startDate: DateTime = DateTime.now()
+  lazy val rootDir: String   = s"/tmp/rudder-test-nodecount/${startDate.toString(ISODateTimeFormat.dateTime())}"
 
-  val rudder = CommitInformation(
+  val rudder: CommitInformation = CommitInformation(
     "rudder-a32c5441-daa5-4244-8792-17f1a43cd9bd",
     Some("rudder+a32c5441-daa5-4244-8792-17f1a43cd9bd@rudder.io"),
     false
@@ -79,7 +80,7 @@ class NodeCountHistorizationTest extends Specification with BeforeAfter {
     }
   }
 
-  def makeService(rootDir: String, refMetrics: Ref[FrequentNodeMetrics]) = for {
+  def makeService(rootDir: String, refMetrics: Ref[FrequentNodeMetrics]): ZIO[Any,errors.RudderError,HistorizeNodeCountService] = for {
     gitLogger <- CommitLogServiceImpl.make(rootDir)
     writer    <- WriteNodeCSV.make(rootDir, ';', "yyyy-MM")
   } yield {

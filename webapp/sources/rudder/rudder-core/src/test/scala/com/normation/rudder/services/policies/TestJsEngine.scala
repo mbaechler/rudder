@@ -54,6 +54,7 @@ import scala.concurrent.duration.FiniteDuration
 import scala.util.matching.Regex
 import zio._
 import zio.syntax._
+import com.normation.cfclerk.domain.InputVariable
 
 /*
  * This class test the JsEngine.
@@ -66,11 +67,11 @@ import zio.syntax._
 class TestJsEngine extends Specification {
 
   val hashPrefix   = "test"
-  val variableSpec = InputVariableSpec(hashPrefix, "", id = None)
+  val variableSpec: InputVariableSpec = InputVariableSpec(hashPrefix, "", id = None)
 
-  val noscriptVariable     = variableSpec.toVariable(Seq("simple ${rudder} value"))
-  val get4scriptVariable   = variableSpec.toVariable(Seq(s"${JsEngine.EVALJS} 2+2"))
-  val infiniteloopVariable = variableSpec.toVariable(Seq(s"${JsEngine.EVALJS}while(true){}"))
+  val noscriptVariable: InputVariable     = variableSpec.toVariable(Seq("simple ${rudder} value"))
+  val get4scriptVariable: InputVariable   = variableSpec.toVariable(Seq(s"${JsEngine.EVALJS} 2+2"))
+  val infiniteloopVariable: InputVariable = variableSpec.toVariable(Seq(s"${JsEngine.EVALJS}while(true){}"))
 
   /**
    * A failure matcher utility that pattern matches the result message

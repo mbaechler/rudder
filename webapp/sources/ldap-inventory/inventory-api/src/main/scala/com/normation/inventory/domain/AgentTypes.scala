@@ -102,9 +102,9 @@ object AgentType {
     override def oldShortName                                    = "nova"
     override def displayName                                     = "CFEngine Enterprise"
     override def toRulesPath                                     = "/cfengine-nova"
-    override def inventoryAgentNames                             = Set("cfengine-nova", "nova")
+    override def inventoryAgentNames: Set[String]                             = Set("cfengine-nova", "nova")
     override val inventorySoftwareName                           = "cfengine nova"
-    override def toAgentVersionName(softwareVersionName: String) = s"cfe-${softwareVersionName}"
+    override def toAgentVersionName(softwareVersionName: String): String = s"cfe-${softwareVersionName}"
     override val defaultPolicyExtension                          = ".cf"
   }
 
@@ -113,7 +113,7 @@ object AgentType {
     override def oldShortName                                    = "community"
     override def displayName                                     = "Rudder"
     override def toRulesPath                                     = "/cfengine-community"
-    override def inventoryAgentNames                             = Set("cfengine-community", "community")
+    override def inventoryAgentNames: Set[String]                             = Set("cfengine-community", "community")
     override val inventorySoftwareName                           = "rudder-agent"
     override def toAgentVersionName(softwareVersionName: String) = softwareVersionName
     override val defaultPolicyExtension                          = ".cf"
@@ -124,14 +124,14 @@ object AgentType {
     override def oldShortName                                    = "dsc"
     override def displayName                                     = "Rudder Windows"
     override def toRulesPath                                     = "/dsc"
-    override def inventoryAgentNames                             = Set("dsc")
+    override def inventoryAgentNames: Set[String]                             = Set("dsc")
     override val inventorySoftwareName                           = "Rudder agent (DSC)"
     override def toAgentVersionName(softwareVersionName: String) = softwareVersionName
     override val defaultPolicyExtension                          =
       "" // no extension - .ps1 extension is already in the template name (more by convention than anything else)
   }
 
-  def allValues = ca.mrvisser.sealerate.values[AgentType]
+  def allValues: Set[AgentType] = ca.mrvisser.sealerate.values[AgentType]
 
   def fromValue(value: String): Either[InventoryError.AgentType, AgentType] = {
     // Check if the value is correct compared to the agent tag name (fusion > 2.3) or its toString value (added by CFEngine)
@@ -168,7 +168,7 @@ object AgentInfoSerialisation {
 
   implicit class ToJson(val agent: AgentInfo) extends AnyVal {
 
-    def toJsonString = {
+    def toJsonString: String = {
       compactRender(
         ("agentType"       -> agent.agentType.id)
         ~ ("version"       -> agent.version.map(_.value))

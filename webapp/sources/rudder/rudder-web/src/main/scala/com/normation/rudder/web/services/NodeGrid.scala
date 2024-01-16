@@ -58,9 +58,10 @@ import net.liftweb.json._
 import net.liftweb.util.Helpers._
 import org.slf4j.LoggerFactory
 import scala.xml._
+import org.slf4j
 
 object NodeGrid {
-  val logger = LoggerFactory.getLogger(classOf[NodeGrid])
+  val logger: slf4j.Logger = LoggerFactory.getLogger(classOf[NodeGrid])
 }
 
 /**
@@ -100,7 +101,7 @@ final class NodeGrid(
     Script(initJs(tableId, columns, aoColumns, searchable, paginate))
   }
 
-  def jsVarNameForId(tableId: String) = "oTable" + tableId
+  def jsVarNameForId(tableId: String): String = "oTable" + tableId
 
   /*
    * Init Javascript for the table with ID

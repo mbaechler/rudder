@@ -51,11 +51,13 @@ import org.junit.runner.RunWith
 import org.slf4j.LoggerFactory
 import org.specs2.mutable.Specification
 import org.specs2.runner.JUnitRunner
+import com.normation.inventory.domain.NodeId
+import com.normation.rudder.domain.nodes.NodeInfo
 
 @RunWith(classOf[JUnitRunner])
 class TestWriteNodeCertificatesPem extends Specification {
 
-  val cert1 = """-----BEGIN CERTIFICATE-----
+  val cert1: String = """-----BEGIN CERTIFICATE-----
                 |MIIFgTCCA2mgAwIBAgIUXpY2lv7l+hkx4mVP324d9O1qJh0wDQYJKoZIhvcNAQEL
                 |BQAwUDEYMBYGA1UEAwwPV0lOLUdOR0RIUFZIVlROMTQwMgYKCZImiZPyLGQBAQwk
                 |YjczZWE0NTEtYzQyYS00MjBkLWE1NDAtNDdiNDQ1ZTU4MzEzMB4XDTE5MDcxMjE2
@@ -88,7 +90,7 @@ class TestWriteNodeCertificatesPem extends Specification {
                 |ootapja6lKOaIpqp0kmmYN7gFIhp
                 |-----END CERTIFICATE-----""".stripMargin
 
-  val cert2 = """-----BEGIN CERTIFICATE-----
+  val cert2: String = """-----BEGIN CERTIFICATE-----
                 |MIIFgTCCA2mgAwIBAgIUTOUJeR7kGBPch+AvEUcfL+fFP6wwDQYJKoZIhvcNAQEL
                 |BQAwUDEYMBYGA1UEAwwPV0lOLUdOR0RIUFZIVlROMTQwMgYKCZImiZPyLGQBAQwk
                 |YjczZWE0NTEtYzQyYS00MjBkLWE1NDAtNDdiNDQ1ZTU4MzEzMB4XDTE5MDcxMjE2
@@ -121,13 +123,13 @@ class TestWriteNodeCertificatesPem extends Specification {
                 |TZEW7+Ri43DsMyRwYiCafuVThL+J
                 |-----END CERTIFICATE-----""".stripMargin
 
-  val root  = NodeConfigData.root.modify(_.agentsName.each.securityToken).setTo(PublicKey(NodeConfigData.PUBKEY))
-  val node1 = NodeConfigData.node1.modify(_.agentsName.each.securityToken).setTo(Certificate(cert1))
-  val node2 = NodeConfigData.node2.modify(_.agentsName.each.securityToken).setTo(Certificate(cert2))
+  val root: NodeInfo  = NodeConfigData.root.modify(_.agentsName.each.securityToken).setTo(PublicKey(NodeConfigData.PUBKEY))
+  val node1: NodeInfo = NodeConfigData.node1.modify(_.agentsName.each.securityToken).setTo(Certificate(cert1))
+  val node2: NodeInfo = NodeConfigData.node2.modify(_.agentsName.each.securityToken).setTo(Certificate(cert2))
 
-  val nodes = (root :: node1 :: node2 :: Nil).map(x => (x.id, x)).toMap
+  val nodes: Map[NodeId,NodeInfo] = (root :: node1 :: node2 :: Nil).map(x => (x.id, x)).toMap
 
-  val dest = File("/tmp/rudder-test-allnodescerts.pem")
+  val dest: File = File("/tmp/rudder-test-allnodescerts.pem")
 
   dest.deleteOnExit()
 

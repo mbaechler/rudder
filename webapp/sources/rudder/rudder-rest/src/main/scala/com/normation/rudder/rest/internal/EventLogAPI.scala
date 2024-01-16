@@ -62,6 +62,7 @@ import net.liftweb.json.JValue
 import net.liftweb.util.Helpers.tryo
 import org.joda.time.DateTime
 import org.joda.time.format.DateTimeFormat
+import net.liftweb.json.JsonAST
 
 class EventLogAPI(
     repos:              EventLogRepository,
@@ -84,7 +85,7 @@ class EventLogAPI(
     ~ ("hasDetails"  -> (if (event.details != <entry></entry>) true else false)))
   }
 
-  def errorFormatter(errorMessage: String) = {
+  def errorFormatter(errorMessage: String): JsonAST.JObject = {
     (("draw"             -> 0)
     ~ ("recordsTotal"    -> 0)
     ~ ("recordsFiltered" -> 0)

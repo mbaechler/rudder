@@ -146,7 +146,7 @@ class ShowNodeDetailsFromNode(
     }
   }.toBox
 
-  val emptyInterval = AgentRunInterval(Some(false), 5, 0, 0, 0) // if everything fails, we fall back to the default entry
+  val emptyInterval: AgentRunInterval = AgentRunInterval(Some(false), 5, 0, 0, 0) // if everything fails, we fall back to the default entry
   def getSchedule(nodeFact: CoreNodeFact): Box[AgentRunInterval] = {
     Full(nodeFact.rudderSettings.reportingConfiguration.agentRunInterval.getOrElse(getGlobalSchedule().getOrElse(emptyInterval)))
   }
@@ -163,7 +163,7 @@ class ShowNodeDetailsFromNode(
     }).toBox
   }
 
-  def mainDispatch = {
+  def mainDispatch: Map[String,NodeSeq => NodeSeq] = {
     implicit val qc: QueryContext = CurrentUser.queryContext
 
     Map(

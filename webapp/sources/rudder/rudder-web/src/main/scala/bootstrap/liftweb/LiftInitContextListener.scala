@@ -49,6 +49,7 @@ import org.springframework.core.io.{ClassPathResource => CPResource}
 import org.springframework.core.io.{FileSystemResource => FSResource}
 import org.springframework.web.context.ContextLoaderListener
 import org.springframework.web.context.support.WebApplicationContextUtils
+import java.net.URL
 
 /**
  * A context loader listener for initializing Spring webapp context
@@ -68,7 +69,7 @@ class LiftInitContextListener extends ContextLoaderListener {
   val JVM_CONFIG_FILE_KEY      = "logback.configurationFile"
   val DEFAULT_CONFIG_FILE_NAME = "logback.xml"
 
-  val logbackFile = System.getProperty(JVM_CONFIG_FILE_KEY) match {
+  val logbackFile: URL = System.getProperty(JVM_CONFIG_FILE_KEY) match {
     case null | "" => // use default location in classpath
       val path = new CPResource(DEFAULT_CONFIG_FILE_NAME).getURL
       println("JVM property -D%s is not defined, use configuration file in classpath: /%s".format(JVM_CONFIG_FILE_KEY, path))

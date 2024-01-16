@@ -55,6 +55,7 @@ import org.junit.runner._
 import org.specs2.mutable._
 import org.specs2.runner._
 import scala.io.Source
+import org.joda.time.format.DateTimeFormatter
 
 /**
  *
@@ -78,7 +79,7 @@ import scala.io.Source
  */
 object PgOptMillisDateTimeParser {
 
-  val pgDateTimeFormater = (
+  val pgDateTimeFormater: DateTimeFormatter = (
     (new DateTimeFormatterBuilder())
       .appendYear(4, 4)
       .appendLiteral("-")

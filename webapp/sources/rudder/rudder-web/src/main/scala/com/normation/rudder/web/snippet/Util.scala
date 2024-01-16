@@ -41,9 +41,10 @@ import net.liftweb.http._ // For implicits
 import org.slf4j.LoggerFactory
 //lift std import
 import scala.xml._
+import org.slf4j.Logger
 
 object Util {
-  val logger = LoggerFactory.getLogger(classOf[Util])
+  val logger: Logger = LoggerFactory.getLogger(classOf[Util])
 }
 
 class Util {

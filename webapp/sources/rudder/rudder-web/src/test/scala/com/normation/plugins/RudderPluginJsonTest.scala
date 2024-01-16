@@ -44,17 +44,18 @@ import org.joda.time.format.ISODateTimeFormat
 import org.junit.runner.RunWith
 import org.specs2.mutable._
 import org.specs2.runner.JUnitRunner
+import com.normation.utils.Version
 
 @RunWith(classOf[JUnitRunner])
 class RudderPluginJsonTest extends Specification {
   implicit class ForceParse(s: String) {
-    def toVersion = ParseVersion.parse(s) match {
+    def toVersion: Version = ParseVersion.parse(s) match {
       case Left(err) => throw new IllegalArgumentException(s"Can not parse '${s}' as a version in test: ${err}")
       case Right(v)  => v
     }
   }
 
-  val index_json = """{
+  val index_json: String = """{
                      |  "plugins": {
                      |    "rudder-plugin-branding": {
                      |      "files": [
@@ -114,7 +115,7 @@ class RudderPluginJsonTest extends Specification {
                      |  }
                      |}""".stripMargin
 
-  val expected = List(
+  val expected: List[JsonPluginDef] = List(
     JsonPluginDef(
       "rudder-plugin-branding",
       PluginVersion("5.0.0".toVersion, "1.3.0".toVersion),
