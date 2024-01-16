@@ -69,8 +69,8 @@ import org.specs2.runner.JUnitRunner
 
 @RunWith(classOf[JUnitRunner])
 class ExpectedReportTest extends Specification {
-  implicit private[this] def r2n(s: String):  RuleId           = RuleId(RuleUid(s))
-  implicit private[this] def d2n(s: String):  DirectiveId      = DirectiveId(DirectiveUid(s), GitVersion.DEFAULT_REV)
+  implicit private[this] def r2n(s: String): RuleId      = RuleId(RuleUid(s))
+  implicit private[this] def d2n(s: String): DirectiveId = DirectiveId(DirectiveUid(s), GitVersion.DEFAULT_REV)
   implicit private[this] def s2tv(s: String): TechniqueVersion = TechniqueVersion
     .parse(s)
     .getOrElse(

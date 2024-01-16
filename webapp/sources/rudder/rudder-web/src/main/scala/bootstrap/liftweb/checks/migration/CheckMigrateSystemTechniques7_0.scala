@@ -168,7 +168,7 @@ object SystemConfig {
     val dn = new DN(s"ruleTarget=${id},groupCategoryId=SystemGroups,groupCategoryId=GroupRoot,ou=Rudder,cn=rudder-configuration")
   }
   final case class R(id: String) {
-    val dn                      = new DN(s"ruleId=${id},${ruleBaseDn.toString}")
+    val dn = new DN(s"ruleId=${id},${ruleBaseDn.toString}")
     def dnWithPrefix(s: String) = new DN(s"ruleId=${s}${id},${ruleBaseDn.toString}")
   }
 
@@ -195,7 +195,7 @@ object SystemConfig {
     def dirCommon(policyServerId: NodeId): DirectiveCommon = DirectiveCommon(policyServerId, techniqueCommon)
 
     def ruleDistributePolicy(policyServerId: NodeId): R = R(s"${policyServerId.value}-DP")
-    def ruleHasPolicyServer(policyServerId: NodeId):  R = R(s"hasPolicyServer-${policyServerId.value}")
+    def ruleHasPolicyServer(policyServerId:  NodeId): R = R(s"hasPolicyServer-${policyServerId.value}")
 
     // for root
     val rootDirCommon:           DirectiveCommon = dirCommon(Constants.ROOT_POLICY_SERVER_ID)
@@ -204,7 +204,7 @@ object SystemConfig {
   }
 
   object v7_x {
-    def rulePolicyServer(policyServerId: NodeId):    R = R(s"policy-server-${policyServerId.value}")
+    def rulePolicyServer(policyServerId:    NodeId): R = R(s"policy-server-${policyServerId.value}")
     def ruleHasPolicyServer(policyServerId: NodeId): R = R(s"hasPolicyServer-${policyServerId.value}")
   }
 }

@@ -530,7 +530,7 @@ class ClassicTechniqueWriter(basePath: String, parameterTypeService: ParameterTy
   // We need to add a reporting bundle for this method to generate a na report for any method with a condition != any/cfengine (which ~= true
   def truthyCondition(condition: String): Boolean = condition.isEmpty || condition == "any" || condition == "cfengine-community"
   def methodCallNeedReporting(methods: Map[BundleName, GenericMethod], parentBlock: List[MethodBlock])(
-      call:                            MethodCall
+      call: MethodCall
   ): Boolean = {
     val condition = formatCondition(call, parentBlock)
     methods
@@ -540,7 +540,7 @@ class ClassicTechniqueWriter(basePath: String, parameterTypeService: ParameterTy
   }
 
   def elemNeedReportingBundle(methods: Map[BundleName, GenericMethod], parentBlock: List[MethodBlock])(
-      elem:                            MethodElem
+      elem: MethodElem
   ): Boolean = {
     elem match {
       case c: MethodCall  => methodCallNeedReporting(methods, parentBlock)(c)
@@ -565,7 +565,7 @@ class ClassicTechniqueWriter(basePath: String, parameterTypeService: ParameterTy
   }
 
   // regex to match double quote characters not preceded by a backslash, and backslash not preceded by backslash or not followed by a backslash or a quote (simple or double)
-  def escapeCFEngineString(value: String):                                   String = value.replaceAll("""\\""", """\\\\""").replaceAll(""""""", """\\"""")
+  def escapeCFEngineString(value: String): String = value.replaceAll("""\\""", """\\\\""").replaceAll(""""""", """\\"""")
   def reportingContext(methodCall: MethodCall, classParameterValue: String): String = {
     val component = escapeCFEngineString(methodCall.component)
     val value     = escapeCFEngineString(classParameterValue)
@@ -921,7 +921,7 @@ class DSCTechniqueWriter(
     s"techniques/${technique.category}/${technique.bundleName.value}/${technique.version.value}/technique.ps1"
 
   def formatDscMethodBlock(techniqueName: String, methods: Map[BundleName, GenericMethod], parentBlocks: List[MethodBlock])(
-      method:                             MethodElem
+      method: MethodElem
   ): PureResult[List[String]] = {
     method match {
       case c: MethodCall =>

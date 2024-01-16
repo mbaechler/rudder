@@ -389,7 +389,7 @@ class ComplianceAPIService(
 
   private[this] def components(
       nodeInfos: Map[NodeId, NodeInfo]
-  )(name:        String, nodeComponents: List[(NodeId, ComponentStatusReport)]): List[ByRuleComponentCompliance] = {
+  )(name: String, nodeComponents: List[(NodeId, ComponentStatusReport)]): List[ByRuleComponentCompliance] = {
 
     val (groupsComponents, uniqueComponents) = nodeComponents.partitionMap {
       case (a, b: BlockStatusReport) => Left((a, b))

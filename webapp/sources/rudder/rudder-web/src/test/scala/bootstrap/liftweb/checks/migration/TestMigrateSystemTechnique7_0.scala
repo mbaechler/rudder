@@ -168,34 +168,34 @@ class TestMigrateSystemTechniques7_0 extends Specification {
     .setTo("relay1.rudder.test")
 
   val nodeInfoService: NodeInfoService = new NodeInfoService {
-    override def getAll():                              IOResult[Map[NodeId, NodeInfo]] = List(root, relay1).map(x => (x.id, x)).toMap.succeed
-    override def getNodeInfo(nodeId: NodeId):           IOResult[Option[NodeInfo]]      = ???
-    override def getNodeInfos(nodeIds: Set[NodeId]):    IOResult[Set[NodeInfo]]         = ???
-    override def getNodeInfosSeq(nodesId: Seq[NodeId]): IOResult[Seq[NodeInfo]]         = ???
-    override def getNumberOfManagedNodes:               Int                             = ???
-    override def getAllNodesIds():                      IOResult[Set[NodeId]]           = ???
-    override def getAllNodes():                         IOResult[Map[NodeId, Node]]     = ???
-    override def getAllSystemNodeIds():                 IOResult[Seq[NodeId]]           = ???
-    override def getPendingNodeInfos():                 IOResult[Map[NodeId, NodeInfo]] = ???
-    override def getPendingNodeInfo(nodeId: NodeId):    IOResult[Option[NodeInfo]]      = ???
-    override def getDeletedNodeInfos():                 IOResult[Map[NodeId, NodeInfo]] = ???
-    override def getDeletedNodeInfo(nodeId: NodeId):    IOResult[Option[NodeInfo]]      = ???
-    override def getAllNodeInfos():                     IOResult[Seq[NodeInfo]]         = ???
+    override def getAll(): IOResult[Map[NodeId, NodeInfo]] = List(root, relay1).map(x => (x.id, x)).toMap.succeed
+    override def getNodeInfo(nodeId:      NodeId):      IOResult[Option[NodeInfo]] = ???
+    override def getNodeInfos(nodeIds:    Set[NodeId]): IOResult[Set[NodeInfo]]    = ???
+    override def getNodeInfosSeq(nodesId: Seq[NodeId]): IOResult[Seq[NodeInfo]]    = ???
+    override def getNumberOfManagedNodes: Int                             = ???
+    override def getAllNodesIds():        IOResult[Set[NodeId]]           = ???
+    override def getAllNodes():           IOResult[Map[NodeId, Node]]     = ???
+    override def getAllSystemNodeIds():   IOResult[Seq[NodeId]]           = ???
+    override def getPendingNodeInfos():   IOResult[Map[NodeId, NodeInfo]] = ???
+    override def getPendingNodeInfo(nodeId: NodeId): IOResult[Option[NodeInfo]] = ???
+    override def getDeletedNodeInfos(): IOResult[Map[NodeId, NodeInfo]] = ???
+    override def getDeletedNodeInfo(nodeId: NodeId): IOResult[Option[NodeInfo]] = ???
+    override def getAllNodeInfos(): IOResult[Seq[NodeInfo]] = ???
   }
 
   val rudderDit = new RudderDit(new DN("ou=Rudder,cn=rudder-configuration"))
 
   val eventLogRepos: EventLogRepository = new EventLogRepository {
-    override def saveEventLog(modId: ModificationId, eventLog: EventLog):                        IOResult[EventLog]                                    = eventLog.succeed
-    override def eventLogFactory:                                                                EventLogFactory                                       = ???
+    override def saveEventLog(modId: ModificationId, eventLog: EventLog): IOResult[EventLog] = eventLog.succeed
+    override def eventLogFactory: EventLogFactory = ???
     override def getEventLogByCriteria(
         criteria:       Option[Fragment],
         limit:          Option[Int],
         orderBy:        List[Fragment],
         extendedFilter: Option[Fragment]
     ): IOResult[Seq[EventLog]] = ???
-    override def getEventLogById(id: Long):                                                      IOResult[EventLog]                                    = ???
-    override def getEventLogCount(criteria: Option[Fragment], extendedFilter: Option[Fragment]): IOResult[Long]                                        = ???
+    override def getEventLogById(id: Long): IOResult[EventLog] = ???
+    override def getEventLogCount(criteria:       Option[Fragment], extendedFilter: Option[Fragment]): IOResult[Long] = ???
     override def getEventLogByChangeRequest(
         changeRequest:   ChangeRequestId,
         xpath:           String,
@@ -203,7 +203,7 @@ class TestMigrateSystemTechniques7_0 extends Specification {
         orderBy:         Option[String],
         eventTypeFilter: List[EventLogFilter]
     ): IOResult[Vector[EventLog]] = ???
-    override def getEventLogWithChangeRequest(id: Int):                                          IOResult[Option[(EventLog, Option[ChangeRequestId])]] = ???
+    override def getEventLogWithChangeRequest(id: Int): IOResult[Option[(EventLog, Option[ChangeRequestId])]] = ???
     override def getLastEventByChangeRequest(
         xpath:           String,
         eventTypeFilter: List[EventLogFilter]
@@ -256,7 +256,7 @@ class TestMigrateSystemTechniques7_0 extends Specification {
     LDAP_INVENTORIES_SOFTWARE_BASEDN,
     "Accepted inventories"
   )
-  def DN(rdn: String, parent: DN)                         = new DN(new RDN(rdn), parent)
+  def DN(rdn: String, parent: DN) = new DN(new RDN(rdn), parent)
   private[this] lazy val LDAP_BASEDN                      = new DN("cn=rudder-configuration")
   private[this] lazy val LDAP_INVENTORIES_BASEDN          = DN("ou=Inventories", LDAP_BASEDN)
   private[this] lazy val LDAP_INVENTORIES_SOFTWARE_BASEDN = LDAP_INVENTORIES_BASEDN
@@ -349,13 +349,13 @@ class TestMigrateSystemTechniques7_0 extends Specification {
     "metadata.xml"
   )
   lazy val configurationRepository: ConfigurationRepository = new ConfigurationRepository {
-    override def getTechnique(id: TechniqueId):              IOResult[Option[(Chunk[TechniqueCategoryName], Technique)]] =
+    override def getTechnique(id: TechniqueId): IOResult[Option[(Chunk[TechniqueCategoryName], Technique)]] =
       testEnv.techniqueRepository.getLastTechniqueByName(id.name).map((Chunk.empty, _)).succeed
-    override def getDirective(id: DirectiveId):              IOResult[Option[ActiveDirective]]                           = ???
-    override def getDirectiveLibrary(ids: Set[DirectiveId]): IOResult[FullActiveTechniqueCategory]                       = ???
-    override def getDirectiveRevision(uid: DirectiveUid):    IOResult[List[GitVersion.RevisionInfo]]                     = ???
-    override def getRule(id: RuleId):                        IOResult[Option[Rule]]                                      = ???
-    override def getGroup(id: NodeGroupId):                  IOResult[Option[GroupAndCat]]                               = ???
+    override def getDirective(id:          DirectiveId):      IOResult[Option[ActiveDirective]]       = ???
+    override def getDirectiveLibrary(ids:  Set[DirectiveId]): IOResult[FullActiveTechniqueCategory]   = ???
+    override def getDirectiveRevision(uid: DirectiveUid):     IOResult[List[GitVersion.RevisionInfo]] = ???
+    override def getRule(id:               RuleId):           IOResult[Option[Rule]]                  = ???
+    override def getGroup(id:              NodeGroupId):      IOResult[Option[GroupAndCat]]           = ???
   }
   private[this] lazy val roLdapDirectiveRepository = new RoLDAPDirectiveRepository(
     rudderDit,

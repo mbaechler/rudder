@@ -264,8 +264,8 @@ object NodeInfoServiceCached {
 
   // utility class to move node updates around
   final case class NodeUpdates(
-      updated:    Buffer[LDAPNodeInfo] = Buffer(),
-      nodeErrors: Buffer[String] =
+      updated:         Buffer[LDAPNodeInfo] = Buffer(),
+      nodeErrors:      Buffer[String] =
         Buffer(), // that's actually nodeId, but we are in perf/mem sensitive part and avoid object instanciation
 
       containerErrors: Buffer[String] = Buffer() // that's actually a container DN
@@ -636,7 +636,7 @@ trait NodeInfoServiceCached extends NodeInfoService with NamedZioLogger with Cac
    * That's the method that do all the logic
    */
   private[this] def withUpToDateCache[T](
-      label:  String
+      label: String
   )(useCache: Map[NodeId, (LDAPNodeInfo, NodeInfo)] => IOResult[T]): IOResult[T] = {
     /*
      * Get all relevant info from backend along with the

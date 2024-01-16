@@ -1314,7 +1314,7 @@ class TestQueryProcessor extends Loggable {
   @Test def nodePropertiesFailingReq(): Unit = {
     def forceParse(q: String) = parser(q).openOrThrowException("Parsing the request must be ok for that test")
     // Failing request, see #10570
-    val failingRegexRequests  = {
+    val failingRegexRequests = {
       """
       { "select":"node", "where":[
         { "objectType":"serializedNodeProperty", "attribute":"name.value", "comparator":"regex", "value":"f{o}o" }

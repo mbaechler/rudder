@@ -221,7 +221,7 @@ final class NodeGrid(
         (if (isEmpty(server.hostname)) "(Missing host name) " + server.id.value else escape(server.hostname))
       } &
       ".fullos *" #> escape(server.osFullName) &
-      ".ips *" #> ((server.ips.flatMap { ip => <div class="ip">{escape(ip)}</div> }): NodeSeq) & // TODO : enhance this
+      ".ips *" #> ((server.ips.flatMap(ip => <div class="ip">{escape(ip)}</div>)):             NodeSeq) & // TODO : enhance this
       ".other" #> ((columns flatMap { c => <td style="overflow:hidden">{c._2(server)}</td> }): NodeSeq) &
       ".nodetr [jsuuid]" #> { server.id.value.replaceAll("-", "") } &
       ".nodetr [nodeid]" #> { server.id.value } &

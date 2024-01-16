@@ -120,9 +120,9 @@ class AsyncComplianceService(
       val nodeIds: Set[NodeId],
       val ruleIds: Set[RuleId]
   ) extends ComplianceBy[NodeId] {
-    def value(key: NodeId): String  = key.value
-    val jsContainer:        String  = "nodeSystemCompliances"
-    def empty:              Boolean = nodeIds.isEmpty
+    def value(key: NodeId): String = key.value
+    val jsContainer: String  = "nodeSystemCompliances"
+    def empty:       Boolean = nodeIds.isEmpty
 
     // Compute compliance
     def computeCompliance: Box[Map[NodeId, Option[ComplianceLevel]]] = {
@@ -142,9 +142,9 @@ class AsyncComplianceService(
       val nodeIds: Set[NodeId],
       val ruleIds: Set[RuleId]
   ) extends ComplianceBy[NodeId] {
-    def value(key: NodeId): String  = key.value
-    val jsContainer:        String  = "nodeCompliances"
-    def empty:              Boolean = nodeIds.isEmpty
+    def value(key: NodeId): String = key.value
+    val jsContainer: String  = "nodeCompliances"
+    def empty:       Boolean = nodeIds.isEmpty
 
     // Compute compliance
     def computeCompliance: Box[Map[NodeId, Option[ComplianceLevel]]] = {
@@ -165,9 +165,9 @@ class AsyncComplianceService(
       val nodeIds: Set[NodeId],
       val ruleIds: Set[RuleId]
   ) extends ComplianceBy[RuleId] {
-    def value(key: RuleId): String  = key.serialize
-    val jsContainer:        String  = "ruleCompliances"
-    def empty:              Boolean = ruleIds.isEmpty
+    def value(key: RuleId): String = key.serialize
+    val jsContainer: String  = "ruleCompliances"
+    def empty:       Boolean = ruleIds.isEmpty
 
     // Compute compliance
     def computeCompliance: Box[Map[RuleId, Option[ComplianceLevel]]] = {

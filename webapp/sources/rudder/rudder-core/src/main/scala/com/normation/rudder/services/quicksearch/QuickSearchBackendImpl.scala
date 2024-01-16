@@ -441,15 +441,15 @@ object QSLdapBackend {
 
       a match {
         case Tags      =>
-          def matcher(t: Tag)     = pattern.matcher(t.name.value).matches || pattern.matcher(t.value.value).matches
+          def matcher(t:     Tag) = pattern.matcher(t.name.value).matches || pattern.matcher(t.value.value).matches
           def transform(tag: Tag) = s"${tag.name.value}=${tag.value.value}"
           parseTag(value, matcher, transform)
         case TagKeys   =>
-          def matcher(t: Tag)     = pattern.matcher(t.name.value).matches
+          def matcher(t:     Tag) = pattern.matcher(t.name.value).matches
           def transform(tag: Tag) = tag.name.value
           parseTag(value, matcher, transform)
         case TagValues =>
-          def matcher(t: Tag)     = pattern.matcher(t.value.value).matches
+          def matcher(t:     Tag) = pattern.matcher(t.value.value).matches
           def transform(tag: Tag) = tag.value.value
           parseTag(value, matcher, transform)
 
@@ -463,9 +463,9 @@ object QSLdapBackend {
    * Build LDAP filter for a QSObject
    */
   implicit final class QSObjectLDAPFilter(obj: QSObject)(implicit
-      inventoryDit:                            InventoryDit,
-      nodeDit:                                 NodeDit,
-      rudderDit:                               RudderDit
+      inventoryDit: InventoryDit,
+      nodeDit:      NodeDit,
+      rudderDit:    RudderDit
   ) {
 
     def filter: List[Filter] = obj match {

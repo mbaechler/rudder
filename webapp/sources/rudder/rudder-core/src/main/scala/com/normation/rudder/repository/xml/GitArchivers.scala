@@ -358,7 +358,7 @@ class GitActiveTechniqueCategoryArchiverImpl(
     with BuildCategoryPathName[ActiveTechniqueCategoryId] with GitArchiverFullCommitUtils {
 
   override def loggerName: String = this.getClass.getName
-  override lazy val relativePath                                      = techniqueLibraryRootDir
+  override lazy val relativePath = techniqueLibraryRootDir
   override def getCategoryName(categoryId: ActiveTechniqueCategoryId) = categoryId.value
 
   override lazy val tagPrefix = "archives/directives/"
@@ -610,7 +610,7 @@ class GitActiveTechniqueArchiverImpl(
     with BuildCategoryPathName[ActiveTechniqueCategoryId] {
 
   override def loggerName: String = this.getClass.getName
-  override lazy val relativePath                                      = techniqueLibraryRootDir
+  override lazy val relativePath = techniqueLibraryRootDir
   override def getCategoryName(categoryId: ActiveTechniqueCategoryId) = categoryId.value
 
   private[this] def newActiveTechniqueFile(ptName: TechniqueName, parents: List[ActiveTechniqueCategoryId]) = {
@@ -759,7 +759,7 @@ class GitDirectiveArchiverImpl(
     with BuildCategoryPathName[ActiveTechniqueCategoryId] {
 
   override def loggerName: String = this.getClass.getName
-  override lazy val relativePath                                      = techniqueLibraryRootDir
+  override lazy val relativePath = techniqueLibraryRootDir
   override def getCategoryName(categoryId: ActiveTechniqueCategoryId) = categoryId.value
 
   private[this] def newPiFile(
@@ -875,7 +875,7 @@ class GitNodeGroupArchiverImpl(
     with BuildCategoryPathName[NodeGroupCategoryId] with GitArchiverFullCommitUtils {
 
   override def loggerName: String = this.getClass.getName
-  override lazy val relativePath                                = groupLibraryRootDir
+  override lazy val relativePath = groupLibraryRootDir
   override def getCategoryName(categoryId: NodeGroupCategoryId) = categoryId.value
 
   override lazy val tagPrefix = "archives/groups/"

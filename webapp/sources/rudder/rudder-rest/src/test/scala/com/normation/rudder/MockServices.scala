@@ -298,8 +298,8 @@ class MockTechniques(configurationRepositoryRoot: File, mockGit: MockGitConfigRe
     ).succeed
     override def getPolicyServers():                         IOResult[PolicyServers]        = ???
 
-    override def savePolicyServers(policyServers: PolicyServers):  IOResult[PolicyServers]                     = ???
-    override def getAllAllowedNetworks():                          IOResult[Map[NodeId, List[AllowedNetwork]]] = ???
+    override def savePolicyServers(policyServers: PolicyServers): IOResult[PolicyServers] = ???
+    override def getAllAllowedNetworks(): IOResult[Map[NodeId, List[AllowedNetwork]]] = ???
     override def updatePolicyServers(
         commands: List[PolicyServersUpdateCommand],
         modId:    ModificationId,
@@ -318,7 +318,7 @@ class MockTechniques(configurationRepositoryRoot: File, mockGit: MockGitConfigRe
         modId:          ModificationId,
         actor:          EventActor
     ): IOResult[List[AllowedNetwork]] = ???
-    override def deleteRelaySystemObjects(policyServerId: NodeId): IOResult[Unit]                              = ???
+    override def deleteRelaySystemObjects(policyServerId: NodeId): IOResult[Unit] = ???
   }
 
   val systemVariableService = new SystemVariableServiceImpl(
@@ -1970,8 +1970,8 @@ z5VEb9yx2KikbWyChM1Akp82AV5BzqE80QIBIw==
     def getGenericAll[A](status: InventoryStatus, f: NodeDetails => Option[A]):             IOResult[Map[NodeId, A]] = {
       nodeBase.get.map(_.collect { case (id, n) if (n.nInv.main.status == status && f(n).isDefined) => (id, f(n).get) })
     }
-    def _info(node: NodeDetails):                                                           Option[NodeInfo]         = Option(node.info)
-    def _fullInventory(node: NodeDetails):                                                  Option[FullInventory]    = Option(FullInventory(node.nInv, node.mInv))
+    def _info(node: NodeDetails): Option[NodeInfo] = Option(node.info)
+    def _fullInventory(node: NodeDetails): Option[FullInventory] = Option(FullInventory(node.nInv, node.mInv))
 
     override def getNodeInfo(nodeId: NodeId): IOResult[Option[NodeInfo]] = getGenericOne(nodeId, AcceptedInventory, _info)
 
@@ -1989,11 +1989,11 @@ z5VEb9yx2KikbWyChM1Akp82AV5BzqE80QIBIw==
       nodeBase.get.map(_.collect { case (id, n) if (n.info.isSystem) => id }.toSeq)
     }
 
-    override def getPendingNodeInfo(nodeId: NodeId): IOResult[Option[NodeInfo]]      = getGenericOne(nodeId, PendingInventory, _info)
-    override def getPendingNodeInfos():              IOResult[Map[NodeId, NodeInfo]] = getGenericAll(PendingInventory, _info)
+    override def getPendingNodeInfo(nodeId: NodeId): IOResult[Option[NodeInfo]] = getGenericOne(nodeId, PendingInventory, _info)
+    override def getPendingNodeInfos(): IOResult[Map[NodeId, NodeInfo]] = getGenericAll(PendingInventory, _info)
 
-    override def getDeletedNodeInfo(nodeId: NodeId): IOResult[Option[NodeInfo]]      = getGenericOne(nodeId, RemovedInventory, _info)
-    override def getDeletedNodeInfos():              IOResult[Map[NodeId, NodeInfo]] = getGenericAll(RemovedInventory, _info)
+    override def getDeletedNodeInfo(nodeId: NodeId): IOResult[Option[NodeInfo]] = getGenericOne(nodeId, RemovedInventory, _info)
+    override def getDeletedNodeInfos(): IOResult[Map[NodeId, NodeInfo]] = getGenericAll(RemovedInventory, _info)
 
     override def get(id: NodeId, inventoryStatus: InventoryStatus): IOResult[Option[FullInventory]] =
       getGenericOne(id, inventoryStatus, _fullInventory)
@@ -2051,9 +2051,9 @@ z5VEb9yx2KikbWyChM1Akp82AV5BzqE80QIBIw==
     // not implemented yet
     override def getNumberOfManagedNodes: Int = ???
 
-    override def delete(id: NodeId, inventoryStatus: InventoryStatus):               IOResult[Seq[LDIFChangeRecord]] = ???
-    override def move(id: NodeId, from: InventoryStatus, into: InventoryStatus):     IOResult[Seq[LDIFChangeRecord]] = ???
-    override def moveNode(id: NodeId, from: InventoryStatus, into: InventoryStatus): IOResult[Seq[LDIFChangeRecord]] = ???
+    override def delete(id:   NodeId, inventoryStatus: InventoryStatus): IOResult[Seq[LDIFChangeRecord]] = ???
+    override def move(id:     NodeId, from:            InventoryStatus, into: InventoryStatus): IOResult[Seq[LDIFChangeRecord]] = ???
+    override def moveNode(id: NodeId, from:            InventoryStatus, into: InventoryStatus): IOResult[Seq[LDIFChangeRecord]] = ???
 
     override def updateNode(node: Node, modId: ModificationId, actor: EventActor, reason: Option[String]): IOResult[Node] = {
       nodeBase.modifyZIO { nodes =>
@@ -2889,7 +2889,7 @@ class MockNodeGroups(nodesRepo: MockNodes) {
 class MockLdapQueryParsing(mockGit: MockGitConfigRepo, mockNodeGroups: MockNodeGroups) {
   ///// query parsing ////
   def DN(rdn: String, parent: DN) = new DN(new RDN(rdn), parent)
-  val LDAP_BASEDN                 = new DN("cn=rudder-configuration")
+  val LDAP_BASEDN = new DN("cn=rudder-configuration")
   val LDAP_INVENTORIES_BASEDN: DN = DN("ou=Inventories", LDAP_BASEDN)
   val LDAP_INVENTORIES_SOFTWARE_BASEDN = LDAP_INVENTORIES_BASEDN
 
@@ -2924,7 +2924,7 @@ class MockLdapQueryParsing(mockGit: MockGitConfigRepo, mockNodeGroups: MockNodeG
     new NodeGroupCategoryUnserialisationImpl(),
     new NodeGroupUnserialisationImpl(new CmdbQueryParser {
       override def parse(query: StringQuery): Box[QueryTrait]  = ???
-      override def lex(query: String):        Box[StringQuery] = ???
+      override def lex(query:   String):      Box[StringQuery] = ???
     }),
     mockGit.gitRepo,
     xmlEntityMigration,

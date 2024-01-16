@@ -137,8 +137,8 @@ trait SerializeFacts[A, B] {
 }
 
 object NoopNodeFactRepository extends NodeFactRepository {
-  override def persist(nodeInfo: NodeInfo, inventory: FullInventory, software: Seq[Software]): IOResult[Unit] = ZIO.unit
-  override def changeStatus(nodeId: NodeId, status: InventoryStatus):                          IOResult[Unit] = ZIO.unit
+  override def persist(nodeInfo:    NodeInfo, inventory: FullInventory, software: Seq[Software]): IOResult[Unit] = ZIO.unit
+  override def changeStatus(nodeId: NodeId, status:      InventoryStatus): IOResult[Unit] = ZIO.unit
 }
 
 /*

@@ -62,7 +62,7 @@ import zio.ZIO
 sealed trait NcfId {
   def value:        String
   def validDscName: String
-  def canonify: String = value.replaceAll("[^a-zA-Z0-9_]", "_")
+  def canonify:     String = value.replaceAll("[^a-zA-Z0-9_]", "_")
 }
 final case class BundleName(value: String) extends NcfId {
   val validDscName: String = value.split("_").map(_.capitalize).mkString("-")
@@ -156,8 +156,8 @@ final case class GenericMethod(
       String
     ], // New name of the method replacing this method, may be defined only if deprecated is defined. Maybe we should have a deprecation info object
 
-    renameTo:    Option[String],
-    renameParam: Seq[(String, String)]
+    renameTo:       Option[String],
+    renameParam:    Seq[(String, String)]
 )
 
 final case class MethodParameter(
@@ -245,8 +245,8 @@ object ParameterType {
       }
     }
 
-    def addNewParameterService(service: ParameterTypeService): Unit                       = innerServices = service :: innerServices
-    private[this] var innerServices:                           List[ParameterTypeService] = new BasicParameterTypeService :: Nil
+    def addNewParameterService(service: ParameterTypeService): Unit = innerServices = service :: innerServices
+    private[this] var innerServices: List[ParameterTypeService] = new BasicParameterTypeService :: Nil
   }
 }
 

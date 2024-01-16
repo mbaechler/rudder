@@ -444,9 +444,9 @@ object AuthenticationMethods {
 class AuthBackendProvidersManager() extends DynamicRudderProviderManager {
 
   val defaultAuthBackendsProvider: AuthBackendsProvider = new AuthBackendsProvider() {
-    override def authenticationBackends:            Set[String] = Set("file", "rootAdmin")
-    override def name:                              String      = s"Default authentication backends provider: '${authenticationBackends.mkString("','")}"
-    override def allowedToUseBackend(name: String): Boolean     = true // always enable - ie we never want to skip them
+    override def authenticationBackends: Set[String] = Set("file", "rootAdmin")
+    override def name:                   String      = s"Default authentication backends provider: '${authenticationBackends.mkString("','")}"
+    override def allowedToUseBackend(name: String): Boolean = true // always enable - ie we never want to skip them
   }
 
   // the list of AuthenticationMethods configured by the user
@@ -521,7 +521,7 @@ class RestAuthenticationFilter(
     systemApiAcl:       ApiAuthorization,
     apiTokenHeaderName: String = "X-API-Token"
 ) extends Filter with Loggable {
-  def destroy():                  Unit = {}
+  def destroy(): Unit = {}
   def init(config: FilterConfig): Unit = {}
 
   private[this] val not_authenticated_api = List(

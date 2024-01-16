@@ -216,7 +216,7 @@ object TemplateCli {
    * inputExtension is replaced by outputExtension.
    */
   def fill(variables: Seq[STVariable], outDir: File, inputExtension: String, outputExtension: String, timer: FillTemplateTimer)(
-      template:       File
+      template: File
   ): IOResult[String] = {
     for {
       ok      <- if (template.getName.endsWith(inputExtension)) { ZIO.unit }
@@ -241,7 +241,7 @@ object TemplateCli {
    * Same as fill, but print everything to stdout
    */
   def fillToStdout(variables: Seq[STVariable], inputExtension: String, timer: FillTemplateTimer)(
-      template:               File
+      template: File
   ): IOResult[String] = {
     for {
       ok      <- if (template.getName.endsWith(inputExtension)) { ZIO.unit }

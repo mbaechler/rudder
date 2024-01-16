@@ -546,8 +546,8 @@ class NodeApi(
     val schema: API.GetNodesStatus.type = API.GetNodesStatus
     val restExtractor = restExtractorService
     def process0(version: ApiVersion, path: ApiPath, req: Req, params: DefaultParams, authzToken: AuthzToken): LiftResponse = {
-      implicit val action             = "getNodeStatus"
-      implicit val prettify           = params.prettify
+      implicit val action   = "getNodeStatus"
+      implicit val prettify = params.prettify
       def errorMsg(ids: List[String]) = s"Error when trying to get status for nodes with IDs '${ids.mkString(",")}''"
       (for {
         ids      <- (restExtractorService
@@ -1400,7 +1400,7 @@ class NodeApiService6(
 ) extends Loggable {
 
   import restSerializer._
-  def listNodes(state:   InventoryStatus, detailLevel: NodeDetailLevel, nodeFilter: Option[Seq[NodeId]], version: ApiVersion)(
+  def listNodes(state: InventoryStatus, detailLevel: NodeDetailLevel, nodeFilter: Option[Seq[NodeId]], version: ApiVersion)(
       implicit prettify: Boolean
   ): LiftResponse = {
     implicit val action = s"list${state.name.capitalize}Nodes"
@@ -1472,7 +1472,7 @@ class NodeApiService6(
   }
 
   def queryNodes(query: QueryTrait, state: InventoryStatus, detailLevel: NodeDetailLevel, version: ApiVersion)(implicit
-      prettify:         Boolean
+      prettify: Boolean
   ): LiftResponse = {
     implicit val action = s"list${state.name.capitalize}Nodes"
     (for {

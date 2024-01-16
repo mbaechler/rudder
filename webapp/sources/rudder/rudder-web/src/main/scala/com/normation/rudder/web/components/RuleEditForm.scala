@@ -683,7 +683,7 @@ class RuleEditForm(
   }
 
   private[this] def workflowCallBack(workflowEnabled: Boolean, action: RuleModAction)(
-      returns:                                        Either[Rule, ChangeRequestId]
+      returns: Either[Rule, ChangeRequestId]
   ): JsCmd = {
     if ((!workflowEnabled) & (action == RuleModAction.Delete)) {
       JsRaw("""

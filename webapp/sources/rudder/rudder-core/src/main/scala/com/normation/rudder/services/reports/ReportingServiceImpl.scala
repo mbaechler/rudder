@@ -69,7 +69,7 @@ import zio.syntax._
 object ReportingServiceUtils {
 
   def log(msg: String): ZIO[Any, Nothing, Unit] = ZIO.succeed(println(msg)) // you actual log lib
-  val effect:           Task[Nothing]           = ZIO.attempt(
+  val effect: Task[Nothing] = ZIO.attempt(
     throw new RuntimeException("I'm some impure code!")
   ) // here, exception is caught and you get a ZIO[Any, Throwable, Something]
   val withLogError: ZIO[Any, Throwable, Nothing] =
