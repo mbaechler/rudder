@@ -112,22 +112,22 @@ import com.normation.rudder.services.queries.JsonQueryLexer
 import com.normation.rudder.services.servers.PolicyServerManagementServiceImpl
 import com.normation.rudder.services.user.TrivialPersonIdentService
 import com.normation.utils.StringUuidGeneratorImpl
-import com.normation.zio._
-import com.softwaremill.quicklens._
+import com.normation.zio.*
+import com.softwaremill.quicklens.*
 import com.unboundid.ldap.sdk.DN
 import com.unboundid.ldap.sdk.RDN
-import doobie._
+import doobie.*
 import java.io.File
 import org.apache.commons.io.FileUtils
 import org.eclipse.jgit.lib.PersonIdent
 import org.joda.time.DateTime
-import org.junit.runner._
+import org.junit.runner.*
 import org.specs2.matcher.MatchResult
-import org.specs2.mutable._
-import org.specs2.runner._
+import org.specs2.mutable.*
+import org.specs2.runner.*
 import scala.util.Try
-import zio._
-import zio.syntax._
+import zio.*
+import zio.syntax.*
 
 /**
  * A simple test class to check that the demo data file is up to date

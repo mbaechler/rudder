@@ -55,17 +55,17 @@ import bootstrap.liftweb.checks.migration.MigrateChangeValidationEnforceSchema
 import bootstrap.liftweb.checks.migration.MigrateEventLogEnforceSchema
 import bootstrap.liftweb.checks.onetimeinit.CheckInitUserTemplateLibrary
 import bootstrap.liftweb.checks.onetimeinit.CheckInitXmlExport
-import com.normation.appconfig._
-import com.normation.box._
-import com.normation.cfclerk.services._
-import com.normation.cfclerk.services.impl._
-import com.normation.cfclerk.xmlparsers._
+import com.normation.appconfig.*
+import com.normation.box.*
+import com.normation.cfclerk.services.*
+import com.normation.cfclerk.services.impl.*
+import com.normation.cfclerk.xmlparsers.*
 import com.normation.cfclerk.xmlwriters.SectionSpecWriter
 import com.normation.cfclerk.xmlwriters.SectionSpecWriterImpl
 import com.normation.errors.IOResult
 import com.normation.errors.SystemError
-import com.normation.inventory.domain._
-import com.normation.inventory.ldap.core._
+import com.normation.inventory.domain.*
+import com.normation.inventory.ldap.core.*
 import com.normation.inventory.ldap.provisioning.AddIpValues
 import com.normation.inventory.ldap.provisioning.CheckMachineName
 import com.normation.inventory.ldap.provisioning.CheckOsType
@@ -82,7 +82,7 @@ import com.normation.inventory.ldap.provisioning.UseExistingNodeIdFinder
 import com.normation.inventory.ldap.provisioning.UuidMergerPreCommit
 import com.normation.inventory.provisioning.fusion.FusionInventoryParser
 import com.normation.inventory.provisioning.fusion.PreInventoryParserCheckConsistency
-import com.normation.inventory.services.core._
+import com.normation.inventory.services.core.*
 import com.normation.inventory.services.provisioning.DefaultInventoryParser
 import com.normation.inventory.services.provisioning.InventoryDigestServiceV1
 import com.normation.inventory.services.provisioning.InventoryParser
@@ -91,18 +91,18 @@ import com.normation.inventory.services.provisioning.NamedMachineDNFinderAction
 import com.normation.inventory.services.provisioning.NamedNodeInventoryDNFinderAction
 import com.normation.inventory.services.provisioning.NodeInventoryDNFinderService
 import com.normation.inventory.services.provisioning.PreCommit
-import com.normation.ldap.sdk._
+import com.normation.ldap.sdk.*
 import com.normation.plugins.FilePluginSettingsService
 import com.normation.plugins.ReadPluginPackageInfo
 import com.normation.plugins.SnippetExtensionRegister
 import com.normation.plugins.SnippetExtensionRegisterImpl
 import com.normation.rudder.User
 import com.normation.rudder.UserService
-import com.normation.rudder.api._
+import com.normation.rudder.api.*
 import com.normation.rudder.apidata.RestDataSerializer
 import com.normation.rudder.apidata.RestDataSerializerImpl
 import com.normation.rudder.apidata.ZioJsonExtractor
-import com.normation.rudder.batch._
+import com.normation.rudder.batch.*
 import com.normation.rudder.campaigns.CampaignEventRepositoryImpl
 import com.normation.rudder.campaigns.CampaignRepositoryImpl
 import com.normation.rudder.campaigns.CampaignSerializer
@@ -113,11 +113,11 @@ import com.normation.rudder.configuration.ConfigurationRepositoryImpl
 import com.normation.rudder.configuration.GroupRevisionRepository
 import com.normation.rudder.configuration.RuleRevisionRepository
 import com.normation.rudder.db.Doobie
-import com.normation.rudder.domain._
+import com.normation.rudder.domain.*
 import com.normation.rudder.domain.logger.ApplicationLogger
 import com.normation.rudder.domain.logger.NodeConfigurationLoggerImpl
 import com.normation.rudder.domain.logger.ScheduledJobLoggerPure
-import com.normation.rudder.domain.queries._
+import com.normation.rudder.domain.queries.*
 import com.normation.rudder.facts.nodes.GitNodeFactRepository
 import com.normation.rudder.facts.nodes.NodeFactRepository
 import com.normation.rudder.facts.nodes.NoopNodeFactRepository
@@ -132,7 +132,7 @@ import com.normation.rudder.inventory.InventoryMover
 import com.normation.rudder.inventory.InventoryProcessor
 import com.normation.rudder.inventory.PostCommitInventoryHooks
 import com.normation.rudder.inventory.ProcessFile
-import com.normation.rudder.metrics._
+import com.normation.rudder.metrics.*
 import com.normation.rudder.migration.DefaultXmlEventLogMigration
 import com.normation.rudder.ncf
 import com.normation.rudder.ncf.ParameterType.PlugableParameterTypeService
@@ -144,54 +144,54 @@ import com.normation.rudder.reports.AgentRunIntervalService
 import com.normation.rudder.reports.AgentRunIntervalServiceImpl
 import com.normation.rudder.reports.ComplianceModeService
 import com.normation.rudder.reports.ComplianceModeServiceImpl
-import com.normation.rudder.reports.execution._
-import com.normation.rudder.repository._
-import com.normation.rudder.repository.jdbc._
-import com.normation.rudder.repository.ldap._
-import com.normation.rudder.repository.xml._
+import com.normation.rudder.reports.execution.*
+import com.normation.rudder.repository.*
+import com.normation.rudder.repository.jdbc.*
+import com.normation.rudder.repository.ldap.*
+import com.normation.rudder.repository.xml.*
 import com.normation.rudder.repository.xml.GitParseTechniqueLibrary
-import com.normation.rudder.rest._
+import com.normation.rudder.rest.*
 import com.normation.rudder.rest.RestExtractorService
-import com.normation.rudder.rest.internal._
+import com.normation.rudder.rest.internal.*
 import com.normation.rudder.rest.lift
-import com.normation.rudder.rest.lift._
-import com.normation.rudder.rule.category._
+import com.normation.rudder.rest.lift.*
+import com.normation.rudder.rule.category.*
 import com.normation.rudder.rule.category.GitRuleCategoryArchiverImpl
-import com.normation.rudder.services._
-import com.normation.rudder.services.eventlog._
+import com.normation.rudder.services.*
+import com.normation.rudder.services.eventlog.*
 import com.normation.rudder.services.eventlog.EventLogFactoryImpl
-import com.normation.rudder.services.healthcheck._
-import com.normation.rudder.services.marshalling._
+import com.normation.rudder.services.healthcheck.*
+import com.normation.rudder.services.marshalling.*
 import com.normation.rudder.services.modification.DiffService
 import com.normation.rudder.services.modification.DiffServiceImpl
 import com.normation.rudder.services.modification.ModificationService
-import com.normation.rudder.services.nodes._
-import com.normation.rudder.services.policies._
+import com.normation.rudder.services.nodes.*
+import com.normation.rudder.services.policies.*
 import com.normation.rudder.services.policies.DeployOnTechniqueCallback
-import com.normation.rudder.services.policies.nodeconfig._
+import com.normation.rudder.services.policies.nodeconfig.*
 import com.normation.rudder.services.policies.write.AgentRegister
 import com.normation.rudder.services.policies.write.BuildBundleSequence
 import com.normation.rudder.services.policies.write.PathComputerImpl
 import com.normation.rudder.services.policies.write.PolicyWriterServiceImpl
 import com.normation.rudder.services.policies.write.PrepareTemplateVariablesImpl
 import com.normation.rudder.services.policies.write.WriteAllAgentSpecificFiles
-import com.normation.rudder.services.queries._
+import com.normation.rudder.services.queries.*
 import com.normation.rudder.services.quicksearch.FullQuickSearchService
-import com.normation.rudder.services.reports._
-import com.normation.rudder.services.servers._
-import com.normation.rudder.services.system._
+import com.normation.rudder.services.reports.*
+import com.normation.rudder.services.servers.*
+import com.normation.rudder.services.system.*
 import com.normation.rudder.services.user.PersonIdentService
 import com.normation.rudder.services.user.TrivialPersonIdentService
-import com.normation.rudder.services.workflows._
-import com.normation.rudder.web.model._
-import com.normation.rudder.web.services._
+import com.normation.rudder.services.workflows.*
+import com.normation.rudder.web.model.*
+import com.normation.rudder.web.services.*
 import com.normation.rudder.web.services.EventLogDetailsGenerator
 import com.normation.rudder.web.services.UserPropertyService
 import com.normation.templates.FillTemplatesService
-import com.normation.utils.CronParser._
+import com.normation.utils.CronParser.*
 import com.normation.utils.StringUuidGenerator
 import com.normation.utils.StringUuidGeneratorImpl
-import com.normation.zio._
+import com.normation.zio.*
 import com.typesafe.config.Config
 import com.typesafe.config.ConfigException
 import com.typesafe.config.ConfigFactory
@@ -202,7 +202,7 @@ import java.io.File
 import java.nio.file.attribute.PosixFilePermission
 import java.security.Security
 import java.util.concurrent.TimeUnit
-import net.liftweb.common._
+import net.liftweb.common.*
 import net.liftweb.common.Loggable
 import org.apache.commons.io.FileUtils
 import org.bouncycastle.jce.provider.BouncyCastleProvider
@@ -210,8 +210,8 @@ import org.joda.time.DateTimeZone
 import scala.collection.mutable.Buffer
 import scala.concurrent.duration
 import scala.concurrent.duration.FiniteDuration
-import zio.{Scheduler => _, System => _, _}
-import zio.syntax._
+import zio.{Scheduler as _, System as _, *}
+import zio.syntax.*
 
 object RUDDER_CHARSET {
   import java.nio.charset.StandardCharsets
@@ -355,7 +355,7 @@ object RudderProperties {
     overrideDir.foreach { d =>
       val dest = better.files.File(d) / "rudder-web.properties-resolved-debug"
       ApplicationLogger.debug(s"Writing resolved configuration file to ${dest.pathAsString}")
-      import java.nio.file.attribute.PosixFilePermission._
+      import java.nio.file.attribute.PosixFilePermission.*
       try {
         dest.writeText(config.root().render()).setPermissions(Set(OWNER_READ))
       } catch {
@@ -398,7 +398,7 @@ object RudderParsedProperties {
   private[this] val filteredPasswords = scala.collection.mutable.Buffer[String]()
 
   def logRudderParsedProperties(): Unit = {
-    import scala.jdk.CollectionConverters._
+    import scala.jdk.CollectionConverters.*
     val config = RudderProperties.config
     if (ApplicationLogger.isInfoEnabled) {
       // sort properties by key name
@@ -429,7 +429,7 @@ object RudderParsedProperties {
   // auth backend is init too late to have a chance to hide its values, which is a bit sad.
   // We still need to make invisible all oauth/oidc client secret
   hiddenRegisteredProperties ++= {
-    import scala.jdk.CollectionConverters._
+    import scala.jdk.CollectionConverters.*
     config
       .entrySet()
       .asScala
@@ -1315,7 +1315,7 @@ case class RudderServiceApi(
 object RudderConfigInit {
   private case class InitError(msg: String) extends Throwable(msg, null, false, false)
 
-  import RudderParsedProperties._
+  import RudderParsedProperties.*
 
   def init(): RudderServiceApi = {
 
@@ -1990,7 +1990,7 @@ object RudderConfigInit {
     lazy val resourceFileService = new ResourceFileService(gitConfigRepo)
     lazy val apiDispatcher       = new RudderEndpointDispatcher(LiftApiProcessingLogger)
     lazy val rudderApi           = {
-      import com.normation.rudder.rest.lift._
+      import com.normation.rudder.rest.lift.*
 
       val nodeInheritedProperties  =
         new NodeApiInheritedProperties(nodeInfoService, roNodeGroupRepository, roLDAPParameterRepository)
@@ -3266,7 +3266,7 @@ object RudderConfigInit {
     ////////////////////////////// Directive Editor and web fields //////////////////////////////
     //////////////////////////////////////////////////////////////////////////////////////////
 
-    import com.normation.cfclerk.domain._
+    import com.normation.cfclerk.domain.*
 
     object FieldFactoryImpl extends DirectiveFieldFactory {
       // only one field

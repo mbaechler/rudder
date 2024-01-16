@@ -37,36 +37,36 @@
 
 package com.normation.rudder.domain.queries
 
-import cats.implicits._
+import cats.implicits.*
 import com.jayway.jsonpath.JsonPath
-import com.normation.errors._
-import com.normation.inventory.domain._
-import com.normation.inventory.ldap.core.LDAPConstants._
-import com.normation.ldap.sdk._
-import com.normation.ldap.sdk.BuildFilter._
+import com.normation.errors.*
+import com.normation.inventory.domain.*
+import com.normation.inventory.ldap.core.LDAPConstants.*
+import com.normation.ldap.sdk.*
+import com.normation.ldap.sdk.BuildFilter.*
 import com.normation.rudder.domain.logger.ApplicationLogger
 import com.normation.rudder.domain.nodes.NodeGroupId
 import com.normation.rudder.domain.nodes.NodeInfo
 import com.normation.rudder.domain.nodes.NodeState
 import com.normation.rudder.domain.properties.NodeProperty
-import com.normation.rudder.services.queries._
-import com.normation.zio._
-import com.unboundid.ldap.sdk._
+import com.normation.rudder.services.queries.*
+import com.normation.zio.*
+import com.unboundid.ldap.sdk.*
 import java.util.Locale
 import java.util.regex.PatternSyntaxException
-import net.liftweb.common._
+import net.liftweb.common.*
 import net.liftweb.http.SHtml
-import net.liftweb.http.SHtml.ElemAttr._
+import net.liftweb.http.SHtml.ElemAttr.*
 import net.liftweb.http.SHtml.SelectableOption
-import net.liftweb.http.js._
-import net.liftweb.http.js.JE._
-import net.liftweb.http.js.JsCmds._
-import net.liftweb.json._
-import net.liftweb.json.JsonDSL._
+import net.liftweb.http.js.*
+import net.liftweb.http.js.JE.*
+import net.liftweb.http.js.JsCmds.*
+import net.liftweb.json.*
+import net.liftweb.json.JsonDSL.*
 import org.joda.time.DateTime
 import org.joda.time.format.DateTimeFormat
 import org.joda.time.format.DateTimeFormatter
-import scala.xml._
+import scala.xml.*
 
 sealed trait CriterionComparator {
   val id: String
@@ -129,7 +129,7 @@ sealed trait CriterionType extends ComparatorList {
    * for the field.
    * DO NOT FORGET TO USE attrs ! (especially 'id')
    */
-  def toForm(value:    String, func: String => Any, attrs: (String, String)*): Elem = SHtml.text(value, func, attrs: _*)
+  def toForm(value:    String, func: String => Any, attrs: (String, String)*): Elem = SHtml.text(value, func, attrs*)
   def initForm(formId: String): JsCmd = Noop
   def destroyForm(formId: String):               JsCmd              = {
     OnLoad(
@@ -221,7 +221,7 @@ case object NodeStateComparator extends NodeCriterionType {
       nodeStates,
       Box(nodeStates.find(_._1 == value).map(_._1)),
       func,
-      attrs: _*
+      attrs*
     )
   }
 }
@@ -245,7 +245,7 @@ case object NodeOstypeComparator extends NodeCriterionType {
       (osTypes map (e => (e, e))).toSeq,
       if (osTypes.contains(value)) Full(value) else Empty,
       func,
-      attrs: _*
+      attrs*
     )
   }
 }
@@ -289,7 +289,7 @@ case object NodeOsNameComparator extends NodeCriterionType {
       osNames.map(e => (e.name, distribName(e))).toSeq,
       osNames.find(x => x.name == value).map(_.name),
       func,
-      attrs: _*
+      attrs*
     )
   }
 }
@@ -428,7 +428,7 @@ final case class NodePropertyComparator(ldapAttr: String) extends NodeCriterionT
   }
 
   override def matches(comparator: CriterionComparator, value: String): NodeInfoMatcher = {
-    import com.normation.rudder.domain.queries.{KeyValueComparator => KVC}
+    import com.normation.rudder.domain.queries.KeyValueComparator as KVC
 
     comparator match {
       // equals mean: the key is equals to kv._1 and the value is defined and the value is equals to kv._2.get
@@ -695,7 +695,7 @@ case object MachineComparator extends LDAPCriterionType {
       (machineTypes map (e => (e, e))).toSeq,
       if (machineTypes.contains(value)) Full(value) else Empty,
       func,
-      attrs: _*
+      attrs*
     )
   }
 }
@@ -736,7 +736,7 @@ final case object VmTypeComparator extends LDAPCriterionType {
       (vmTypes map (e => (e._1, e._2))),
       Box(vmTypes.find(_._1 == value).map(_._1)),
       func,
-      attrs: _*
+      attrs*
     )
   }
 }
@@ -792,9 +792,9 @@ case object AgentComparator extends LDAPCriterionType {
     comparator match {
       // for equals and not equals, check value for joker
       case Equals =>
-        OR(filters: _*)
+        OR(filters*)
       case _      => // actually, this is meant to be "not equals"
-        NOT(OR(filters: _*))
+        NOT(OR(filters*))
     }
   }
 
@@ -803,7 +803,7 @@ case object AgentComparator extends LDAPCriterionType {
       agentTypes,
       Box(agentTypes.find(_._1 == value)).map(_._1),
       func,
-      attrs: _*
+      attrs*
     )
   }
 }
@@ -818,7 +818,7 @@ case object EditorComparator extends LDAPCriterionType {
       (editors map (e => (e, e))).toSeq,
       if (editors.contains(value)) Full(value) else Empty,
       func,
-      attrs: _*
+      attrs*
     )
   }
   override def toLDAP(value: String): PureResult[String] = Right(value)
@@ -977,7 +977,7 @@ class SubGroupComparator(getGroups: () => IOResult[Seq[SubGroupChoice]]) extends
       subGroups,
       Box(subGroups.find(_.value == value).map(_.value)),
       func,
-      attrs: _*
+      attrs*
     )
   }
 }

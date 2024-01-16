@@ -46,12 +46,12 @@ import com.normation.plugins.DefaultExtendableSnippet
 import com.normation.rudder.domain.eventlog.LogoutEventLog
 import com.normation.rudder.domain.logger.ApplicationLogger
 import com.normation.rudder.web.services.CurrentUser
-import com.normation.zio._
-import net.liftweb.common._
-import net.liftweb.http._
-import net.liftweb.http.js._
+import com.normation.zio.*
+import net.liftweb.common.*
+import net.liftweb.http.*
+import net.liftweb.http.js.*
 import net.liftweb.util.CssSel
-import net.liftweb.util.Helpers._
+import net.liftweb.util.Helpers.*
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.core.userdetails.UserDetails
 import scala.xml.NodeSeq

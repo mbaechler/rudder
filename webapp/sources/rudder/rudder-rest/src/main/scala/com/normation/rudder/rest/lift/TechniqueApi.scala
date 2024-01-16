@@ -38,20 +38,20 @@
 package com.normation.rudder.rest.lift
 
 import better.files.File
-import com.normation.box._
+import com.normation.box.*
 import com.normation.cfclerk.domain.RootTechniqueCategory
 import com.normation.cfclerk.domain.Technique
 import com.normation.cfclerk.domain.TechniqueCategory
 import com.normation.cfclerk.domain.TechniqueName
 import com.normation.cfclerk.domain.TechniqueVersion
 import com.normation.cfclerk.services.TechniqueRepository
-import com.normation.errors._
+import com.normation.errors.*
 import com.normation.eventlog.EventActor
 import com.normation.eventlog.ModificationId
 import com.normation.rudder.api.ApiVersion
-import com.normation.rudder.apidata.JsonResponseObjects._
+import com.normation.rudder.apidata.JsonResponseObjects.*
 import com.normation.rudder.apidata.RestDataSerializer
-import com.normation.rudder.apidata.implicits._
+import com.normation.rudder.apidata.implicits.*
 import com.normation.rudder.domain.policies.Directive
 import com.normation.rudder.ncf.BundleName
 import com.normation.rudder.ncf.EditorTechnique
@@ -63,10 +63,10 @@ import com.normation.rudder.ncf.TechniqueWriter
 import com.normation.rudder.repository.RoDirectiveRepository
 import com.normation.rudder.repository.json.DataExtractor.OptionnalJson
 import com.normation.rudder.repository.xml.TechniqueRevisionRepository
-import com.normation.rudder.rest.{TechniqueApi => API, _}
+import com.normation.rudder.rest.{TechniqueApi as API, *}
 import com.normation.rudder.rest.RestUtils.ActionType
 import com.normation.rudder.rest.RestUtils.response
-import com.normation.rudder.rest.implicits._
+import com.normation.rudder.rest.implicits.*
 import com.normation.utils.ParseVersion
 import com.normation.utils.StringUuidGenerator
 import com.normation.utils.Version
@@ -82,8 +82,8 @@ import net.liftweb.json.JsonAST.JObject
 import net.liftweb.json.JsonAST.JString
 import net.liftweb.json.JsonAST.JValue
 import scala.collection.SortedMap
-import zio._
-import zio.syntax._
+import zio.*
+import zio.syntax.*
 
 class TechniqueApi(
     restExtractorService: RestExtractorService,
@@ -110,7 +110,7 @@ class TechniqueApi(
     // implementation copied from RestUtils#actionResponse2
     // but changed to never fail on reason message extraction
     implicit val prettify = restExtractorService.extractPrettify(req.params)
-    import net.liftweb.json.JsonDSL._
+    import net.liftweb.json.JsonDSL.*
     import net.liftweb.common.EmptyBox
 
     (
@@ -169,8 +169,8 @@ class TechniqueApi(
         authzToken:    AuthzToken
     ): LiftResponse = {
 
-      import net.liftweb.json.JsonDSL._
-      import zio.syntax._
+      import net.liftweb.json.JsonDSL.*
+      import zio.syntax.*
 
       def serializeResourceWithState(resource: ResourceFile) = {
         (("name" -> resource.path) ~ ("state" -> resource.state.value))
@@ -224,7 +224,7 @@ class TechniqueApi(
           force <- restExtractorService.extractBoolean("force")(req)(identity) map (_.getOrElse(false))
           _     <- techniqueWriter.deleteTechnique(techniqueInfo._1, techniqueInfo._2, force, modId, authzToken.actor).toBox
         } yield {
-          import net.liftweb.json.JsonDSL._
+          import net.liftweb.json.JsonDSL.*
           (("id"       -> techniqueInfo._1)
           ~ ("version" -> techniqueInfo._2))
         }
@@ -809,7 +809,7 @@ class TechniqueAPIService14(
           at                   <- activeTechniques
           (version, technique) <- at.techniques
         } yield {
-          import net.liftweb.json.JsonDSL._
+          import net.liftweb.json.JsonDSL.*
           techniques.find(t =>
             t.bundleName.value == technique.id.name.value && t.version.value == version.version.toVersionString
           ) match {

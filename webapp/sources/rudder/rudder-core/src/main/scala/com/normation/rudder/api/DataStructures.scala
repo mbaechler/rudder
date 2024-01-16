@@ -36,8 +36,8 @@
  */
 package com.normation.rudder.api
 
-import cats.data._
-import cats.implicits._
+import cats.data.*
+import cats.implicits.*
 import org.joda.time.DateTime
 import scala.util.matching.Regex
 
@@ -184,7 +184,7 @@ object AclPath {
   implicit val orderingaAclPath: Ordering[AclPath] = new Ordering[AclPath] {
     // compare: negative if x < y
     override def compare(x: AclPath, y: AclPath): Int = {
-      import AclPathSegment._
+      import AclPathSegment.*
       if (x.parts.size == y.parts.size) {
         (x.parts.last, y.parts.last) match {
           case (p1, p2) if (p1 == p2)   => 0

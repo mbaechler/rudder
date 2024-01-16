@@ -21,15 +21,15 @@
 package com.normation.history
 package impl
 
-import com.normation.errors._
-import com.normation.history.impl.FileHistoryLogRepository._
+import com.normation.errors.*
+import com.normation.history.impl.FileHistoryLogRepository.*
 import com.normation.inventory.domain.InventoryError
 import java.io.File
 import org.joda.time.DateTime
 import org.joda.time.format.ISODateTimeFormat
 import scala.reflect.ClassTag
-import zio._
-import zio.syntax._
+import zio.*
+import zio.syntax.*
 
 /**
  * A trait that allows to write and read datas of type T
