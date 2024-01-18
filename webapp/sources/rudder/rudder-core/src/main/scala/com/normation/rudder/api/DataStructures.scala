@@ -210,15 +210,16 @@ object AclPath {
  * A path may have 0 authorized action, which explicity mean that there
  * is no authorization for that path.
  */
-final case class ApiAclElement(path: AclPath, actions: Iterable[HttpAction]) {
+final case class ApiAclElement(path: AclPath, actions: Set[HttpAction]) {
   def display: String = path.value + ":" + actions.map(_.name.toUpperCase()).mkString("[", ",", "]")
 }
 
-sealed trait ApiAuthorizationKind { def name: String }
-object ApiAuthorizationKind       {
-  final case object None extends ApiAuthorizationKind { override val name = "none" }
-  final case object RO   extends ApiAuthorizationKind { override val name = "ro"   }
-  final case object RW   extends ApiAuthorizationKind { override val name = "rw"   }
+sealed abstract class ApiAuthorizationKind(override val entryName: String) extends EnumEntry { def name: String = entryName }
+
+object ApiAuthorizationKind extends Enum[ApiAuthorizationKind] {
+  final case object None extends ApiAuthorizationKind("none")
+  final case object RO   extends ApiAuthorizationKind("ro")
+  final case object RW   extends ApiAuthorizationKind("rw")
   /*
    * An ACL (Access Control List) is the exhaustive list of
    * authorized path + the set of action on each path.
@@ -226,17 +227,17 @@ object ApiAuthorizationKind       {
    * It's a list, so ordered. If a path matches several entries in the
    * ACL list, only the first one is considered.
    */
-  final case object ACL  extends ApiAuthorizationKind { override val name = "acl"  }
+  final case object ACL  extends ApiAuthorizationKind("acl")
 
-  def values: Set[ApiAuthorizationKind] = ca.mrvisser.sealerate.values[ApiAuthorizationKind]
+  def values: IndexedSeq[ApiAuthorizationKind] = findValues
 
   def parse(s: String): Either[String, ApiAuthorizationKind] = {
-    val lc = s.toLowerCase
-    values.find(_.name == lc) match {
-      case scala.None => Left(s"Unserialization error: '${s}' is not a known API authorization kind ")
-      case Some(x)    => Right(x)
-    }
+    withNameInsensitiveOption(s)
+      .toRight(
+        s"Unserialization error: '${s}' is not a known API authorization kind, possible values are '${values.map(_.name).mkString("', '")}'"
+      )
   }
+
 }
 
 /**
@@ -248,16 +249,18 @@ object ApiAuthorizationKind       {
  */
 sealed trait ApiAuthorization { def kind: ApiAuthorizationKind }
 object ApiAuthorization       {
-  case object None                               extends ApiAuthorization { override val kind = ApiAuthorizationKind.None }
-  case object RW                                 extends ApiAuthorization { override val kind = ApiAuthorizationKind.RW   }
-  case object RO                                 extends ApiAuthorization { override val kind = ApiAuthorizationKind.RO   }
-  final case class ACL(acl: List[ApiAclElement]) extends ApiAuthorization { override def kind = ApiAuthorizationKind.ACL  }
+  case object None                               extends ApiAuthorization { override val kind: ApiAuthorizationKind = ApiAuthorizationKind.None }
+  case object RW                                 extends ApiAuthorization { override val kind: ApiAuthorizationKind = ApiAuthorizationKind.RW   }
+  case object RO                                 extends ApiAuthorization { override val kind: ApiAuthorizationKind = ApiAuthorizationKind.RO   }
+  final case class ACL(acl: List[ApiAclElement]) extends ApiAuthorization {
+    override def kind: ApiAuthorizationKind = ApiAuthorizationKind.ACL
+  }
 
   /**
    * An authorization object with ALL authorization,
    * present and future.
    */
-  val allAuthz: ACL = ACL(List(ApiAclElement(AclPath.Root(Nil), HttpAction.values)))
+  val allAuthz: ACL = ACL(List(ApiAclElement(AclPath.Root(Nil), HttpAction.values.toSet)))
 }
 
 /**
