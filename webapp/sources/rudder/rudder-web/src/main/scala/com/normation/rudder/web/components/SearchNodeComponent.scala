@@ -778,7 +778,7 @@ object SearchNodeComponent {
             )
         }
 
-      case DateComparator                             =>
+      case DateComparator    =>
         new AsForm {
 
           // init a jquery datepicker
@@ -791,7 +791,7 @@ object SearchNodeComponent {
             JsRaw("""$('#%s').datepicker( "destroy" );""".format(formId))
           )
         }
-      case MachineComparator                          =>
+      case MachineComparator =>
         import MachineComparator.*
         AsForm {
           case (value, func, attrs) =>
@@ -802,7 +802,7 @@ object SearchNodeComponent {
               attrs*
             )
         }
-      case VmTypeComparator                           =>
+      case VmTypeComparator  =>
         import VmTypeComparator.*
         AsForm {
           case (value, func, attrs) =>
@@ -813,7 +813,7 @@ object SearchNodeComponent {
               attrs*
             )
         }
-      case AgentComparator                            =>
+      case AgentComparator   =>
         import AgentComparator.*
         AsForm {
           case (value, func, attrs) =>
@@ -824,7 +824,7 @@ object SearchNodeComponent {
               attrs*
             )
         }
-      case EditorComparator                           =>
+      case EditorComparator  =>
         import EditorComparator.*
         AsForm {
           case (value, func, attrs) =>
@@ -835,7 +835,7 @@ object SearchNodeComponent {
               attrs*
             )
         }
-      case _                                          => AsForm.default
+      case _                 => AsForm.default
     }
   }
 }

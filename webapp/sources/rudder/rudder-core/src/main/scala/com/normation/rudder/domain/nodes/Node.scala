@@ -93,11 +93,15 @@ sealed abstract class NodeState(override val entryName: String) extends EnumEntr
 
 object NodeState extends Enum[NodeState] {
 
-  final case object Initializing  extends NodeState("initializing")
-  final case object Enabled       extends NodeState("enabled")
+  final case object Initializing extends NodeState("initializing")
+
+  final case object Enabled extends NodeState("enabled")
+
   final case object EmptyPolicies extends NodeState("empty-policies")
-  final case object Ignored       extends NodeState("ignored")
-  final case object PreparingEOL  extends NodeState("preparing-eol")
+
+  final case object Ignored extends NodeState("ignored")
+
+  final case object PreparingEOL extends NodeState("preparing-eol")
 
   def values: IndexedSeq[NodeState] = findValues
 
@@ -112,6 +116,12 @@ object NodeState extends Enum[NodeState] {
     }
   }
 
+  def parse(s: String): Either[String, NodeState] = {
+    withNameInsensitiveOption(s)
+      .toRight(
+        s"Value '${s}' is not recognized as node state. Accepted values are: '${values.map(_.entryName).mkString("', '")}'"
+      )
+  }
 }
 
 /**
