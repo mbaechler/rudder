@@ -474,7 +474,7 @@ sealed abstract class SoftwareUpdateKind(override val entryName: String) extends
   def name: String = entryName
 }
 
-object SoftwareUpdateKind extends Enum[SoftwareUpdateKind] {
+object SoftwareUpdateKind                                                    extends Enum[SoftwareUpdateKind] {
   final case object None                extends SoftwareUpdateKind("none")
   final case object Defect              extends SoftwareUpdateKind("defect")
   final case object Security            extends SoftwareUpdateKind("security")
@@ -490,20 +490,24 @@ object SoftwareUpdateKind extends Enum[SoftwareUpdateKind] {
       )
   }
 }
-sealed trait SoftwareUpdateSeverity {
-  def name: String
+sealed abstract class SoftwareUpdateSeverity(override val entryName: String) extends EnumEntry                {
+  def name: String = entryName
 }
 
-object SoftwareUpdateSeverity {
-  case object Low                 extends SoftwareUpdateSeverity { val name = "low"      }
-  case object Moderate            extends SoftwareUpdateSeverity { val name = "moderate" }
-  case object High                extends SoftwareUpdateSeverity { val name = "high"     }
-  case object Critical            extends SoftwareUpdateSeverity { val name = "critical" }
-  case class Other(value: String) extends SoftwareUpdateSeverity { val name = "other"    }
+object SoftwareUpdateSeverity extends Enum[SoftwareUpdateSeverity] {
+  case object Low                 extends SoftwareUpdateSeverity("low")
+  case object Moderate            extends SoftwareUpdateSeverity("moderate")
+  case object High                extends SoftwareUpdateSeverity("high")
+  case object Critical            extends SoftwareUpdateSeverity("critical")
+  case class Other(value: String) extends SoftwareUpdateSeverity("other")
 
-  def all: Set[SoftwareUpdateSeverity] = ca.mrvisser.sealerate.collect[SoftwareUpdateSeverity]
+  def values: IndexedSeq[SoftwareUpdateSeverity] = findValues
 
-  def parse(value: String): SoftwareUpdateSeverity = all.find(_.name == value.toLowerCase()).getOrElse(Other(value))
+  def parse(value: String): Either[String, SoftwareUpdateSeverity] = values
+    .find(_.name == value.toLowerCase())
+    .toRight(
+      s"Value '${value}' is not recognized as SoftwareUpdateSeverity. Accepted values are: '${values.map(_.name).mkString("', '")}'"
+    )
 }
 
 /*

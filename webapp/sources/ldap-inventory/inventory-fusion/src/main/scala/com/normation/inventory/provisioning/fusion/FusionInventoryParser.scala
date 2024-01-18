@@ -981,7 +981,7 @@ class FusionInventoryParser(
                .getOrElse(SoftwareUpdateKind.None)
       s    = optText(e \ "SOURCE")
       d    = optText(e \ "DESCRIPTION")
-      sev  = optText(e \ "SEVERITY").map(SoftwareUpdateSeverity.parse)
+      sev  = optText(e \ "SEVERITY").map(s => SoftwareUpdateSeverity.parse(s).getOrElse(SoftwareUpdateSeverity.Other(s)))
       date = optText(e \ "DATE")
       ids  = (e \ "ID").toList.flatMap(_.text.split(","))
     } yield {
