@@ -40,6 +40,7 @@ package com.normation.inventory.provisioning.fusion
 import com.normation.errors.*
 import com.normation.inventory.domain.*
 import com.normation.inventory.domain.AgentType.*
+import com.normation.inventory.domain.VmType.Virtuozzo
 import com.normation.utils.StringUuidGeneratorImpl
 import com.normation.zio.ZioRuntime
 import java.io.File

@@ -78,9 +78,9 @@ import com.normation.inventory.domain.PendingInventory
 import com.normation.inventory.domain.PublicKey
 import com.normation.inventory.domain.UndefinedKey
 import com.normation.inventory.domain.Version
-import com.normation.inventory.domain.VirtualBox
 import com.normation.inventory.domain.VirtualMachineType
-import com.normation.inventory.domain.VMWare
+import com.normation.inventory.domain.VmType.VirtualBox
+import com.normation.inventory.domain.VmType.VMWare
 import com.normation.inventory.domain.Windows
 import com.normation.inventory.domain.Windows2012
 import com.normation.rudder.domain.Constants

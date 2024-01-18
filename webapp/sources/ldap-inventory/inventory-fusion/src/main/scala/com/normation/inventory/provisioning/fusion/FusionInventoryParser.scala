@@ -42,6 +42,7 @@ import com.normation.inventory.domain.*
 import com.normation.inventory.domain.AgentType.*
 import com.normation.inventory.domain.InventoryError.Inconsistency
 import com.normation.inventory.domain.NodeTimezone
+import com.normation.inventory.domain.VmType.*
 import com.normation.inventory.services.provisioning.*
 import com.normation.utils.HostnameRegex
 import com.normation.utils.StringUuidGenerator

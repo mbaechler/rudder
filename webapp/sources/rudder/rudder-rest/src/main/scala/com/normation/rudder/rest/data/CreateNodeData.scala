@@ -43,6 +43,7 @@ import com.normation.NamedZioLogger
 import com.normation.inventory.domain.*
 import com.normation.inventory.domain.AgentType.CfeCommunity
 import com.normation.inventory.domain.AgentType.Dsc
+import com.normation.inventory.domain.VmType.*
 import com.normation.rudder.domain.nodes.NodeState
 import com.normation.rudder.domain.policies.PolicyMode
 import com.normation.rudder.domain.properties.GenericProperty
