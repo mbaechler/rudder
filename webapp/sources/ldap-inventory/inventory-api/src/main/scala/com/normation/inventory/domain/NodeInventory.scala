@@ -37,6 +37,7 @@
 
 package com.normation.inventory.domain
 
+import enumeratum.*
 import java.net.InetAddress
 import net.liftweb.json.JsonAST.JValue
 import org.joda.time.DateTime
@@ -469,20 +470,25 @@ final case class CustomProperty(
     value: JValue
 )
 
-sealed trait SoftwareUpdateKind {
-  def name: String
+sealed abstract class SoftwareUpdateKind(override val entryName: String) extends EnumEntry {
+  def name: String = entryName
 }
 
-object SoftwareUpdateKind           {
-  final case object None                extends SoftwareUpdateKind { val name = "none"        }
-  final case object Defect              extends SoftwareUpdateKind { val name = "defect"      }
-  final case object Security            extends SoftwareUpdateKind { val name = "security"    }
-  final case object Enhancement         extends SoftwareUpdateKind { val name = "enhancement" }
-  final case class Other(value: String) extends SoftwareUpdateKind { val name = "other"       }
+object SoftwareUpdateKind extends Enum[SoftwareUpdateKind] {
+  final case object None                extends SoftwareUpdateKind("none")
+  final case object Defect              extends SoftwareUpdateKind("defect")
+  final case object Security            extends SoftwareUpdateKind("security")
+  final case object Enhancement         extends SoftwareUpdateKind("enhancement")
+  final case class Other(value: String) extends SoftwareUpdateKind("other")
 
-  def all: Set[SoftwareUpdateKind] = ca.mrvisser.sealerate.collect[SoftwareUpdateKind]
+  def values: IndexedSeq[SoftwareUpdateKind] = findValues
 
-  def parse(value: String): SoftwareUpdateKind = all.find(_.name == value.toLowerCase()).getOrElse(Other(value))
+  def parse(value: String): Either[String, SoftwareUpdateKind] = {
+    withNameInsensitiveOption(value)
+      .toRight(
+        s"Value '${value}' is not recognized as SoftwareUpdateKind. Accepted values are: '${values.map(_.entryName).mkString("', '")}'"
+      )
+  }
 }
 sealed trait SoftwareUpdateSeverity {
   def name: String
