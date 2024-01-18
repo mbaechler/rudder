@@ -167,7 +167,9 @@ object TechniqueGenerationMode extends Enum[TechniqueGenerationMode] {
 
   def parse(value: String): Either[String, TechniqueGenerationMode] = {
     withNameInsensitiveOption(value)
-      .toRight(s"Value '${value}' is not recognized as TechniqueGenerationMode. Accepted values are: '${values.map(_.name).mkString("', '")}'")
+      .toRight(
+        s"Value '${value}' is not recognized as TechniqueGenerationMode. Accepted values are: '${values.map(_.name).mkString("', '")}'"
+      )
   }
 }
 
