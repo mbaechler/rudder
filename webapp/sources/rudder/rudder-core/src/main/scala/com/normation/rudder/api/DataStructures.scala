@@ -38,6 +38,7 @@ package com.normation.rudder.api
 
 import cats.data.*
 import cats.implicits.*
+import enumeratum.*
 import org.joda.time.DateTime
 import scala.util.matching.Regex
 
@@ -79,24 +80,28 @@ case class ApiVersion(
 /*
  * HTTP verbs
  */
-sealed trait HttpAction      { def name: String }
-final case object HttpAction {
+sealed abstract class HttpAction(override val entryName: String) extends EnumEntry        {
+  def name: String = entryName
+}
+final case object HttpAction                                     extends Enum[HttpAction] {
 
-  final case object HEAD   extends HttpAction { val name = "head"   }
-  final case object GET    extends HttpAction { val name = "get"    }
+  final case object HEAD   extends HttpAction("head")
+  final case object GET    extends HttpAction("get")
   // perhaps we should have an "accepted content type"
   // for update verbs
-  final case object PUT    extends HttpAction { val name = "put"    }
-  final case object POST   extends HttpAction { val name = "post"   }
-  final case object DELETE extends HttpAction { val name = "delete" }
+  final case object PUT    extends HttpAction("put")
+  final case object POST   extends HttpAction("post")
+  final case object DELETE extends HttpAction("delete")
 
   // no PATCH for now
 
-  def values: Set[HttpAction] = ca.mrvisser.sealerate.values[HttpAction]
+  def values: IndexedSeq[HttpAction] = findValues
 
   def parse(action: String): Either[String, HttpAction] = {
-    val lower = action.toLowerCase()
-    values.find(_.name == lower).toRight(s"Action '${action}' is not recognized as a supported HTTP action")
+    withNameInsensitiveOption(action)
+      .toRight(
+        s"Action '${action}' is not recognized as a supported HTTP action, supported actions are ${values.mkString("', '")}"
+      )
   }
 }
 
@@ -205,7 +210,7 @@ object AclPath {
  * A path may have 0 authorized action, which explicity mean that there
  * is no authorization for that path.
  */
-final case class ApiAclElement(path: AclPath, actions: Set[HttpAction]) {
+final case class ApiAclElement(path: AclPath, actions: Iterable[HttpAction]) {
   def display: String = path.value + ":" + actions.map(_.name.toUpperCase()).mkString("[", ",", "]")
 }
 
