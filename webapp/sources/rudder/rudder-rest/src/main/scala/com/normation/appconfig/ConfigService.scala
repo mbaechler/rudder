@@ -524,7 +524,7 @@ class GenericConfigService(
   }
 
   implicit private[this] def toNodeState(p: RudderWebProperty): NodeState = {
-    NodeState.values.find(_.name == p.value.toLowerCase()).getOrElse(NodeState.Enabled) // default value is "enabled"
+    NodeState.parse(p.value).getOrElse(NodeState.Enabled) // default value is "enabled"
   }
 
   implicit private[this] def serState(x: NodeState): String = x.name

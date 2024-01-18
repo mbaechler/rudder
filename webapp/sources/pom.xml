@@ -851,6 +851,11 @@ limitations under the License.
       <version>0.0.6</version>
       <scope>provided</scope>
     </dependency>
+    <dependency>
+      <groupId>com.beachape</groupId>
+      <artifactId>enumeratum_${scala-binary-version}</artifactId>
+      <version>1.7.3</version>
+    </dependency>
     <!-- joda-time is used in all projects -->
     <dependency>
       <groupId>joda-time</groupId>
