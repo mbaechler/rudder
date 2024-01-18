@@ -13,7 +13,7 @@ import zio.test.test
 object EnumLaws {
   import scala.language.reflectiveCalls
 
-  def laws[A <: { def parse(s: String): Either[String, Any] }](
+  def laws[A <: { def parse(s: String): Either[String, Any]; def values: Seq[Any] }](
       `enum`:     A,
       validNames: Seq[String]
   )(implicit name: Tag[A]): Spec[Any, Nothing] = {
@@ -41,6 +41,9 @@ object EnumLaws {
           val actual = `enum`.parse(name)
           assert(actual)(isLeft(validNames.foldLeft(isNonEmptyString)(_ && containsString(_))))
         }
+      ),
+      test("values should return as many entries as validNames")(
+        assert(`enum`.values)(hasSize(equalTo(validNames.length)))
       )
     )
   }
