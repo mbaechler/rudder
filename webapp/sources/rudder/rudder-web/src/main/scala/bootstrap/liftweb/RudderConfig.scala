@@ -1604,7 +1604,7 @@ object RudderConfigInit {
     lazy val tokenGenerator = new TokenGeneratorImpl(32)
 
     implicit lazy val userService = new UserService {
-      def getCurrentUser = CurrentUser
+      def getCurrentUser: AuthenticatedUser = CurrentUser
     }
 
     lazy val userRepository:   UserRepository = new JdbcUserRepository(doobie)
@@ -3393,7 +3393,8 @@ object RudderConfigInit {
         }
       }
 
-      override def default(id: String) = new TextField(id, () => configService.rudder_featureSwitch_directiveScriptEngine().toBox)
+      override def default(id: String): DirectiveField =
+        new TextField(id, () => configService.rudder_featureSwitch_directiveScriptEngine().toBox)
     }
 
     lazy val section2FieldService:       Section2FieldService   = {
