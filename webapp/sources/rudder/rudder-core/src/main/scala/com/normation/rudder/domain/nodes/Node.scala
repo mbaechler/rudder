@@ -48,7 +48,6 @@ import com.normation.rudder.domain.properties.NodeProperty
 import com.normation.rudder.reports.AgentRunInterval
 import com.normation.rudder.reports.HeartbeatConfiguration
 import com.normation.rudder.reports.ReportingConfiguration
-import net.liftweb.http.S
 import org.joda.time.DateTime
 
 /**
@@ -98,16 +97,16 @@ object NodeState       {
 
   def values: Set[NodeState] = ca.mrvisser.sealerate.values[NodeState]
 
-  // human readable, sorted list of (state, label)
+  // sorted list of (state, label)
   def labeledPairs: List[(NodeState, String)] = {
     val a = values.toList
     val b = a.map { x =>
       x match {
-        case NodeState.Initializing  => (0, x, S.?("node.states.initializing"))
-        case NodeState.Enabled       => (1, x, S.?("node.states.enabled"))
-        case NodeState.EmptyPolicies => (2, x, S.?("node.states.empty-policies"))
-        case NodeState.Ignored       => (3, x, S.?("node.states.ignored"))
-        case NodeState.PreparingEOL  => (4, x, S.?("node.states.preparing-eol"))
+        case NodeState.Initializing  => (0, x, "node.states.initializing")
+        case NodeState.Enabled       => (1, x, "node.states.enabled")
+        case NodeState.EmptyPolicies => (2, x, "node.states.empty-policies")
+        case NodeState.Ignored       => (3, x, "node.states.ignored")
+        case NodeState.PreparingEOL  => (4, x, "node.states.preparing-eol")
       }
     }
 

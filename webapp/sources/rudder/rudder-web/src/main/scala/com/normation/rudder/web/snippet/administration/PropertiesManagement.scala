@@ -1121,7 +1121,7 @@ class PropertiesManagement extends DispatchSnippet with Loggable {
     // node states, sorted [init, enable, other]
     val states = NodeState.labeledPairs.map {
       case (x, label) =>
-        SelectableOption[NodeState](x, label)
+        SelectableOption[NodeState](x, S.?(label))
     }
 
     val process = (for {
