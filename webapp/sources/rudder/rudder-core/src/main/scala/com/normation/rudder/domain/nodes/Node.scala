@@ -117,7 +117,9 @@ object NodeState extends Enum[NodeState] {
 
   def parse(s: String): Either[String, NodeState] = {
     withNameInsensitiveOption(s)
-      .toRight(s"Value '${s}' is not recognized as node state. Accepted values are: '${values.map(_.entryName).mkString("', '")}'")
+      .toRight(
+        s"Value '${s}' is not recognized as node state. Accepted values are: '${values.map(_.entryName).mkString("', '")}'"
+      )
   }
 }
 
