@@ -363,7 +363,7 @@ object Validation {
       val msg: String = s"Machine type must be one of ${names(Machine.values)(_.name)} but '${x}' provided"
     }
     final case class Agent(x: String)         extends NodeValidationError {
-      val msg: String = s"Agent's management technology must be one of ${names(AgentType.allValues)(_.id)} but '${x}' provided"
+      val msg: String = s"Agent's management technology must be one of ${names(AgentType.values)(_.id)} but '${x}' provided"
     }
     final case class KeyStatus(x: String)     extends NodeValidationError {
       val msg: String = s"Key status must be '${CertifiedKey.value}' or '${UndefinedKey.value}' but '${x}' provided"
