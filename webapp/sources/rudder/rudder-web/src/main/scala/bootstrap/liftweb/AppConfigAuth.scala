@@ -37,17 +37,17 @@
 
 package bootstrap.liftweb
 
-import com.normation.errors._
+import com.normation.errors.*
 import com.normation.rudder.Role
-import com.normation.rudder.api._
+import com.normation.rudder.api.*
 import com.normation.rudder.domain.logger.ApplicationLogger
 import com.normation.rudder.facts.nodes.NodeSecurityContext
 import com.normation.rudder.facts.nodes.QueryContext
-import com.normation.rudder.users._
+import com.normation.rudder.users.*
 import com.normation.rudder.users.RudderUserDetail
 import com.normation.rudder.web.services.UserSessionLogEvent
-import com.normation.zio._
-import com.softwaremill.quicklens._
+import com.normation.zio.*
+import com.softwaremill.quicklens.*
 import com.typesafe.config.Config
 import com.typesafe.config.ConfigException
 import java.util.Collection
@@ -58,7 +58,7 @@ import javax.servlet.ServletRequest
 import javax.servlet.ServletResponse
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
-import net.liftweb.common._
+import net.liftweb.common.*
 import org.joda.time.DateTime
 import org.springframework.beans.factory.config.PropertyPlaceholderConfigurer
 import org.springframework.context.ApplicationContext
@@ -86,7 +86,7 @@ import org.springframework.security.web.AuthenticationEntryPoint
 import org.springframework.security.web.authentication.AuthenticationFailureHandler
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler
 import scala.annotation.nowarn
-import zio.syntax._
+import zio.syntax.*
 
 /**
  * Spring configuration for user authentication.
@@ -138,7 +138,7 @@ class AppConfigAuth extends ApplicationContextAware {
 
     // prepare specific properties for each configuredAuthProviders - we need system properties for spring
 
-    import scala.jdk.CollectionConverters._
+    import scala.jdk.CollectionConverters.*
     configuredAuthProviders.foreach { x =>
       try {
         // try to load all the specific properties of that auth type
@@ -176,7 +176,7 @@ class AppConfigAuth extends ApplicationContextAware {
     val ctx = new ClassPathXmlApplicationContext(applicationContext)
     ctx.addBeanFactoryPostProcessor(propertyConfigurer)
     // here, we load all spring bean conigured in the classpath files: applicationContext-security-auth-BACKEND.xml
-    ctx.setConfigLocations(configuredAuthProviders.map(_.configFile).toSeq: _*)
+    ctx.setConfigLocations(configuredAuthProviders.map(_.configFile).toSeq*)
     ctx.refresh
 
     // now, handle back the configured bean / user configured list to AuthBackendProvidersManager
@@ -417,7 +417,7 @@ class RudderXmlUserDetailsContextMapper(authConfigProvider: UserDetailListProvid
   def mapUserFromContext(
       ctx:         DirContextOperations,
       username:    String,
-      authorities: Collection[_ <: GrantedAuthority]
+      authorities: Collection[? <: GrantedAuthority]
   ): UserDetails = {
     authConfigProvider.authConfig.users
       .getOrElse(
@@ -764,7 +764,7 @@ case class RudderAuthenticationProvider(name: String, provider: AuthenticationPr
     provider.authenticate(authentication)
   }
 
-  override def supports(authentication: Class[_]): Boolean = {
+  override def supports(authentication: Class[?]): Boolean = {
     provider.supports(authentication)
   }
 }
