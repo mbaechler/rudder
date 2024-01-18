@@ -570,8 +570,8 @@ class NodeApi(
     val schema: API.GetNodesStatus.type = API.GetNodesStatus
     val restExtractor = restExtractorService
     def process0(version: ApiVersion, path: ApiPath, req: Req, params: DefaultParams, authzToken: AuthzToken): LiftResponse = {
-      implicit val action             = "getNodeStatus"
-      implicit val prettify           = params.prettify
+      implicit val action   = "getNodeStatus"
+      implicit val prettify = params.prettify
       def errorMsg(ids: List[String]) = s"Error when trying to get status for nodes with IDs '${ids.mkString(",")}''"
       (for {
         ids   <- (restExtractorService
@@ -753,7 +753,7 @@ class NodeApiInheritedProperties(
    * Full list of node properties, including inherited ones for a node
    */
   def getNodePropertiesTree(nodeId: NodeId, renderInHtml: RenderInheritedProperties)(implicit
-      qc:                           QueryContext
+      qc: QueryContext
   ): IOResult[JValue] = {
     for {
       nodeInfo   <- infoService.get(nodeId).notOptional(s"Node with ID '${nodeId.value}' was not found.'")
@@ -1180,7 +1180,7 @@ class NodeApiService(
   }
 
   def property(req: Req, property: String, inheritedValue: Boolean)(implicit
-      qc:           QueryContext
+      qc: QueryContext
   ): ZIO[Any, RudderError, LiftResponse] = {
     // import com.normation.rudder.facts.nodes.NodeFactSerialisation.SimpleCodec.codecNodeProperty
 
@@ -1230,8 +1230,8 @@ class NodeApiService(
   }
 
   def modifyStatusFromAction(
-      ids:       Seq[NodeId],
-      action:    NodeStatusAction
+      ids:    Seq[NodeId],
+      action: NodeStatusAction
   )(implicit cc: ChangeContext): Box[List[JValue]] = {
     def actualNodeDeletion(id: NodeId)(implicit cc: ChangeContext) = {
       for {
@@ -1302,7 +1302,7 @@ class NodeApiService(
       nodeId:      NodeId,
       detailLevel: NodeDetailLevel,
       state:       InventoryStatus
-  )(implicit qc:   QueryContext): IOResult[Option[JValue]] = {
+  )(implicit qc: QueryContext): IOResult[Option[JValue]] = {
     for {
       optNodeInfo <- nodeFactRepository.slowGetCompat(nodeId, state, SelectFacts.fromNodeDetailLevel(detailLevel))
       nodeInfo    <- optNodeInfo match {
@@ -1326,8 +1326,8 @@ class NodeApiService(
   }
 
   def nodeDetailsGeneric(nodeId: NodeId, detailLevel: NodeDetailLevel)(implicit
-      prettify:                  Boolean,
-      qc:                        QueryContext
+      prettify: Boolean,
+      qc:       QueryContext
   ): LiftResponse = {
     implicit val action = "nodeDetails"
     (for {
@@ -1363,8 +1363,8 @@ class NodeApiService(
 
   def listNodes(state: InventoryStatus, detailLevel: NodeDetailLevel, nodeFilter: Option[Seq[NodeId]], version: ApiVersion)(
       implicit
-      prettify:        Boolean,
-      qc:              QueryContext
+      prettify: Boolean,
+      qc:       QueryContext
   ): LiftResponse = {
     implicit val action = s"list${state.name.capitalize}Nodes"
     val predicate       = (n: NodeFact) => {
@@ -1418,8 +1418,8 @@ class NodeApiService(
     scoreService.getScoreDetails(nodeId)
   }
   def queryNodes(query: Query, state: InventoryStatus, detailLevel: NodeDetailLevel, version: ApiVersion)(implicit
-      prettify:         Boolean,
-      qc:               QueryContext
+      prettify: Boolean,
+      qc:       QueryContext
   ): LiftResponse = {
     implicit val action = s"list${state.name.capitalize}Nodes"
     (for {

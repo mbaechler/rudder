@@ -104,8 +104,8 @@ class TestSaveInventoryGit extends TestSaveInventory {
 
   def acceptedNodeGitFile(id: String): File = File(GIT_ACCEPTED + "/" + id + ".json")
 
-  override def checkPendingNodeExists(id: String):  Boolean = pendingNodeGitFile(id).exists
-  override def getPendingNodeAsString(id: String):  String  = pendingNodeGitFile(id).contentAsString
+  override def checkPendingNodeExists(id:  String): Boolean = pendingNodeGitFile(id).exists
+  override def getPendingNodeAsString(id:  String): String  = pendingNodeGitFile(id).contentAsString
   override def checkAcceptedNodeExists(id: String): Boolean = acceptedNodeGitFile(id).exists
   override def getAcceptedNodeAsString(id: String): String  = acceptedNodeGitFile(id).contentAsString
 
@@ -141,8 +141,8 @@ class TestSaveInventoryLdap extends TestSaveInventory {
     sb.toString()
   }
 
-  override def checkPendingNodeExists(id: String):  Boolean = nodeExists(id, MockLdapFactStorage.pendingDIT)
-  override def getPendingNodeAsString(id: String):  String  = nodeAsString(id, MockLdapFactStorage.pendingDIT)
+  override def checkPendingNodeExists(id:  String): Boolean = nodeExists(id, MockLdapFactStorage.pendingDIT)
+  override def getPendingNodeAsString(id:  String): String  = nodeAsString(id, MockLdapFactStorage.pendingDIT)
   override def checkAcceptedNodeExists(id: String): Boolean = nodeExists(id, MockLdapFactStorage.acceptedDIT)
   override def getAcceptedNodeAsString(id: String): String  = nodeAsString(id, MockLdapFactStorage.acceptedDIT)
 
