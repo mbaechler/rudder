@@ -43,6 +43,8 @@ import com.normation.errors.Unexpected
 import com.normation.inventory.domain.NodeId
 import com.normation.rudder.domain.Constants
 import com.normation.rudder.services.nodes.NodeInfoService
+import enumeratum.Enum
+import enumeratum.EnumEntry
 import net.liftweb.common.*
 import org.joda.time.Duration
 
@@ -161,9 +163,7 @@ class AgentRunIntervalServiceImpl(
 
 }
 
-import ca.mrvisser.sealerate.values
-
-sealed trait AgentReportingProtocol {
+sealed trait AgentReportingProtocol extends EnumEntry {
   def value: String
 }
 
@@ -171,7 +171,7 @@ final case object AgentReportingHTTPS extends AgentReportingProtocol {
   val value = "HTTPS"
 }
 
-object AgentReportingProtocol {
+object AgentReportingProtocol extends Enum[AgentReportingProtocol] {
   def apply(value: String): Box[AgentReportingProtocol] = {
     value match {
       case AgentReportingHTTPS.value => Full(AgentReportingHTTPS)
@@ -179,13 +179,13 @@ object AgentReportingProtocol {
     }
   }
 
-  def allProtocols:         Set[AgentReportingProtocol]                 = values[AgentReportingProtocol]
+  val values:               IndexedSeq[AgentReportingProtocol]          = findValues
   def parse(value: String): Either[RudderError, AgentReportingProtocol] = {
-    allProtocols.find(_.value == value.toUpperCase()) match {
+    values.find(_.value == value.toUpperCase()) match {
       case None           =>
         Left(
           Unexpected(
-            s"Unable to parse reporting protocol mame '${value}'. was expecting ${allProtocols.map(_.value).mkString("'", "' or '", "'")}."
+            s"Unable to parse reporting protocol mame '${value}'. was expecting ${values.map(_.value).mkString("'", "' or '", "'")}."
           )
         )
       case Some(protocol) =>

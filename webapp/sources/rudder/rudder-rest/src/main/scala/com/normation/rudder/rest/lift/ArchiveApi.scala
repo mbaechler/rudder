@@ -39,11 +39,7 @@ package com.normation.rudder.rest.lift
 
 import better.files.File
 import cats.data.NonEmptyList
-import com.normation.cfclerk.domain.Technique
-import com.normation.cfclerk.domain.TechniqueCategoryName
-import com.normation.cfclerk.domain.TechniqueId
-import com.normation.cfclerk.domain.TechniqueName
-import com.normation.cfclerk.domain.TechniqueVersion
+import com.normation.cfclerk.domain.*
 import com.normation.cfclerk.services.TechniqueReader
 import com.normation.cfclerk.services.TechniqueRepository
 import com.normation.cfclerk.services.TechniquesInfo
@@ -66,21 +62,12 @@ import com.normation.rudder.domain.logger.ApplicationLoggerPure
 import com.normation.rudder.domain.nodes.NodeGroup
 import com.normation.rudder.domain.nodes.NodeGroupCategoryId
 import com.normation.rudder.domain.nodes.NodeGroupId
-import com.normation.rudder.domain.policies.Directive
-import com.normation.rudder.domain.policies.DirectiveId
-import com.normation.rudder.domain.policies.Rule
-import com.normation.rudder.domain.policies.RuleId
-import com.normation.rudder.domain.policies.RuleTarget
+import com.normation.rudder.domain.policies.*
 import com.normation.rudder.git.ZipUtils
 import com.normation.rudder.git.ZipUtils.Zippable
 import com.normation.rudder.ncf.ResourceFile
 import com.normation.rudder.ncf.ResourceFileState
-import com.normation.rudder.repository.RoDirectiveRepository
-import com.normation.rudder.repository.RoNodeGroupRepository
-import com.normation.rudder.repository.RoRuleRepository
-import com.normation.rudder.repository.WoDirectiveRepository
-import com.normation.rudder.repository.WoNodeGroupRepository
-import com.normation.rudder.repository.WoRuleRepository
+import com.normation.rudder.repository.*
 import com.normation.rudder.repository.xml.TechniqueArchiverImpl
 import com.normation.rudder.repository.xml.TechniqueRevisionRepository
 import com.normation.rudder.rest.ApiPath
