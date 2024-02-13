@@ -53,6 +53,8 @@ import com.normation.rudder.rest.data.NodeTemplate.AcceptedNodeTemplate
 import com.normation.rudder.rest.data.NodeTemplate.PendingNodeTemplate
 import com.softwaremill.quicklens.*
 import com.typesafe.config.ConfigValue
+import enumeratum.Enum
+import enumeratum.EnumEntry
 import java.util.regex.Pattern
 import net.liftweb.json.JArray
 import net.liftweb.json.JField
@@ -309,7 +311,7 @@ object Validation {
     }
   }
 
-  sealed trait Machine {
+  sealed trait Machine extends EnumEntry     {
     def tpe:        MachineType
     final def name: String = tpe match {
       case PhysicalMachineType               => "physical"
@@ -317,7 +319,7 @@ object Validation {
       case VirtualMachineType(vm)            => vm.name
     }
   }
-  object Machine       {
+  object Machine       extends Enum[Machine] {
     case object MPhysical      extends Machine { val tpe: MachineType = PhysicalMachineType                      }
     case object MUnknownVmType extends Machine { val tpe: VirtualMachineType = VirtualMachineType(UnknownVmType) }
     case object MSolarisZone   extends Machine { val tpe: VirtualMachineType = VirtualMachineType(SolarisZone)   }
@@ -329,7 +331,7 @@ object Validation {
     case object MHyperV        extends Machine { val tpe: VirtualMachineType = VirtualMachineType(HyperV)        }
     case object MBSDJail       extends Machine { val tpe: VirtualMachineType = VirtualMachineType(BSDJail)       }
 
-    val values: Set[Machine] = ca.mrvisser.sealerate.values[Machine]
+    val values: IndexedSeq[Machine] = findValues
   }
 
   sealed trait NodeValidationError { def msg: String }
