@@ -272,8 +272,8 @@ object ApiAuthorization       {
  * - Standard account are used for public API acess.
  *
  */
-sealed trait ApiAccountType { def name: String }
-object ApiAccountType       {
+sealed trait ApiAccountType extends EnumEntry            { def name: String }
+object ApiAccountType       extends Enum[ApiAccountType] {
   // system token get special authorization and lifetime
   final case object System    extends ApiAccountType { val name = "system" }
   // a token linked to an user account
@@ -281,13 +281,13 @@ object ApiAccountType       {
   // a standard API token, that can be only for public API access
   final case object PublicApi extends ApiAccountType { val name = "public" }
 
-  def values: Set[ApiAccountType] = ca.mrvisser.sealerate.values[ApiAccountType]
+  def values: IndexedSeq[ApiAccountType] = findValues
 }
 
 sealed trait ApiAccountKind { def kind: ApiAccountType }
 object ApiAccountKind       {
-  final case object System extends ApiAccountKind { val kind: ApiAccountType = ApiAccountType.System }
-  final case object User   extends ApiAccountKind { val kind = ApiAccountType.User                   }
+  final case object System extends ApiAccountKind { val kind: ApiAccountType = ApiAccountType.System         }
+  final case object User   extends ApiAccountKind { val kind: ApiAccountType.User.type = ApiAccountType.User }
   final case class PublicApi(
       authorizations: ApiAuthorization,
       expirationDate: Option[DateTime]
