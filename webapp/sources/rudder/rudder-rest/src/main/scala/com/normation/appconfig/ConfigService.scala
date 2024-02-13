@@ -499,7 +499,7 @@ class GenericConfigService(
   }
 
   implicit private[this] def toOptionPolicyMode(p: RudderWebProperty): Option[PolicyMode] = {
-    PolicyMode.allModes.find(_.name == p.value.toLowerCase())
+    PolicyMode.values.find(_.name == p.value.toLowerCase())
   }
 
   implicit private[this] def serOptionPolicyMode(x: Option[PolicyMode]): String = x match {
