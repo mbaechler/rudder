@@ -43,6 +43,8 @@ import com.normation.inventory.domain.*
 import com.normation.rudder.domain.Constants
 import com.normation.rudder.domain.logger.PolicyGenerationLogger
 import com.normation.zio.*
+import enumeratum.Enum
+import enumeratum.EnumEntry
 import java.io.StringReader
 import java.security.KeyFactory
 import java.security.MessageDigest
@@ -65,13 +67,13 @@ final case class MachineInfo(
     manufacturer: Option[Manufacturer]
 )
 
-sealed trait NodeKind { def name: String }
-object NodeKind       {
+sealed trait NodeKind extends EnumEntry      { def name: String }
+object NodeKind       extends Enum[NodeKind] {
   final case object Root  extends NodeKind { val name = "root"  }
   final case object Relay extends NodeKind { val name = "relay" }
   final case object Node  extends NodeKind { val name = "node"  }
 
-  def values: Set[NodeKind] = ca.mrvisser.sealerate.values[NodeKind]
+  def values: IndexedSeq[NodeKind] = findValues
 
   def parse(kind: String): Either[String, NodeKind] = {
     val lower = kind.toLowerCase()
