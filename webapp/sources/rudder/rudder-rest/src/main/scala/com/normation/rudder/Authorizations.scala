@@ -98,121 +98,116 @@ object ActionType {
   }
 }
 
-sealed trait Administration extends AuthorizationType { def authzKind = "administration" }
-sealed trait Compliance     extends AuthorizationType { def authzKind = "compliance"     }
-sealed trait Configuration  extends AuthorizationType { def authzKind = "configuration"  }
-sealed trait Deployer       extends AuthorizationType { def authzKind = "deployer"       }
-sealed trait Deployment     extends AuthorizationType { def authzKind = "deployment"     }
-sealed trait Directive      extends AuthorizationType { def authzKind = "directive"      }
-sealed trait Group          extends AuthorizationType { def authzKind = "group"          }
-sealed trait Node           extends AuthorizationType { def authzKind = "node"           }
-sealed trait Parameter      extends AuthorizationType { def authzKind = "parameter"      }
-sealed trait Rule           extends AuthorizationType { def authzKind = "rule"           }
-sealed trait Technique      extends AuthorizationType { def authzKind = "technique"      }
-sealed trait UserAccount    extends AuthorizationType { def authzKind = "userAccount"    }
-sealed trait Validator      extends AuthorizationType { def authzKind = "validator"      }
+sealed trait Administration extends EnumEntry with AuthorizationType { def authzKind = "administration" }
+sealed trait Compliance     extends EnumEntry with AuthorizationType { def authzKind = "compliance"     }
+sealed trait Configuration  extends EnumEntry with AuthorizationType { def authzKind = "configuration"  }
+sealed trait Deployer       extends EnumEntry with AuthorizationType { def authzKind = "deployer"       }
+sealed trait Deployment     extends EnumEntry with AuthorizationType { def authzKind = "deployment"     }
+sealed trait Directive      extends EnumEntry with AuthorizationType { def authzKind = "directive"      }
+sealed trait Group          extends EnumEntry with AuthorizationType { def authzKind = "group"          }
+sealed trait Node           extends EnumEntry with AuthorizationType { def authzKind = "node"           }
+sealed trait Parameter      extends EnumEntry with AuthorizationType { def authzKind = "parameter"      }
+sealed trait Rule           extends EnumEntry with AuthorizationType { def authzKind = "rule"           }
+sealed trait Technique      extends EnumEntry with AuthorizationType { def authzKind = "technique"      }
+sealed trait UserAccount    extends EnumEntry with AuthorizationType { def authzKind = "userAccount"    }
+sealed trait Validator      extends EnumEntry with AuthorizationType { def authzKind = "validator"      }
 
 object AuthorizationType {
 
   case object NoRights  extends AuthorizationType { val authzKind = "no"; val action = "rights"  }
   case object AnyRights extends AuthorizationType { val authzKind = "any"; val action = "rights" }
 
-  // can't use sealerate here: "knownDirectSubclasses of observed before subclass ... registered"
-  // I'm not sure exactly how/why it bugs. It's only for object where ".values" is used
-  // in Role.
-
   // UIs and action related to Rudder app management (settings menu, etc)
-  final case object Administration {
+  final case object Administration extends Enum[Administration] {
     final case object Read  extends Administration with ActionType.Read with AuthorizationType
     final case object Edit  extends Administration with ActionType.Edit with AuthorizationType
     final case object Write extends Administration with ActionType.Write with AuthorizationType
-    def values: Set[AuthorizationType] = Set(Read, Edit, Write)
+    val values: IndexedSeq[Administration] = findValues
   }
   //
-  final case object Compliance     {
+  final case object Compliance     extends Enum[Compliance]     {
     final case object Read  extends Compliance with ActionType.Read with AuthorizationType
     final case object Edit  extends Compliance with ActionType.Edit with AuthorizationType
     final case object Write extends Compliance with ActionType.Write with AuthorizationType
-    def values: Set[AuthorizationType] = Set(Read, Edit, Write)
+    val values: IndexedSeq[Compliance] = findValues
   }
   // configure param, techniques, directives, rules, groups
-  final case object Configuration  {
+  final case object Configuration  extends Enum[Configuration]  {
     final case object Read  extends Configuration with ActionType.Read with AuthorizationType
     final case object Edit  extends Configuration with ActionType.Edit with AuthorizationType
     final case object Write extends Configuration with ActionType.Write with AuthorizationType
 
-    def values: Set[AuthorizationType] = Set(Read, Edit, Write)
+    val values: IndexedSeq[Configuration] = findValues
   }
   // in workflow, ability to merge a change
-  final case object Deployer       {
+  final case object Deployer       extends Enum[Deployer]       {
     final case object Read  extends Deployer with ActionType.Read with AuthorizationType
     final case object Edit  extends Deployer with ActionType.Edit with AuthorizationType
     final case object Write extends Deployer with ActionType.Write with AuthorizationType
-    def values: Set[AuthorizationType] = Set(Read, Edit, Write)
+    val values: IndexedSeq[Deployer] = findValues
   }
   // in rudder, ability to start/interact with a policy generation
-  final case object Deployment     {
+  final case object Deployment     extends Enum[Deployment]     {
     final case object Read  extends Deployment with ActionType.Read with AuthorizationType
     final case object Edit  extends Deployment with ActionType.Edit with AuthorizationType
     final case object Write extends Deployment with ActionType.Write with AuthorizationType
-    def values: Set[AuthorizationType] = Set(Read, Edit, Write)
+    val values: IndexedSeq[Deployment] = findValues
   }
-  final case object Directive      {
+  final case object Directive      extends Enum[Directive]      {
     final case object Read  extends Directive with ActionType.Read with AuthorizationType
     final case object Edit  extends Directive with ActionType.Edit with AuthorizationType
     final case object Write extends Directive with ActionType.Write with AuthorizationType
-    def values: Set[AuthorizationType] = Set(Read, Edit, Write)
+    val values: IndexedSeq[Directive] = findValues
   }
-  final case object Group          {
+  final case object Group          extends Enum[Group]          {
     final case object Read  extends Group with ActionType.Read with AuthorizationType
     final case object Edit  extends Group with ActionType.Edit with AuthorizationType
     final case object Write extends Group with ActionType.Write with AuthorizationType
-    def values: Set[AuthorizationType] = Set(Read, Edit, Write)
+    val values: IndexedSeq[Group] = findValues
   }
-  final case object Node           {
+  final case object Node           extends Enum[Node]           {
     final case object Read  extends Node with ActionType.Read with AuthorizationType
     final case object Edit  extends Node with ActionType.Edit with AuthorizationType
     final case object Write extends Node with ActionType.Write with AuthorizationType
-    def values: Set[AuthorizationType] = Set(Read, Edit, Write)
+    val values: IndexedSeq[Node] = findValues
   }
-  final case object Rule           {
+  final case object Rule           extends Enum[Rule]           {
     final case object Read  extends Rule with ActionType.Read with AuthorizationType
     final case object Edit  extends Rule with ActionType.Edit with AuthorizationType
     final case object Write extends Rule with ActionType.Write with AuthorizationType
-    def values: Set[AuthorizationType] = Set(Read, Edit, Write)
+    val values: IndexedSeq[Rule] = findValues
   }
-  final case object Parameter      {
+  final case object Parameter      extends Enum[Parameter]      {
     final case object Read  extends Parameter with ActionType.Read with AuthorizationType
     final case object Edit  extends Parameter with ActionType.Edit with AuthorizationType
     final case object Write extends Parameter with ActionType.Write with AuthorizationType
-    def values: Set[AuthorizationType] = Set(Read, Edit, Write)
+    val values: IndexedSeq[Parameter] = findValues
   }
-  final case object Technique      {
+  final case object Technique      extends Enum[Technique]      {
     final case object Read  extends Technique with ActionType.Read with AuthorizationType
     final case object Edit  extends Technique with ActionType.Edit with AuthorizationType
     final case object Write extends Technique with ActionType.Write with AuthorizationType
-    def values: Set[AuthorizationType] = Set(Read, Edit, Write)
+    val values: IndexedSeq[Technique] = findValues
   }
-  final case object UserAccount    {
+  final case object UserAccount    extends Enum[UserAccount]    {
     final case object Read  extends UserAccount with ActionType.Read with AuthorizationType
     final case object Edit  extends UserAccount with ActionType.Edit with AuthorizationType
     final case object Write extends UserAccount with ActionType.Write with AuthorizationType
-    def values: Set[AuthorizationType] = Set(Read, Edit, Write)
+    val values: IndexedSeq[UserAccount] = findValues
   }
-  final case object Validator      {
+  final case object Validator      extends Enum[Validator]      {
     final case object Read  extends Validator with ActionType.Read with AuthorizationType
     final case object Edit  extends Validator with ActionType.Edit with AuthorizationType
     final case object Write extends Validator with ActionType.Write with AuthorizationType
-    def values: Set[AuthorizationType] = Set(Read, Edit, Write)
+    val values: IndexedSeq[Validator] = findValues
   }
 
   val configurationKind: Set[AuthorizationType] =
-    Configuration.values ++ Rule.values ++ Directive.values ++ Technique.values ++ Parameter.values
-  val nodeKind:          Set[AuthorizationType] = Node.values ++ Group.values
-  val workflowKind:      Set[AuthorizationType] = Validator.values ++ Deployer.values
-  val complianceKind:    Set[AuthorizationType] = Compliance.values ++ (nodeKind ++ configurationKind).collect {
-    case x: ActionType.Read => x
-  }
+    (Configuration.values ++ Rule.values ++ Directive.values ++ Technique.values ++ Parameter.values).toSet
+  val nodeKind:          Set[AuthorizationType] = (Node.values ++ Group.values).toSet
+  val workflowKind:      Set[AuthorizationType] = (Validator.values ++ Deployer.values).toSet
+  val complianceKind:    Set[AuthorizationType] =
+    (Compliance.values ++ (nodeKind ++ configurationKind).collect { case x: ActionType.Read => x }).toSet
 
   /*
    * Authorization are extensible but can not be removed.
