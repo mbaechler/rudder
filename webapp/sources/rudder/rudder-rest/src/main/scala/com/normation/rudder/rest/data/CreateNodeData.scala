@@ -345,7 +345,7 @@ object Validation {
       val msg: String = s"Node 'status' must be one of ${names(allStatus)(_.name)} but '${x}' provided"
     }
     final case class PolicyMode(x: String)    extends NodeValidationError {
-      val msg: String = s"Node's policy mode must be one of ${names(PM.allModes)(_.name)} but '${x}' provided"
+      val msg: String = s"Node's policy mode must be one of ${names(PM.values)(_.name)} but '${x}' provided"
     }
     case object PolicyModeOnBadStatus         extends NodeValidationError {
       val msg: String = s"Policy mode can not be specified when status=pending"
@@ -466,7 +466,7 @@ object Validation {
     case None     => None.validNel
     case Some(pm) =>
       if (status == PendingInventory) NodeValidationError.PolicyModeOnBadStatus.invalidNel
-      else checkFind(pm, NodeValidationError.PolicyMode(pm))(x => PM.allModes.find(_.name == x).map(Some(_)))
+      else checkFind(pm, NodeValidationError.PolicyMode(pm))(x => PM.values.find(_.name == x).map(Some(_)))
   }
 
   // this part is adapted from inventory extraction. It should be factored out

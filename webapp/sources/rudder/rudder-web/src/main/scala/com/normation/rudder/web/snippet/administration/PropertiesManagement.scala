@@ -1070,7 +1070,7 @@ class PropertiesManagement extends DispatchSnippet with Loggable {
   }
 
   def nodeOnAcceptDefaultsConfiguration: NodeSeq => NodeSeq = { (xml: NodeSeq) =>
-    val modes  = SelectableOption[Option[PolicyMode]](None, "Use global value") :: PolicyMode.allModes.map { x =>
+    val modes = SelectableOption[Option[PolicyMode]](None, "Use global value") :: PolicyMode.values.map { x =>
       SelectableOption[Option[PolicyMode]](Some(x), x.name.capitalize)
     }.toList
     // node states, sorted [init, enable, other]
