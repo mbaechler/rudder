@@ -49,6 +49,8 @@ import com.normation.rudder.domain.nodes.NodeInfo
 import com.normation.rudder.domain.properties.NodeProperty
 import com.normation.rudder.services.queries.*
 import com.unboundid.ldap.sdk.*
+import enumeratum.Enum
+import enumeratum.EnumEntry
 import java.util.Locale
 import java.util.regex.PatternSyntaxException
 import net.liftweb.json.*
@@ -85,12 +87,13 @@ sealed trait SpecialComparator extends BaseComparator
 case object Regex              extends SpecialComparator { override val id = "regex"    }
 case object NotRegex           extends SpecialComparator { override val id = "notRegex" }
 
-sealed trait KeyValueComparator extends BaseComparator
-object KeyValueComparator {
+sealed trait KeyValueComparator extends EnumEntry with BaseComparator
+
+object KeyValueComparator extends Enum[KeyValueComparator] {
   final case object HasKey     extends KeyValueComparator { override val id = "hasKey"     }
   final case object JsonSelect extends KeyValueComparator { override val id = "jsonSelect" }
 
-  def values: Set[KeyValueComparator] = ca.mrvisser.sealerate.values[KeyValueComparator]
+  val values: IndexedSeq[KeyValueComparator] = findValues
 }
 
 sealed trait ComparatorList {
@@ -915,16 +918,17 @@ case object NodeAndRootServerReturnType extends QueryReturnType {
   override val value = "nodeAndPolicyServer"
 }
 
-sealed trait ResultTransformation {
+sealed trait ResultTransformation extends EnumEntry {
   def value: String
 }
-object ResultTransformation       {
+
+object ResultTransformation extends Enum[ResultTransformation] {
   // no result transformation
   final case object Identity extends ResultTransformation { val value = "identity" }
   // invert result: substract from "all nodes" the one matching that query
   final case object Invert   extends ResultTransformation { val value = "invert"   }
 
-  def all: Set[ResultTransformation] = ca.mrvisser.sealerate.values[ResultTransformation]
+  val values: IndexedSeq[ResultTransformation] = findValues
 
   def parse(value: String): PureResult[ResultTransformation] = {
     value.toLowerCase match {
@@ -933,7 +937,7 @@ object ResultTransformation       {
       case _                       =>
         Left(
           Inconsistency(
-            s"Can not parse '${value}' as a result transformation; expecting: ${all.map(_.value).mkString("'", "', '", "'")}"
+            s"Can not parse '${value}' as a result transformation; expecting: ${values.map(_.value).mkString("'", "', '", "'")}"
           )
         )
     }
