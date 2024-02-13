@@ -44,6 +44,8 @@ import com.normation.rudder.Role.Builtin
 import com.normation.rudder.Role.BuiltinName
 import com.normation.rudder.domain.logger.ApplicationLoggerPure
 import com.normation.zio.*
+import enumeratum.Enum
+import enumeratum.EnumEntry
 import scala.collection.immutable.SortedMap
 import zio.*
 import zio.syntax.*
@@ -83,15 +85,16 @@ object ActionType {
   trait Edit  extends ActionType { def action = VALUE.EDIT.name  }
 
   // we restrict the set of action types to only these three one to avoid future problem with named custom role
-  sealed trait VALUE { def name: String }
-  object VALUE       {
+  sealed trait VALUE extends EnumEntry   { def name: String }
+  object VALUE       extends Enum[VALUE] {
     final case object READ  extends VALUE { val name = "read"  }
     final case object WRITE extends VALUE { val name = "write" }
     final case object EDIT  extends VALUE { val name = "edit"  }
 
-    val all: Set[VALUE] = ca.mrvisser.sealerate.values
+    val values: IndexedSeq[VALUE] = findValues
+    val all:    Set[VALUE]        = values.toSet
 
-    def parse(s: String): Option[VALUE] = all.find(_.name == s.toLowerCase())
+    def parse(s: String): Option[VALUE] = values.find(_.name == s.toLowerCase())
   }
 }
 
@@ -328,12 +331,12 @@ object Rights {
  * Rudder "Role" which are kind of an aggregate of rights which somehow
  * make sense from a rudder usage point of view.
  */
-sealed trait Role {
+sealed trait Role extends EnumEntry  {
   def name:        String
   def rights:      Rights
   def debugString: String = name
 }
-object Role       {
+object Role       extends Enum[Role] {
   import com.normation.rudder.AuthorizationType as A
   // for now, all account type also have the "user account" rights
   val ua = A.UserAccount.values
@@ -409,8 +412,10 @@ object Role       {
     override def debugString: String = s"customRole[${permissions.map(_.debugString).mkString(",")}]"
   }
 
+  val values: IndexedSeq[Role] = findValues
+
   // standard predefined special roles, ie Admin et NoRights
-  def specialBuiltIn: Set[Role] = ca.mrvisser.sealerate.collect[Role]
+  def specialBuiltIn: Set[Role] = values.toSet
 
   def allBuiltInRoles: Map[String, Role] =
     standardBuiltIn.map { case (k, v) => (k.value, v) } ++ specialBuiltIn.map(r => (r.name, r)).toMap
