@@ -45,6 +45,8 @@ import com.normation.rudder.domain.policies.RuleId
 import com.normation.rudder.domain.reports.*
 import com.normation.rudder.domain.reports.ComplianceLevel
 import com.normation.rudder.reports.ComplianceModeName
+import enumeratum.Enum
+import enumeratum.EnumEntry
 import java.lang
 import net.liftweb.json.*
 import net.liftweb.json.JsonAST
@@ -1192,19 +1194,19 @@ object JsonCompliance {
   }
 }
 
-sealed trait ComplianceFormat {
+sealed trait ComplianceFormat extends EnumEntry {
   def value: String
 }
 
-object ComplianceFormat {
+object ComplianceFormat extends Enum[ComplianceFormat] {
   case object CSV  extends ComplianceFormat { val value = "csv"  }
   case object JSON extends ComplianceFormat { val value = "json" }
-  def allValues:                Set[ComplianceFormat]            = ca.mrvisser.sealerate.values[ComplianceFormat]
+  val values:                   IndexedSeq[ComplianceFormat]     = findValues
   def fromValue(value: String): Either[String, ComplianceFormat] = {
-    allValues.find(_.value == value) match {
+    values.find(_.value == value) match {
       case None         =>
         Left(
-          s"Wrong type of value for compliance format '${value}', expected : ${allValues.map(_.value).mkString("[", ", ", "]")}"
+          s"Wrong type of value for compliance format '${value}', expected : ${values.map(_.value).mkString("[", ", ", "]")}"
         )
       case Some(action) => Right(action)
     }
