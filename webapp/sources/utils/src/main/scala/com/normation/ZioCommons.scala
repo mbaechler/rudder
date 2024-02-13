@@ -513,7 +513,7 @@ object box {
   /**
    * A utility alias type / methods to create ZIO `Managed[RudderError, A]`
    */
-  type IOManaged[A] = ZIO[Any with Scope, RudderError, A]
+  type IOManaged[A] = ZIO[Any & Scope, RudderError, A]
   object IOManaged {
     def make[A](acquire: => A)(release: A => Unit): IOManaged[A] =
       ZIO.acquireRelease(IOResult.attempt(acquire))(a => effectUioUnit(release(a)))

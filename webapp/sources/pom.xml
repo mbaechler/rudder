@@ -107,7 +107,7 @@ limitations under the License.
       </extension>
     </extensions>
     <plugins>
-      <plugin>
+      <!--<plugin>
         <groupId>io.github.evis</groupId>
         <artifactId>scalafix-maven-plugin_2.13</artifactId>
         <version>0.1.8_0.11.0</version>
@@ -123,7 +123,7 @@ limitations under the License.
             <version>0.6.2</version>
           </dependency>
         </dependencies>
-      </plugin>
+      </plugin>-->
       <plugin>
         <!-- Specify maven resources plugin version because to avoid this bug from plugin 3.2+ https://issues.apache.org/jira/browse/MRESOURCES-269
 	especially with maven 3.9 that uses version 3.3.0 of this plugin by default, see https://issues.rudder.io/issues/22403
@@ -166,25 +166,25 @@ limitations under the License.
         </executions>
         <configuration>
           <scalaCompatVersion>${scala-binary-version}</scalaCompatVersion>
+          <scalaVersion>${scala-version}</scalaVersion>
           <recompileMode>all</recompileMode>
-          <compilerPlugins>
+          <!--<compilerPlugins>
             <compilerPlugin>
               <groupId>org.scalameta</groupId>
               <artifactId>semanticdb-scalac_${scala-version}</artifactId>
               <version>4.9.1</version>
             </compilerPlugin>
-          </compilerPlugins>
+          </compilerPlugins>-->
           <args>
             <arg>-release:17</arg>
-            <arg>-dependencyfile</arg>
-            <arg>${basedir}/.scala_dependencies</arg>
+            <!--<arg>-dependencyfile</arg>
+            <arg>${basedir}/.scala_dependencies</arg>-->
             <!-- standard warning, most of the one from https://tpolecat.github.io/2017/04/25/scalac-flags.html -->
             <!-- corresponding scala line:
               -language:existentials -language:higherKinds -language:implicitConversions
               -Xlint:_,-nullary-unit,-missing-interpolator -Yno-adapted-args -Ywarn-dead-code -Ywarn-extra-implicit -Ywarn-inaccessible
               -Ywarn-infer-any -Ywarn-nullary-override -Ywarn-numeric-widen -Ywarn-unused:imports -Ywarn-unused:locals -Ywarn-unused:privates
             -->
-            <arg>-Xsource:3-cross</arg>
             <arg>-deprecation</arg>                  <!-- Emit warning and location for usages of deprecated APIs. -->
             <arg>-explaintypes</arg>                 <!-- Explain type errors in more detail. -->
             <arg>-feature</arg>                      <!-- Emit warning and location for usages of features that should be imported explicitly. -->
@@ -192,27 +192,28 @@ limitations under the License.
             <arg>-language:existentials</arg>        <!-- Existential types (besides wildcard types) can be written and inferred -->
             <arg>-language:higherKinds</arg>         <!-- Allow higher-kinded types -->
             <arg>-language:implicitConversions</arg> <!-- Allow definition of implicit functions called views -->
-            <arg>-Xcheckinit</arg>                   <!--  Wrap field accessors to throw an exception on uninitialized access. -->
+            <arg>-Xmax-inlines</arg><arg>100</arg>
+            <!--<arg>-Xcheckinit</arg>-->                   <!--  Wrap field accessors to throw an exception on uninitialized access. -->
             <!-- Xlint, minus non-local returns, nullary-units and missing interpolator (which brings false positive in Rudder).
                  For -byname-implicit, it's because of Doobie, see: https://gitter.im/tpolecat/doobie?at=5f59e618765d633c54e74d52
             -->
-            <arg>-Xfatal-warnings</arg>              <!-- Fail the compilation if there are any warnings. -->
-            <arg>-Xlint:_,-nonlocal-return,-nullary-unit,-missing-interpolator,-byname-implicit</arg>
-            <arg>-Ywarn-dead-code</arg>              <!-- Warn when dead code is identified. -->
+            <!-- <arg>-Xfatal-warnings</arg> -->              <!-- Fail the compilation if there are any warnings. -->
+            <!--<arg>-Xlint:_,-nonlocal-return,-nullary-unit,-missing-interpolator,-byname-implicit</arg>-->
+            <!--<arg>-Ywarn-dead-code</arg>-->              <!-- Warn when dead code is identified. -->
 
-            <arg>-Ywarn-extra-implicit</arg>         <!-- Warn when more than one implicit parameter section is defined. -->
-            <arg>-Ywarn-numeric-widen</arg>          <!-- Warn when numerics are widened. -->
-            <arg>-Ywarn-unused:imports</arg>         <!-- Warn if an import selector is not referenced. -->
-            <arg>-Ywarn-unused:locals</arg>          <!-- Warn if a local definition is unused. -->
-            <arg>-Ywarn-unused:privates</arg>        <!-- Warn if a private member is unused. -->
-            <arg>-Ywarn-unused:implicits</arg>       <!-- Warn if an implicit parameter is unused. -->
-            <arg>-Ywarn-unused:privates</arg>        <!-- Warn if a private member is unused. -->
-            <arg>-Ybackend-parallelism</arg><arg>8</arg>         <!-- Enable parallelization — change to desired number! -->
-            <arg>-Ycache-plugin-class-loader:last-modified</arg> <!-- Enables caching of classloaders for compiler plugins -->
-            <arg>-Ycache-macro-class-loader:last-modified</arg>  <!-- and macro definitions. This can lead to performance improvements. -->
+            <!--<arg>-Ywarn-extra-implicit</arg>-->         <!-- Warn when more than one implicit parameter section is defined. -->
+            <!--<arg>-Ywarn-numeric-widen</arg>-->          <!-- Warn when numerics are widened. -->
+            <!--<arg>-Ywarn-unused:imports</arg>-->         <!-- Warn if an import selector is not referenced. -->
+            <!--<arg>-Ywarn-unused:locals</arg>-->          <!-- Warn if a local definition is unused. -->
+            <!--<arg>-Ywarn-unused:privates</arg>-->        <!-- Warn if a private member is unused. -->
+            <!--<arg>-Ywarn-unused:implicits</arg>-->       <!-- Warn if an implicit parameter is unused. -->
+            <!--<arg>-Ywarn-unused:privates</arg>-->        <!-- Warn if a private member is unused. -->
+            <!--<arg>-Ybackend-parallelism</arg><arg>8</arg>-->         <!-- Enable parallelization — change to desired number! -->
+            <!--<arg>-Ycache-plugin-class-loader:last-modified</arg>--> <!-- Enables caching of classloaders for compiler plugins -->
+            <!--<arg>-Ycache-macro-class-loader:last-modified</arg>-->  <!-- and macro definitions. This can lead to performance improvements. -->
 
             <!-- fastparse 3.0.1 emits false unused warning. We must silence them on related files. See: https://github.com/com-lihaoyi/fastparse/issues/285-->
-            <arg>-Wconf:cat=unused-nowarn&amp;src=com/normation/utils/Version.scala:s,cat=unused-nowarn&amp;src=com/normation/rudder/services/policies/InterpolatedValueCompiler.scala:s</arg>
+            <!--<arg>-Wconf:cat=unused-nowarn&amp;src=com/normation/utils/Version.scala:s,cat=unused-nowarn&amp;src=com/normation/rudder/services/policies/InterpolatedValueCompiler.scala:s</arg>-->
           </args>
           <jvmArgs>
             <jvmArg>-Xmx${jvmArg-Xmx}</jvmArg>
@@ -411,7 +412,7 @@ limitations under the License.
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
     <!-- Maven plugin version -->
-    <scala-maven-plugin-version>4.7.2</scala-maven-plugin-version>
+    <scala-maven-plugin-version>4.8.1</scala-maven-plugin-version>
 
     <!-- Libraries version that MUST be used in all children project -->
 
@@ -419,14 +420,14 @@ limitations under the License.
     <rudder-major-version>8.1</rudder-major-version>
     <rudder-version>8.1.0~beta3-SNAPSHOT</rudder-version>
 
-    <scala-version>2.13.13</scala-version>
-    <scala-binary-version>2.13</scala-binary-version>
+    <scala-version>3.3.1</scala-version>
+    <scala-binary-version>3</scala-binary-version>
     <!-- lift force us to remain with 1.3.0 because of
          java.lang.NoSuchMethodError: 'scala.collection.mutable.Stack scala.xml.parsing.NoBindingFactoryAdapter.scopeStack()'net.liftweb.util.Html5Parser.$anonfun$parse$1(HtmlParser.scala:373)
           And scala-xml 2.1.0 has non-trivial change on parsing semantic, can't
          upgrade without much care and correcting how we parse XML doc (xml
          parser option - see https://github.com/scala/scala-xml/releases/tag/v2.1.0 -->
-    <scala-xml-version>1.3.0</scala-xml-version>
+    <scala-xml-version>2.2.0</scala-xml-version>
     <lift-version>3.5.0</lift-version>
     <slf4j-version>2.0.9</slf4j-version>
     <logback-version>1.4.14</logback-version>
@@ -462,7 +463,7 @@ limitations under the License.
     <reflections-version>0.10.2</reflections-version>
     <graalvm-version>23.1.1</graalvm-version>
     <chimney-version>0.8.3</chimney-version>
-    <cron4s-version>0.6.1</cron4s-version>
+    <cron4s-version>0.7.0</cron4s-version>
     <ipaddress-version>5.4.0</ipaddress-version>
     <snakeyaml-version>2.2</snakeyaml-version>
 
@@ -480,7 +481,7 @@ limitations under the License.
     <fs2-version>3.3.0</fs2-version>
     <shapeless-version>2.3.10</shapeless-version>
     <cats-effect-version>3.5.2</cats-effect-version>
-    <dev-zio-version>2.0.19</dev-zio-version>
+    <dev-zio-version>2.0.21</dev-zio-version>
     <zio-cats-version>23.1.0.0</zio-cats-version> <!-- gives fs2 3.1.6, but doobie 1.0.0-RC1 is in 3.0.3 -->
     <zio-json-version>0.6.2</zio-json-version>
 
@@ -520,24 +521,24 @@ limitations under the License.
        -->
       <dependency>
         <groupId>org.scala-lang</groupId>
-        <artifactId>scala-library</artifactId>
+        <artifactId>scala3-library_${scala-binary-version}</artifactId>
         <version>${scala-version}</version>
       </dependency>
       <dependency>
         <groupId>org.scala-lang</groupId>
-        <artifactId>scala-compiler</artifactId>
+        <artifactId>scala-compiler_${scala-binary-version}</artifactId>
         <version>${scala-version}</version>
       </dependency>
       <dependency>
         <groupId>org.scala-lang</groupId>
-        <artifactId>scala-reflect</artifactId>
+        <artifactId>scala-reflect_${scala-binary-version}</artifactId>
         <version>${scala-version}</version>
       </dependency>
-      <dependency>
+      <!--<dependency>
         <groupId>org.scala-lang</groupId>
         <artifactId>scalap</artifactId>
         <version>${scala-version}</version>
-      </dependency>
+      </dependency>-->
       <dependency>
         <groupId>org.scala-lang.modules</groupId>
         <artifactId>scala-xml_${scala-binary-version}</artifactId>
@@ -587,7 +588,7 @@ limitations under the License.
       </dependency>
       <dependency>
         <groupId>net.liftweb</groupId>
-        <artifactId>lift-common_${scala-binary-version}</artifactId>
+        <artifactId>lift-common_2.13</artifactId>
         <version>${lift-version}</version>
         <exclusions>
           <exclusion>
@@ -602,12 +603,12 @@ limitations under the License.
       </dependency>
       <dependency>
         <groupId>net.liftweb</groupId>
-        <artifactId>lift-json_${scala-binary-version}</artifactId>
+        <artifactId>lift-json_2.13</artifactId>
         <version>${lift-version}</version>
       </dependency>
       <dependency>
         <groupId>net.liftweb</groupId>
-        <artifactId>lift-util_${scala-binary-version}</artifactId>
+        <artifactId>lift-util_2.13</artifactId>
         <version>${lift-version}</version>
         <exclusions>
           <exclusion>
@@ -618,7 +619,7 @@ limitations under the License.
       </dependency>
       <dependency>
         <groupId>net.liftweb</groupId>
-        <artifactId>lift-webkit_${scala-binary-version}</artifactId>
+        <artifactId>lift-webkit_2.13</artifactId>
         <version>${lift-version}</version>
         <exclusions>
           <exclusion>

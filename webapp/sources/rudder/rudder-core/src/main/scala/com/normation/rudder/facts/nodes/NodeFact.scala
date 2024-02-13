@@ -120,7 +120,7 @@ final case class SecurityTag(tenants: Chunk[TenantId])
 
 // default serialization for security tag. Be careful, changing that impacts external APIs.
 object SecurityTag {
-  implicit val codecSecurityTag: JsonCodec[SecurityTag] = DeriveJsonCodec.gen
+  implicit def codecSecurityTag: JsonCodec[SecurityTag] = DeriveJsonCodec.gen
 }
 
 // rudder settings for that node
@@ -1358,7 +1358,7 @@ object SelectFacts {
       case None     => newFact
       // we assume that all the properties not in SelectFacts are up-to-date, so we start with newFact and only update
       case Some(of) =>
-        implicit val oldFact = of
+        implicit def oldFact: NodeFact = of
 
         newFact
           .update(attrs.swap)
@@ -1620,13 +1620,13 @@ final case class QueryContext(
 
 object QueryContext {
   // for test
-  implicit val testQC: QueryContext = QueryContext(eventlog.RudderEventActor, NodeSecurityContext.All)
+  implicit def testQC: QueryContext = QueryContext(eventlog.RudderEventActor, NodeSecurityContext.All)
 
   // for place that didn't get a real node security context yet
-  implicit val todoQC: QueryContext = QueryContext(eventlog.RudderEventActor, NodeSecurityContext.All)
+  implicit def todoQC: QueryContext = QueryContext(eventlog.RudderEventActor, NodeSecurityContext.All)
 
   // for system queries (when rudder needs to look-up things)
-  implicit val systemQC: QueryContext = QueryContext(eventlog.RudderEventActor, NodeSecurityContext.All)
+  implicit def systemQC: QueryContext = QueryContext(eventlog.RudderEventActor, NodeSecurityContext.All)
 }
 
 /*
@@ -1760,11 +1760,11 @@ object NodeFactSerialisation {
 
   object SimpleCodec {
 
-    implicit val codecOptionDateTime: JsonCodec[Option[DateTime]] = DeriveJsonCodec.gen
-    implicit val codecNodeId:         JsonCodec[NodeId]           = JsonCodec.string.transform[NodeId](NodeId(_), _.value)
-    implicit val codecJsonOsDetails:  JsonCodec[JsonOsDetails]    = DeriveJsonCodec.gen
+    implicit def codecOptionDateTime: JsonCodec[Option[DateTime]] = DeriveJsonCodec.gen
+    implicit def codecNodeId:         JsonCodec[NodeId]           = JsonCodec.string.transform[NodeId](NodeId(_), _.value)
+    implicit def codecJsonOsDetails:  JsonCodec[JsonOsDetails]    = DeriveJsonCodec.gen
 
-    implicit val decoderOsDetails: JsonDecoder[OsDetails] = JsonDecoder[JsonOsDetails].map { jod =>
+    implicit def decoderOsDetails: JsonDecoder[OsDetails] = JsonDecoder[JsonOsDetails].map { jod =>
       val tpe     = ParseOSType.getType(jod.osType, jod.name, jod.fullName)
       val details =
         ParseOSType.getDetails(tpe, jod.fullName, new SVersion(jod.version), jod.servicePack, new SVersion(jod.kernelVersion))
@@ -1780,7 +1780,7 @@ object NodeFactSerialisation {
       }
     }
 
-    implicit val encoderOsDetails: JsonEncoder[OsDetails] = JsonEncoder[JsonOsDetails].contramap { od =>
+    implicit def encoderOsDetails: JsonEncoder[OsDetails] = JsonEncoder[JsonOsDetails].contramap { od =>
       val jod = {
         JsonOsDetails(
           od.os.kernelName,
@@ -1807,8 +1807,8 @@ object NodeFactSerialisation {
       }
     }
 
-    implicit val codecJsonAgentRunInterval:   JsonCodec[JsonAgentRunInterval]   = DeriveJsonCodec.gen
-    implicit val codecAgentRunInterval:       JsonCodec[AgentRunInterval]       = JsonCodec(
+    implicit def codecJsonAgentRunInterval:   JsonCodec[JsonAgentRunInterval]   = DeriveJsonCodec.gen
+    implicit def codecAgentRunInterval:       JsonCodec[AgentRunInterval]       = JsonCodec(
       JsonEncoder[JsonAgentRunInterval].contramap[AgentRunInterval] { ari =>
         JsonAgentRunInterval(
           ari.overrides.map(_.toString()).getOrElse("default"),
@@ -1828,22 +1828,22 @@ object NodeFactSerialisation {
         AgentRunInterval(o, jari.interval, jari.startMinute, jari.startHour, jari.splayHour * 60 + jari.splayMinute)
       }
     )
-    implicit val codecAgentReportingProtocol: JsonCodec[AgentReportingProtocol] = {
+    implicit def codecAgentReportingProtocol: JsonCodec[AgentReportingProtocol] = {
       JsonCodec.string.transformOrFail[AgentReportingProtocol](
         s => AgentReportingProtocol.parse(s).left.map(_.fullMsg),
         _.value
       )
     }
-    implicit val codecHeartbeatConfiguration: JsonCodec[HeartbeatConfiguration] = DeriveJsonCodec.gen
-    implicit val codecReportingConfiguration: JsonCodec[ReportingConfiguration] = DeriveJsonCodec.gen
+    implicit def codecHeartbeatConfiguration: JsonCodec[HeartbeatConfiguration] = DeriveJsonCodec.gen
+    implicit def codecReportingConfiguration: JsonCodec[ReportingConfiguration] = DeriveJsonCodec.gen
 
-    implicit val codecNodeKind: JsonCodec[NodeKind] = JsonCodec.string.transformOrFail[NodeKind](NodeKind.parse, _.name)
+    implicit def codecNodeKind: JsonCodec[NodeKind] = JsonCodec.string.transformOrFail[NodeKind](NodeKind.parse, _.name)
 
-    implicit val encoderOptionPolicyMode: JsonEncoder[Option[PolicyMode]] = JsonEncoder.string.contramap {
+    implicit def encoderOptionPolicyMode: JsonEncoder[Option[PolicyMode]] = JsonEncoder.string.contramap {
       case None       => "default"
       case Some(mode) => mode.name
     }
-    implicit val decoderOptionPolicyMode: JsonDecoder[Option[PolicyMode]] = JsonDecoder[Option[String]].mapOrFail(opt => {
+    implicit def decoderOptionPolicyMode: JsonDecoder[Option[PolicyMode]] = JsonDecoder[Option[String]].mapOrFail(opt => {
       opt match {
         case None            => Right(None)
         // we need to be able to set "default", for example to reset in clone
@@ -1852,7 +1852,7 @@ object NodeFactSerialisation {
       }
     })
 
-    implicit val codecKeyStatus: JsonCodec[KeyStatus] = JsonCodec.string.transform[KeyStatus](
+    implicit def codecKeyStatus: JsonCodec[KeyStatus] = JsonCodec.string.transform[KeyStatus](
       _ match {
         case "certified" => CertifiedKey
         case _           => UndefinedKey
@@ -1860,7 +1860,7 @@ object NodeFactSerialisation {
       _.value
     )
 
-    implicit val codecInventoryStatus: JsonCodec[InventoryStatus] = JsonCodec.string.transformOrFail[InventoryStatus](
+    implicit def codecInventoryStatus: JsonCodec[InventoryStatus] = JsonCodec.string.transformOrFail[InventoryStatus](
       s => {
         InventoryStatus(s) match {
           case None     => Left(s"'${s}' is not recognized as a node status. Expected: 'pending', 'accepted'")
@@ -1870,25 +1870,25 @@ object NodeFactSerialisation {
       _.name
     )
 
-    implicit val codecSecurityTag:    JsonCodec[SecurityTag]    = DeriveJsonCodec.gen
-    implicit val codecNodeState:      JsonCodec[NodeState]      = JsonCodec.string.transformOrFail[NodeState](NodeState.parse, _.name)
-    implicit val codecRudderSettings: JsonCodec[RudderSettings] = DeriveJsonCodec.gen
-    implicit val codecAgentType:      JsonCodec[AgentType]      =
+    implicit def codecSecurityTag:    JsonCodec[SecurityTag]    = DeriveJsonCodec.gen
+    implicit def codecNodeState:      JsonCodec[NodeState]      = JsonCodec.string.transformOrFail[NodeState](NodeState.parse, _.name)
+    implicit def codecRudderSettings: JsonCodec[RudderSettings] = DeriveJsonCodec.gen
+    implicit def codecAgentType:      JsonCodec[AgentType]      =
       JsonCodec.string.transformOrFail[AgentType](s => AgentType.fromValue(s).left.map(_.fullMsg), _.id)
-    implicit val codecAgentVersion:   JsonCodec[AgentVersion]   = JsonCodec.string.transform[AgentVersion](AgentVersion(_), _.value)
-    implicit val codecVersion:        JsonCodec[Version]        =
+    implicit def codecAgentVersion:   JsonCodec[AgentVersion]   = JsonCodec.string.transform[AgentVersion](AgentVersion(_), _.value)
+    implicit def codecVersion:        JsonCodec[Version]        =
       JsonCodec.string.transformOrFail[Version](ParseVersion.parse, _.toVersionString)
-    implicit val codecJSecurityToken: JsonCodec[JSecurityToken] = DeriveJsonCodec.gen
+    implicit def codecJSecurityToken: JsonCodec[JSecurityToken] = DeriveJsonCodec.gen
 
-    implicit val codecSecturityToken: JsonCodec[SecurityToken] = JsonCodec(
+    implicit def codecSecturityToken: JsonCodec[SecurityToken] = JsonCodec(
       JsonEncoder[JSecurityToken].contramap[SecurityToken](st => JSecurityToken(SecurityToken.kind(st), st.key)),
       JsonDecoder[JSecurityToken].mapOrFail[SecurityToken](jst => SecurityToken.token(jst.kind, jst.token))
     )
 
-    implicit val codecAgentCapability: JsonCodec[AgentCapability] =
+    implicit def codecAgentCapability: JsonCodec[AgentCapability] =
       JsonCodec.string.transform[AgentCapability](AgentCapability(_), _.value)
 
-    implicit val codecConfigValue: JsonCodec[ConfigValue] = JsonCodec(
+    implicit def codecConfigValue: JsonCodec[ConfigValue] = JsonCodec(
       new JsonEncoder[ConfigValue] {
         override def unsafeEncode(a: ConfigValue, indent: Option[Int], out: Write): Unit = {
           out.write(
@@ -1899,9 +1899,9 @@ object NodeFactSerialisation {
       JsonDecoder[Json].map(json => GenericProperty.fromZioJson(json))
     )
 
-    implicit val codecJNodeProperty: JsonCodec[JNodeProperty] = DeriveJsonCodec.gen
+    implicit def codecJNodeProperty: JsonCodec[JNodeProperty] = DeriveJsonCodec.gen
 
-    implicit val codecNodeProperty: JsonCodec[NodeProperty] = JsonCodec(
+    implicit def codecNodeProperty: JsonCodec[NodeProperty] = JsonCodec(
       JsonEncoder[JNodeProperty].contramap[NodeProperty](p =>
         JNodeProperty(p.name, p.value, p.inheritMode.map(_.value), p.provider.map(_.value))
       ),
@@ -1917,11 +1917,11 @@ object NodeFactSerialisation {
       })
     )
 
-    implicit val codecRudderAgent:    JsonCodec[RudderAgent]    = DeriveJsonCodec.gen
-    implicit val codecIpAddress:      JsonCodec[IpAddress]      = JsonCodec.string.transform(IpAddress(_), _.inet)
-    implicit val codecNodeTimezone:   JsonCodec[NodeTimezone]   = DeriveJsonCodec.gen
-    implicit val codecMachineUuid:    JsonCodec[MachineUuid]    = JsonCodec.string.transform[MachineUuid](MachineUuid(_), _.value)
-    implicit val codecMachineType:    JsonCodec[MachineType]    = JsonCodec.string.transform[MachineType](
+    implicit def codecRudderAgent:    JsonCodec[RudderAgent]    = DeriveJsonCodec.gen
+    implicit def codecIpAddress:      JsonCodec[IpAddress]      = JsonCodec.string.transform(IpAddress(_), _.inet)
+    implicit def codecNodeTimezone:   JsonCodec[NodeTimezone]   = DeriveJsonCodec.gen
+    implicit def codecMachineUuid:    JsonCodec[MachineUuid]    = JsonCodec.string.transform[MachineUuid](MachineUuid(_), _.value)
+    implicit def codecMachineType:    JsonCodec[MachineType]    = JsonCodec.string.transform[MachineType](
       _ match {
         case UnknownMachineType.kind  => UnknownMachineType
         case PhysicalMachineType.kind => PhysicalMachineType
@@ -1929,19 +1929,19 @@ object NodeFactSerialisation {
       },
       _.kind
     )
-    implicit val codecManufacturer:   JsonCodec[Manufacturer]   = JsonCodec.string.transform[Manufacturer](Manufacturer(_), _.name)
-    implicit val codecMachine:        JsonCodec[MachineInfo]    = DeriveJsonCodec.gen
-    implicit val codecMemorySize:     JsonCodec[MemorySize]     = JsonCodec.long.transform[MemorySize](MemorySize(_), _.size)
-    implicit val codecSVersion:       JsonCodec[SVersion]       = JsonCodec.string.transform[SVersion](new SVersion(_), _.value)
-    implicit val codecSoftwareEditor: JsonCodec[SoftwareEditor] =
+    implicit def codecManufacturer:   JsonCodec[Manufacturer]   = JsonCodec.string.transform[Manufacturer](Manufacturer(_), _.name)
+    implicit def codecMachine:        JsonCodec[MachineInfo]    = DeriveJsonCodec.gen
+    implicit def codecMemorySize:     JsonCodec[MemorySize]     = JsonCodec.long.transform[MemorySize](MemorySize(_), _.size)
+    implicit def codecSVersion:       JsonCodec[SVersion]       = JsonCodec.string.transform[SVersion](new SVersion(_), _.value)
+    implicit def codecSoftwareEditor: JsonCodec[SoftwareEditor] =
       JsonCodec.string.transform[SoftwareEditor](SoftwareEditor(_), _.name)
   }
 
   import SimpleCodec.*
 
-  implicit val codecBios: JsonCodec[Bios] = DeriveJsonCodec.gen
+  implicit def codecBios: JsonCodec[Bios] = DeriveJsonCodec.gen
 
-  implicit val codecController: JsonCodec[Controller] = DeriveJsonCodec.gen
+  implicit def codecController: JsonCodec[Controller] = DeriveJsonCodec.gen
 
   def recJsonToJValue(json: Json):     JValue       = {
     json match {
@@ -1966,20 +1966,20 @@ object NodeFactSerialisation {
     }
   }
 
-  implicit val decoderJValue:       JsonDecoder[JValue]       = JsonDecoder[Option[Json]].map {
+  implicit def decoderJValue:       JsonDecoder[JValue]       = JsonDecoder[Option[Json]].map {
     case None    => JNothing
     case Some(v) => recJsonToJValue(v)
   }
-  implicit val encoderJValue:       JsonEncoder[JValue]       = JsonEncoder[Option[Json]].contramap(recJValueToJson(_))
-  implicit val codecCustomProperty: JsonCodec[CustomProperty] = DeriveJsonCodec.gen
+  implicit def encoderJValue:       JsonEncoder[JValue]       = JsonEncoder[Option[Json]].contramap(recJValueToJson(_))
+  implicit def codecCustomProperty: JsonCodec[CustomProperty] = DeriveJsonCodec.gen
 
-  implicit val codecFileSystem:     JsonCodec[FileSystem]     = DeriveJsonCodec.gen
-  implicit val codecInputDevice:    JsonCodec[InputDevice]    = DeriveJsonCodec.gen
-  implicit val codecLocalGroup:     JsonCodec[LocalGroup]     = DeriveJsonCodec.gen
-  implicit val codecLocalUser:      JsonCodec[LocalUser]      = DeriveJsonCodec.gen
-  implicit val codecLogicalVolume:  JsonCodec[LogicalVolume]  = DeriveJsonCodec.gen
-  implicit val codecMemorySlot:     JsonCodec[MemorySlot]     = DeriveJsonCodec.gen
-  implicit val codecInetAddress:    JsonCodec[InetAddress]    = JsonCodec.string.transformOrFail(
+  implicit def codecFileSystem:     JsonCodec[FileSystem]     = DeriveJsonCodec.gen
+  implicit def codecInputDevice:    JsonCodec[InputDevice]    = DeriveJsonCodec.gen
+  implicit def codecLocalGroup:     JsonCodec[LocalGroup]     = DeriveJsonCodec.gen
+  implicit def codecLocalUser:      JsonCodec[LocalUser]      = DeriveJsonCodec.gen
+  implicit def codecLogicalVolume:  JsonCodec[LogicalVolume]  = DeriveJsonCodec.gen
+  implicit def codecMemorySlot:     JsonCodec[MemorySlot]     = DeriveJsonCodec.gen
+  implicit def codecInetAddress:    JsonCodec[InetAddress]    = JsonCodec.string.transformOrFail(
     ip =>
       com.comcast.ip4s.IpAddress.fromString(ip) match {
         case None    => Left(s"Value '${ip}' can not be parsed as an IP address")
@@ -1987,18 +1987,18 @@ object NodeFactSerialisation {
       },
     com.comcast.ip4s.IpAddress.fromInetAddress(_).toString
   )
-  implicit val codecNetwork:        JsonCodec[Network]        = DeriveJsonCodec.gen
-  implicit val codecPhysicalVolume: JsonCodec[PhysicalVolume] = DeriveJsonCodec.gen
-  implicit val codecPort:           JsonCodec[Port]           = DeriveJsonCodec.gen
-  implicit val codecProcess:        JsonCodec[Process]        = DeriveJsonCodec.gen
-  implicit val codecProcessor:      JsonCodec[Processor]      = DeriveJsonCodec.gen
-  implicit val codecSlot:           JsonCodec[Slot]           = DeriveJsonCodec.gen
-  implicit val codecSoftwareFact:   JsonCodec[SoftwareFact]   = DeriveJsonCodec.gen
-  implicit val codecSound:          JsonCodec[Sound]          = DeriveJsonCodec.gen
-  implicit val codecStorage:        JsonCodec[Storage]        = DeriveJsonCodec.gen
-  implicit val codecVideo:          JsonCodec[Video]          = DeriveJsonCodec.gen
-  implicit val codecVirtualMachine: JsonCodec[VirtualMachine] = DeriveJsonCodec.gen
+  implicit def codecNetwork:        JsonCodec[Network]        = DeriveJsonCodec.gen
+  implicit def codecPhysicalVolume: JsonCodec[PhysicalVolume] = DeriveJsonCodec.gen
+  implicit def codecPort:           JsonCodec[Port]           = DeriveJsonCodec.gen
+  implicit def codecProcess:        JsonCodec[Process]        = DeriveJsonCodec.gen
+  implicit def codecProcessor:      JsonCodec[Processor]      = DeriveJsonCodec.gen
+  implicit def codecSlot:           JsonCodec[Slot]           = DeriveJsonCodec.gen
+  implicit def codecSoftwareFact:   JsonCodec[SoftwareFact]   = DeriveJsonCodec.gen
+  implicit def codecSound:          JsonCodec[Sound]          = DeriveJsonCodec.gen
+  implicit def codecStorage:        JsonCodec[Storage]        = DeriveJsonCodec.gen
+  implicit def codecVideo:          JsonCodec[Video]          = DeriveJsonCodec.gen
+  implicit def codecVirtualMachine: JsonCodec[VirtualMachine] = DeriveJsonCodec.gen
 
-  implicit val codecNodeFact: JsonCodec[NodeFact] = DeriveJsonCodec.gen
+  implicit def codecNodeFact: JsonCodec[NodeFact] = DeriveJsonCodec.gen
 
 }
