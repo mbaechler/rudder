@@ -410,7 +410,7 @@ class PropertiesManagement extends DispatchSnippet with Loggable {
                 </li>
             }
             (<ul id="relaySyncMethod">{
-              RelaySynchronizationMethod.all.map(radioHtml)
+              RelaySynchronizationMethod.values.map(radioHtml)
             }
               </ul>: NodeSeq) ++ Script(OnLoad(setRelaySyncMethodJs(value.value)))
           case eb: EmptyBox =>
