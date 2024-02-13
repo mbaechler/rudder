@@ -201,7 +201,7 @@ object QSAttribute extends Enum[QSAttribute] {
   case object Targets      extends QSAttribute { override val name = "groups"     }
 
   final val values: IndexedSeq[QSAttribute] = findValues
-  final val all: Set[QSAttribute] = values.toSet
+  final val all:    Set[QSAttribute]        = values.toSet
 }
 
 /*
@@ -269,7 +269,7 @@ object QSObject extends Enum[QSObject] {
   }
 
   final val values: IndexedSeq[QSObject] = findValues
-  final val all: Set[QSObject] = values.toSet
+  final val all:    Set[QSObject]        = values.toSet
 
   // default sort for QuickSearchResult:
   // - by type
