@@ -86,6 +86,7 @@ import com.normation.rudder.repository.WoRuleRepository
 import com.normation.rudder.repository.xml.TechniqueArchiverImpl
 import com.normation.rudder.repository.xml.TechniqueFiles
 import com.normation.rudder.repository.xml.TechniqueRevisionRepository
+import com.normation.rudder.rest.ApiModuleProvider
 import com.normation.rudder.rest.ApiPath
 import com.normation.rudder.rest.ArchiveApi as API
 import com.normation.rudder.rest.AuthzToken
@@ -95,6 +96,8 @@ import com.normation.rudder.rest.implicits.*
 import com.normation.rudder.rest.lift.ImportAnswer.*
 import com.normation.rudder.services.queries.CmdbQueryParser
 import com.normation.zio.*
+import enumeratum.Enum
+import enumeratum.EnumEntry
 import java.io.ByteArrayInputStream
 import java.io.InputStream
 import java.io.OutputStream
