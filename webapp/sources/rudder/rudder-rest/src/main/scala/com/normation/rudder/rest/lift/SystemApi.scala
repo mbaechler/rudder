@@ -657,7 +657,7 @@ class SystemApiService11(
   // The private methods are the internal behavior of the API.
   // They are helper functions called by the public method (implemented lower) to avoid code repetition.
 
-  private[this] def reloadTechniquesWrapper(req: Req): Either[String, JField] = {
+  private def reloadTechniquesWrapper(req: Req): Either[String, JField] = {
     ApiLogger.info(s"Trigger dynamic group reload")
     updatePTLibService.update(
       ModificationId(uuidGen.newUuid),
@@ -675,7 +675,7 @@ class SystemApiService11(
 
   // For now we are not able to give information about the group reload process.
   // We still send OK instead to inform the endpoint has correctly triggered.
-  private[this] def reloadDyngroupsWrapper(): Either[String, JField] = {
+  private def reloadDyngroupsWrapper(): Either[String, JField] = {
     ApiLogger.info(s"Trigger dynamic group reload")
     updateDynamicGroups.forceStartUpdate
     Right(JField("groups", "Started"))
@@ -686,7 +686,7 @@ class SystemApiService11(
     * (the most recent is the first in the array)
     * { "archiveType" : [ { "id" : "datetimeID", "date": "human readable date" , "commiter": "name", "gitPath": "path" }, ... ]
     */
-  private[this] def formatList(archiveType: String, availableArchives: Map[DateTime, GitArchiveId]): JField = {
+  private def formatList(archiveType: String, availableArchives: Map[DateTime, GitArchiveId]): JField = {
     val ordered = availableArchives.toList.sortWith { case ((d1, _), (d2, _)) => d1.isAfter(d2) }.map {
       case (date, tag) =>
         // archiveId is contained in gitPath, archive is archives/<kind>/archiveId
@@ -700,16 +700,16 @@ class SystemApiService11(
     JField(archiveType, ordered)
   }
 
-  private[this] def listTags(list: () => IOResult[Map[DateTime, GitArchiveId]], archiveType: String): Either[String, JField] = {
+  private def listTags(list: () => IOResult[Map[DateTime, GitArchiveId]], archiveType: String): Either[String, JField] = {
     list().either.runNow.fold(
       err => Left(s"Error when trying to list available archives for ${archiveType}. Error was: ${err.fullMsg}"),
       map => Right(formatList(archiveType, map))
     )
   }
 
-  private[this] def newModId = ModificationId(uuidGen.newUuid)
+  private def newModId = ModificationId(uuidGen.newUuid)
 
-  private[this] def restoreLatestArchive(
+  private def restoreLatestArchive(
       req:         Req,
       list:        () => IOResult[Map[DateTime, GitArchiveId]],
       restore:     (GitCommitId, PersonIdent, ModificationId, EventActor, Option[String], Boolean) => IOResult[GitCommitId],
@@ -737,7 +737,7 @@ class SystemApiService11(
     )
   }
 
-  private[this] def restoreLatestCommit(
+  private def restoreLatestCommit(
       req:         Req,
       restore:     (PersonIdent, ModificationId, EventActor, Option[String], Boolean) => IOResult[GitCommitId],
       archiveType: String
@@ -759,7 +759,7 @@ class SystemApiService11(
     )
   }
 
-  private[this] def restoreByDatetime(
+  private def restoreByDatetime(
       req:         Req,
       list:        () => IOResult[Map[DateTime, GitArchiveId]],
       restore:     (GitCommitId, PersonIdent, ModificationId, EventActor, Option[String], Boolean) => IOResult[GitCommitId],
@@ -794,7 +794,7 @@ class SystemApiService11(
     )
   }
 
-  private[this] def archive(
+  private def archive(
       req:         Req,
       archive:     (PersonIdent, ModificationId, EventActor, Option[String], Boolean) => IOResult[GitArchiveId],
       archiveType: String
@@ -817,18 +817,18 @@ class SystemApiService11(
     )
   }
 
-  private[this] val format = new DateTimeFormatterBuilder()
+  private val format = new DateTimeFormatterBuilder()
     .append(DateTimeFormat.forPattern("YYYY-MM-dd"))
     .appendLiteral('T')
     .append(DateTimeFormat.forPattern("hhmmss"))
     .toFormatter
 
-  private[this] val directiveFiles = List("directives", "techniques", "parameters", "ncf")
-  private[this] val ruleFiles      = List("rules", "ruleCategories")
-  private[this] val parameterFiles = List("parameters")
-  private[this] val allFiles       = "groups" :: ruleFiles ::: directiveFiles ::: parameterFiles
+  private val directiveFiles = List("directives", "techniques", "parameters", "ncf")
+  private val ruleFiles      = List("rules", "ruleCategories")
+  private val parameterFiles = List("parameters")
+  private val allFiles       = "groups" :: ruleFiles ::: directiveFiles ::: parameterFiles
 
-  private[this] def getZip(
+  private def getZip(
       commitId:    String,
       paths:       List[String],
       archiveType: String

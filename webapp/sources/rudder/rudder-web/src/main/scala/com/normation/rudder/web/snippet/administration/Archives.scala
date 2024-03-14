@@ -59,13 +59,13 @@ import scala.xml.NodeSeq
 
 class Archives extends DispatchSnippet with Loggable {
 
-  private[this] val DL_NAME = "Download as zip"
+  private val DL_NAME = "Download as zip"
 
-  private[this] val itemArchiver       = RudderConfig.itemArchiveManager
-  private[this] val personIdentService = RudderConfig.personIdentService
-  private[this] val uuidGen            = RudderConfig.stringUuidGenerator
+  private val itemArchiver       = RudderConfig.itemArchiveManager
+  private val personIdentService = RudderConfig.personIdentService
+  private val uuidGen            = RudderConfig.stringUuidGenerator
 
-  private[this] val noElements = NotArchivedElements(Seq(), Seq(), Seq())
+  private val noElements = NotArchivedElements(Seq(), Seq(), Seq())
 
   def dispatch: PartialFunction[String, NodeSeq => NodeSeq] = {
     case "allForm"              => allForm
@@ -79,7 +79,7 @@ class Archives extends DispatchSnippet with Loggable {
    * Export all items (CR, Active Techniques library, groups)
    * Advertise on success and error
    */
-  private[this] def allForm = {
+  private def allForm = {
     actionFormBuilder(
       formName = "allForm",
       archiveButtonId = "exportAllButton",
@@ -101,7 +101,7 @@ class Archives extends DispatchSnippet with Loggable {
     )
   }
 
-  private[this] def rulesForm = {
+  private def rulesForm = {
     actionFormBuilder(
       formName = "rulesForm",
       archiveButtonId = "exportRulesButton",
@@ -122,7 +122,7 @@ class Archives extends DispatchSnippet with Loggable {
     )
   }
 
-  private[this] def directiveLibraryForm = {
+  private def directiveLibraryForm = {
     actionFormBuilder(
       formName = "directiveLibraryForm",
       archiveButtonId = "exportDirectiveLibraryButton",
@@ -143,7 +143,7 @@ class Archives extends DispatchSnippet with Loggable {
     )
   }
 
-  private[this] def groupLibraryForm = {
+  private def groupLibraryForm = {
     actionFormBuilder(
       formName = "groupLibraryForm",
       archiveButtonId = "exportGroupLibraryButton",
@@ -164,7 +164,7 @@ class Archives extends DispatchSnippet with Loggable {
     )
   }
 
-  private[this] def parametersForm = {
+  private def parametersForm = {
     actionFormBuilder(
       formName = "parametersForm",
       archiveButtonId = "exportParametersButton",
@@ -188,7 +188,7 @@ class Archives extends DispatchSnippet with Loggable {
   /**
    * Create a form with a validation button for an export or an import
    */
-  private[this] def actionFormBuilder(
+  private def actionFormBuilder(
       formName: String, // the element name to update on error/succes
 
       archiveButtonId: String, // input button
@@ -385,7 +385,7 @@ class Archives extends DispatchSnippet with Loggable {
   }
 
   ///////////// success pop-up ///////////////
-  private[this] def successPopup: JsCmd = {
+  private def successPopup: JsCmd = {
     JsRaw("""createSuccessNotification()""")
   }
 }

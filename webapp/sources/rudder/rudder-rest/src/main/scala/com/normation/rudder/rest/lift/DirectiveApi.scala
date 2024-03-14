@@ -443,7 +443,7 @@ class DirectiveApiService2(
 
   def serialize: (Technique, Directive, Option[ChangeRequestId]) => JValue = restDataSerializer.serializeDirective _
 
-  private[this] def createChangeRequestAndAnswer(
+  private def createChangeRequestAndAnswer(
       diff:            ChangeRequestDirectiveDiff,
       technique:       Technique,
       activeTechnique: ActiveTechnique,
@@ -505,7 +505,7 @@ class DirectiveApiService2(
     }
   }
 
-  private[this] def actualDirectiveCreation(
+  private def actualDirectiveCreation(
       restDirective:   RestDirective,
       baseDirective:   Directive,
       activeTechnique: ActiveTechnique,
@@ -639,7 +639,7 @@ class DirectiveApiService2(
   }
 
   // A function to check if Variables passed as parameter are correct
-  private[this] def checkParameters(paramEditor: DirectiveEditor)(parameterValues: (String, Seq[String])) = {
+  private def checkParameters(paramEditor: DirectiveEditor)(parameterValues: (String, Seq[String])) = {
     try {
       val s = Seq((paramEditor.variableSpecs(parameterValues._1).toVariable(parameterValues._2)))
       RudderLDAPConstants.variableToSeq(s)
@@ -651,7 +651,7 @@ class DirectiveApiService2(
     }
   }
 
-  private[this] def updateDirectiveModel(directiveId: DirectiveUid, restDirective: RestDirective) = {
+  private def updateDirectiveModel(directiveId: DirectiveUid, restDirective: RestDirective) = {
     for {
       (oldTechnique, activeTechnique, oldDirective) <-
         readDirective.getDirectiveWithContext(directiveId).notOptional(s"Could not find Directive ${directiveId.value}").toBox
@@ -965,7 +965,7 @@ class DirectiveApiService14(
   }
 
   // A function to check if Variables passed as parameter are correct
-  private[this] def checkParameters(paramEditor: DirectiveEditor)(parameterValues: (String, Seq[String])) = {
+  private def checkParameters(paramEditor: DirectiveEditor)(parameterValues: (String, Seq[String])) = {
     try {
       val s = Seq((paramEditor.variableSpecs(parameterValues._1).toVariable(parameterValues._2)))
       RudderLDAPConstants.variableToSeq(s)
@@ -977,7 +977,7 @@ class DirectiveApiService14(
     }
   }
 
-  private[this] def updateDirectiveModel(directiveId: DirectiveUid, restDirective: JQDirective): IOResult[DirectiveUpdate] = {
+  private def updateDirectiveModel(directiveId: DirectiveUid, restDirective: JQDirective): IOResult[DirectiveUpdate] = {
     for {
       triple                                       <- readDirective.getDirectiveWithContext(directiveId).notOptional(s"Could not find Directive ${directiveId.value}")
       (oldTechnique, activeTechnique, oldDirective) = triple

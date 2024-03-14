@@ -711,7 +711,7 @@ class GroupApiService2(
   import RestUtils.*
   import restDataSerializer.*
 
-  private[this] def createChangeRequestAndAnswer(
+  private def createChangeRequestAndAnswer(
       id:           String,
       diff:         ChangeRequestNodeGroupDiff,
       group:        NodeGroup,
@@ -1067,7 +1067,7 @@ class GroupApiService14(
     restDataSerializer:   RestDataSerializer
 ) {
 
-  private[this] def createChangeRequest(
+  private def createChangeRequest(
       diff:   ChangeRequestNodeGroupDiff,
       change: NodeGroupChangeRequest,
       params: DefaultParams,

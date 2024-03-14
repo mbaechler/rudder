@@ -124,7 +124,7 @@ class ItemArchiveManagerImpl(
   override def loggerName: String = this.getClass.getName
 
   // Clean a directory only if it exists, all exception are caught by the tryo
-  private[this] def cleanExistingDirectory(directory: File): IOResult[Unit] = {
+  private def cleanExistingDirectory(directory: File): IOResult[Unit] = {
     IOResult.attempt {
       if (directory.exists) FileUtils.cleanDirectory(directory)
       else ()
@@ -156,7 +156,7 @@ class ItemArchiveManagerImpl(
     }
   }
 
-  private[this] def exportRuleCategories(
+  private def exportRuleCategories(
       commiter: PersonIdent,
       modId:    ModificationId,
       actor:    EventActor,
@@ -234,7 +234,7 @@ class ItemArchiveManagerImpl(
    * - if a directive fails, we record that failure.
    * At the end, we can't have total failure for that part, so we don't have a IOResult
    */
-  private[this] def exportElements(
+  private def exportElements(
       elements: Seq[(List[ActiveTechniqueCategoryId], CategoryWithActiveTechniques)]
   ): IOResult[NotArchivedElements] = {
     ZIO.foldLeft(elements)(NotArchivedElements(Seq(), Seq(), Seq())) {
@@ -390,7 +390,7 @@ class ItemArchiveManagerImpl(
     )
   }
 
-  private[this] def importRuleCategories(archiveId: GitCommitId): IOResult[GitCommitId] = {
+  private def importRuleCategories(archiveId: GitCommitId): IOResult[GitCommitId] = {
     for {
       _        <- GitArchiveLoggerPure.info("Importing rule categories archive with id '%s'".format(archiveId.value))
       parsed   <- parseRuleCategories.getArchive(archiveId)
@@ -400,7 +400,7 @@ class ItemArchiveManagerImpl(
     }
   }
 
-  private[this] def importRulesAndDeploy(
+  private def importRulesAndDeploy(
       archiveId:     GitCommitId,
       modId:         ModificationId,
       actor:         EventActor,
@@ -444,7 +444,7 @@ class ItemArchiveManagerImpl(
     )
   }
 
-  private[this] def importTechniqueLibraryAndDeploy(
+  private def importTechniqueLibraryAndDeploy(
       archiveId:     GitCommitId,
       modId:         ModificationId,
       actor:         EventActor,
@@ -482,7 +482,7 @@ class ItemArchiveManagerImpl(
     )
   }
 
-  private[this] def importGroupLibraryAndDeploy(
+  private def importGroupLibraryAndDeploy(
       archiveId:     GitCommitId,
       modId:         ModificationId,
       actor:         EventActor,
@@ -521,7 +521,7 @@ class ItemArchiveManagerImpl(
     )
   }
 
-  private[this] def importParametersAndDeploy(
+  private def importParametersAndDeploy(
       archiveId:     GitCommitId,
       modId:         ModificationId,
       actor:         EventActor,
