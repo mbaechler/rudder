@@ -344,7 +344,7 @@ class SearchNodeComponent(
      */
     def showQueryAndGridContent(): NodeSeq = {
       (
-        "content-query" #> { (x: NodeSeq) => displayQuery(x, false) }
+        "content-query" #> { (x: NodeSeq) => displayQuery(x, isGroupPage = false) }
         & "update-gridresult" #> srvGrid.displayAndInit(Some(Seq()), "serverGrid") // we need to set something, or IE moans
       )(searchNodes)
     }
@@ -497,10 +497,10 @@ object SearchNodeComponent {
     val comparators  = optionComparatorsFor(ot, a)
     val compNames    = comparators.map(_._1)
     val selectedComp = compNames match {
-      case a :: _ =>
+      case b :: _ =>
         compNames.filter(_ == c_oldVal) match {
           case x :: _ => x
-          case Nil    => a
+          case Nil    => b
         }
       case Nil    => ""
     }

@@ -82,7 +82,7 @@ class ModificationService(
                           rollbackedEvents,
                           target,
                           "after",
-                          false
+                          includeSystem = false
                         )
                         .toBox
                   }
@@ -115,7 +115,7 @@ class ModificationService(
                           rollbackedEvents,
                           target,
                           "before",
-                          false
+                          includeSystem = false
                         )
                         .toBox
                   }

@@ -200,7 +200,7 @@ class TestNodeFactQueryProcessor {
       Nil
     )
 
-    testQueries(q0 :: q1 :: q2 :: Nil, false)
+    testQueries(q0 :: q1 :: q2 :: Nil, doInternalQueryTest = false)
   }
 
   @Test def basicQueriesOnOneNodeParameter(): Unit = {
@@ -254,7 +254,7 @@ class TestNodeFactQueryProcessor {
       q2_2.awaited
     )
 
-    testQueries(q2_0 :: q2_0_ :: q2_1 :: q2_1_ :: q2_2 :: q2_2_ :: Nil, true)
+    testQueries(q2_0 :: q2_0_ :: q2_1 :: q2_1_ :: q2_2 :: q2_2_ :: Nil, doInternalQueryTest = true)
   }
 
   // group of group, with or/and composition
@@ -372,7 +372,7 @@ class TestNodeFactQueryProcessor {
       s(1) :: Nil
     )
 
-    testQueries(q1 :: q2 :: q3 :: q4 :: q5 :: q6 :: q7 :: q8 :: q9 :: q10 :: Nil, false)
+    testQueries(q1 :: q2 :: q3 :: q4 :: q5 :: q6 :: q7 :: q8 :: q9 :: q10 :: Nil, doInternalQueryTest = false)
   }
 
   // group of group, with or/and composition
@@ -431,7 +431,7 @@ class TestNodeFactQueryProcessor {
       s(2) :: Nil
     )
 
-    testQueries(q1 :: q2 :: q3 :: q4 :: q5 :: Nil, true)
+    testQueries(q1 :: q2 :: q3 :: q4 :: q5 :: Nil, doInternalQueryTest = true)
   }
 
   @Test def machineComponentQueries(): Unit = {
@@ -445,7 +445,7 @@ class TestNodeFactQueryProcessor {
       s(6) :: s(7) :: Nil
     )
 
-    testQueries(q3 :: Nil, true)
+    testQueries(q3 :: Nil, doInternalQueryTest = true)
   }
 
   @Test def softwareQueries(): Unit = {
@@ -470,7 +470,7 @@ class TestNodeFactQueryProcessor {
       s(2) :: Nil
     )
 
-    testQueries(q1 :: q2 :: Nil, true)
+    testQueries(q1 :: q2 :: Nil, doInternalQueryTest = true)
   }
 
   @Test def logicalElementQueries(): Unit = {
@@ -515,7 +515,7 @@ class TestNodeFactQueryProcessor {
       s(2) :: Nil
     )
 
-    testQueries(q1 :: q2 :: q3 :: q3bis :: Nil, true)
+    testQueries(q1 :: q2 :: q3 :: q3bis :: Nil, doInternalQueryTest = true)
   }
 
   @Test def networkInterfaceElementQueries(): Unit = {
@@ -540,7 +540,7 @@ class TestNodeFactQueryProcessor {
       s(1) :: s(2) :: s(3) :: Nil
     )
 
-    testQueries(q1 :: q2 :: Nil, true)
+    testQueries(q1 :: q2 :: Nil, doInternalQueryTest = true)
   }
 
   @Test def regexQueries(): Unit = {
@@ -724,7 +724,10 @@ class TestNodeFactQueryProcessor {
       s.filterNot(n => n == s(1))
     )
 
-    testQueries(q0 :: q1 :: q1_ :: q2 :: q2_ :: q3 :: q3_2 :: q4 :: q5 :: q6 :: q7 :: q8 :: q9 :: q10 :: q11 :: Nil, false)
+    testQueries(
+      q0 :: q1 :: q1_ :: q2 :: q2_ :: q3 :: q3_2 :: q4 :: q5 :: q6 :: q7 :: q8 :: q9 :: q10 :: q11 :: Nil,
+      doInternalQueryTest = false
+    )
   }
 
   @Test def regexQueriesInventories(): Unit = {
@@ -839,7 +842,7 @@ class TestNodeFactQueryProcessor {
     //      """).openOrThrowException("For tests"),
     //      s.filterNot(n => n == s(2)) )
 
-    testQueries(q0 :: q2 :: q2_ :: q5 :: q8 :: q9 :: q10 :: q11 :: Nil, true)
+    testQueries(q0 :: q2 :: q2_ :: q5 :: q8 :: q9 :: q10 :: q11 :: Nil, doInternalQueryTest = true)
   }
 
   @Test def invertQueries(): Unit = {
@@ -901,7 +904,7 @@ class TestNodeFactQueryProcessor {
       sr
     )
 
-    testQueries(q0 :: q1 :: q2 :: q3 :: q4 :: Nil, true)
+    testQueries(q0 :: q1 :: q2 :: q3 :: q4 :: Nil, doInternalQueryTest = true)
   }
 
   @Test def dateQueries(): Unit = {
@@ -938,7 +941,7 @@ class TestNodeFactQueryProcessor {
       :: q("q13", "notEq", 14, root +: s)
       :: q("q14", "notEq", 16, root +: s)
       :: Nil,
-      true
+      doInternalQueryTest = true
     )
   }
 
@@ -964,7 +967,7 @@ class TestNodeFactQueryProcessor {
       sr
     )
 
-    testQueries(q0 :: q1 :: Nil, false)
+    testQueries(q0 :: q1 :: Nil, doInternalQueryTest = false)
   }
 
   @Test def agentTypeQueries: Unit = {
@@ -1019,7 +1022,7 @@ class TestNodeFactQueryProcessor {
       sr(6) :: Nil
     )
 
-    testQueries(allCfengine :: community :: nova :: dsc :: notCfengine :: Nil, true)
+    testQueries(allCfengine :: community :: nova :: dsc :: notCfengine :: Nil, doInternalQueryTest = true)
   }
 
   /**
@@ -1047,7 +1050,7 @@ class TestNodeFactQueryProcessor {
       s(1) :: Nil
     )
 
-    testQueries(q1 :: q2 :: Nil, true)
+    testQueries(q1 :: q2 :: Nil, doInternalQueryTest = true)
   }
 
   /**
@@ -1075,7 +1078,7 @@ class TestNodeFactQueryProcessor {
       s(2) :: s(3) :: Nil
     )
 
-    testQueries(q1 :: q2 :: Nil, true)
+    testQueries(q1 :: q2 :: Nil, doInternalQueryTest = true)
   }
 
   @Test def nodeStateQueries(): Unit = {
@@ -1100,7 +1103,7 @@ class TestNodeFactQueryProcessor {
       s(0) :: s(1) :: s(2) :: s(3) :: s(4) :: s(5) :: s(6) :: Nil
     )
 
-    testQueries(q1 :: q2 :: Nil, true)
+    testQueries(q1 :: q2 :: Nil, doInternalQueryTest = true)
   }
 
   @Test def nodeProperties(): Unit = {
@@ -1192,7 +1195,7 @@ class TestNodeFactQueryProcessor {
     val andQueries = q1 :: q2 :: q3 :: q4 :: q5 :: q6 :: q7 :: q8 :: Nil
     // And and Or must yield same results when there is only one criteria for node prop, see: #19538
     val orQueries  = andQueries.map(_.modify(_.query.composition).setTo(Or))
-    testQueries(andQueries ::: orQueries, false)
+    testQueries(andQueries ::: orQueries, doInternalQueryTest = false)
   }
 
   /*
@@ -1255,7 +1258,7 @@ class TestNodeFactQueryProcessor {
       s(5) :: s(6) :: Nil
     )
 
-    testQueries(q1 :: q2 :: q3 :: q4 :: q5 :: Nil, true)
+    testQueries(q1 :: q2 :: q3 :: q4 :: q5 :: Nil, doInternalQueryTest = true)
   }
 
   @Test def testLdapAndNodeInfoQuery(): Unit = {
@@ -1290,7 +1293,7 @@ class TestNodeFactQueryProcessor {
       Nil
     )
 
-    testQueries(q1 :: q2 :: q3 :: Nil, false)
+    testQueries(q1 :: q2 :: q3 :: Nil, doInternalQueryTest = false)
   }
 
   @Test def nodePropertiesFailingReq(): Unit = {
@@ -1328,7 +1331,7 @@ class TestNodeFactQueryProcessor {
       Nil
     )
 
-    testQueries(q1 :: Nil, true)
+    testQueries(q1 :: Nil, doInternalQueryTest = true)
   }
 
   private def testQueries(queries: Seq[TestQuery], doInternalQueryTest: Boolean): Unit = {

@@ -71,7 +71,6 @@ import com.unboundid.ldap.sdk.DN
 import java.nio.charset.StandardCharsets
 import org.eclipse.jgit.lib.PersonIdent
 import org.joda.time.DateTime
-import scala.annotation.nowarn
 import zio.*
 import zio.json.*
 import zio.stream.ZStream
@@ -321,9 +320,7 @@ object NoopFactStorage extends NodeFactStorage {
     StorageChangeEventStatus.Noop(nodeId).succeed
   override def delete(nodeId: NodeId)(implicit attrs: SelectFacts):                         IOResult[StorageChangeEventDelete] =
     StorageChangeEventDelete.Noop(nodeId).succeed
-  @nowarn("msg=parameter attrs in method getAllPending is never used")
   override def getAllPending()(implicit attrs:  SelectFacts = SelectFacts.default): IOStream[NodeFact] = ZStream.empty
-  @nowarn("msg=parameter attrs in method getAllAccepted is never used")
   override def getAllAccepted()(implicit attrs: SelectFacts = SelectFacts.default): IOStream[NodeFact] = ZStream.empty
   override def getPending(nodeId:               NodeId)(implicit attrs: SelectFacts): IOResult[Option[NodeFact]] = None.succeed
   override def getAccepted(nodeId:              NodeId)(implicit attrs: SelectFacts): IOResult[Option[NodeFact]] = None.succeed

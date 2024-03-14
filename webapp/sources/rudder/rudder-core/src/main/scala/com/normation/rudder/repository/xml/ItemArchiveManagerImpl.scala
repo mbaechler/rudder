@@ -351,10 +351,10 @@ class ItemArchiveManagerImpl(
     useSemaphoreOrFail(
       for {
         _           <- GitArchiveLoggerPure.info("Importing full archive with id '%s'".format(archiveId.value))
-        rules       <- importRulesAndDeploy(archiveId, modId, actor, reason, includeSystem, false)
-        userLib     <- importTechniqueLibraryAndDeploy(archiveId, modId, actor, reason, includeSystem, false)
-        groupLIb    <- importGroupLibraryAndDeploy(archiveId, modId, actor, reason, includeSystem, false)
-        parameters  <- importParametersAndDeploy(archiveId, modId, actor, reason, false)
+        rules       <- importRulesAndDeploy(archiveId, modId, actor, reason, includeSystem, deploy = false)
+        userLib     <- importTechniqueLibraryAndDeploy(archiveId, modId, actor, reason, includeSystem, deploy = false)
+        groupLIb    <- importGroupLibraryAndDeploy(archiveId, modId, actor, reason, includeSystem, deploy = false)
+        parameters  <- importParametersAndDeploy(archiveId, modId, actor, reason, includeSystem = false)
         eventLogged <- eventLogger.saveEventLog(modId, new ImportFullArchive(actor, archiveId, reason))
         commit      <- restoreCommitAtHead(
                          commiter,
@@ -565,10 +565,10 @@ class ItemArchiveManagerImpl(
     useSemaphoreOrFail(
       for {
         _           <- GitArchiveLoggerPure.info(s"Importing full archive with id '${archiveId.value}'")
-        rules       <- importRulesAndDeploy(archiveId, modId, actor, reason, includeSystem, false)
-        userLib     <- importTechniqueLibraryAndDeploy(archiveId, modId, actor, reason, includeSystem, false)
-        groupLIb    <- importGroupLibraryAndDeploy(archiveId, modId, actor, reason, includeSystem, false)
-        parameters  <- importParametersAndDeploy(archiveId, modId, actor, reason, false)
+        rules       <- importRulesAndDeploy(archiveId, modId, actor, reason, includeSystem, deploy = false)
+        userLib     <- importTechniqueLibraryAndDeploy(archiveId, modId, actor, reason, includeSystem, deploy = false)
+        groupLIb    <- importGroupLibraryAndDeploy(archiveId, modId, actor, reason, includeSystem, deploy = false)
+        parameters  <- importParametersAndDeploy(archiveId, modId, actor, reason, includeSystem = false)
         eventLogged <- eventLogger.saveEventLog(modId, new Rollback(actor, rollbackedEvents, target, rollbackType, reason))
         commit      <- restoreCommitAtHead(
                          commiter,
