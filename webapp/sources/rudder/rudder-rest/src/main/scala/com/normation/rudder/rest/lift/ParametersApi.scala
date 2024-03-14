@@ -288,7 +288,7 @@ class ParameterApiService2(
 
   import restDataSerializer.serializeParameter as serialize
 
-  private[this] def createChangeRequestAndAnswer(
+  private def createChangeRequestAndAnswer(
       id:           String,
       diff:         ChangeRequestGlobalParameterDiff,
       parameter:    GlobalParameter,
@@ -438,7 +438,7 @@ class ParameterApiService14(
     workflowLevelService: WorkflowLevelService
 ) {
 
-  private[this] def createChangeRequest(
+  private def createChangeRequest(
       diff:      ChangeRequestGlobalParameterDiff,
       parameter: GlobalParameter,
       change:    GlobalParamChangeRequest,

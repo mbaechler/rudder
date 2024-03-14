@@ -58,15 +58,15 @@ import scala.xml.*
 
 class ParameterManagement extends DispatchSnippet with Loggable {
 
-  private[this] val roParameterService   = RudderConfig.roParameterService
-  private[this] val workflowLevelService = RudderConfig.workflowLevelService
+  private val roParameterService   = RudderConfig.roParameterService
+  private val workflowLevelService = RudderConfig.workflowLevelService
 
-  private[this] val gridName      = "globalParametersGrid"
-  private[this] val gridContainer = "ParamGrid"
-  private[this] val linkUtil      = RudderConfig.linkUtil
+  private val gridName      = "globalParametersGrid"
+  private val gridContainer = "ParamGrid"
+  private val linkUtil      = RudderConfig.linkUtil
 
   // the current GlobalParameterForm component
-  private[this] val parameterPopup = new LocalSnippet[CreateOrUpdateGlobalParameterPopup]
+  private val parameterPopup = new LocalSnippet[CreateOrUpdateGlobalParameterPopup]
 
   def dispatch: PartialFunction[String, NodeSeq => NodeSeq] = { case "display" => { _ => display() } }
 
@@ -125,7 +125,7 @@ class ParameterManagement extends DispatchSnippet with Loggable {
     ).apply(dataTableXml(gridName)) ++ Script(initJs())
   }
 
-  private[this] def dataTableXml(gridName: String) = {
+  private def dataTableXml(gridName: String) = {
     <div id={gridContainer}>
       <div id="actions_zone">
         <div class="createParameter"/>
@@ -155,9 +155,9 @@ class ParameterManagement extends DispatchSnippet with Loggable {
 
   }
 
-  private[this] def jsVarNameForId(tableId: String) = "oTable" + tableId
+  private def jsVarNameForId(tableId: String) = "oTable" + tableId
 
-  private[this] def initJs(): JsCmd = {
+  private def initJs(): JsCmd = {
     OnLoad(
       JsRaw(s"""
           /* Event handler function */
@@ -230,7 +230,7 @@ class ParameterManagement extends DispatchSnippet with Loggable {
     )
   }
 
-  private[this] def showPopup(
+  private def showPopup(
       action:    GlobalParamModAction,
       parameter: Option[GlobalParameter]
   ): JsCmd = {
@@ -257,7 +257,7 @@ class ParameterManagement extends DispatchSnippet with Loggable {
     }
   }
 
-  private[this] def workflowCallBack(action: GlobalParamModAction, workflowEnabled: Boolean)(
+  private def workflowCallBack(action: GlobalParamModAction, workflowEnabled: Boolean)(
       returns: Either[GlobalParameter, ChangeRequestId]
   ): JsCmd = {
     if ((!workflowEnabled) & (action == GlobalParamModAction.Delete)) {
@@ -283,20 +283,20 @@ class ParameterManagement extends DispatchSnippet with Loggable {
     }
   }
 
-  private[this] def updateGrid(): JsCmd = {
+  private def updateGrid(): JsCmd = {
     Replace(gridContainer, display())
   }
 
   ///////////// success pop-up ///////////////
-  private[this] def successPopup: JsCmd = {
+  private def successPopup: JsCmd = {
     JsRaw("""createSuccessNotification()""")
   }
 
-  private[this] def onSuccessDeleteCallback(): JsCmd = {
+  private def onSuccessDeleteCallback(): JsCmd = {
     updateGrid() & successPopup
   }
 
-  private[this] def closePopup(): JsCmd = {
+  private def closePopup(): JsCmd = {
     JsRaw(s"""hideBsModal('${CreateOrUpdateGlobalParameterPopup.htmlId_popupContainer}');""")
   }
 

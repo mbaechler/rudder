@@ -97,7 +97,7 @@ class EventLogDetailsGenerator(
     diffDisplayer:       DiffDisplayer
 ) extends Loggable {
 
-  private[this] val xmlPretty = new scala.xml.PrettyPrinter(80, 2)
+  private val xmlPretty = new scala.xml.PrettyPrinter(80, 2)
 
   // convention: "X" means "ignore"
 
@@ -1124,7 +1124,7 @@ class EventLogDetailsGenerator(
     } </td>
   }
 
-  private[this] def agentRunDetails(ar: AgentRunInterval): NodeSeq = {
+  private def agentRunDetails(ar: AgentRunInterval): NodeSeq = {
     (
       "#override" #> ar.overrides.map(_.toString()).getOrElse("false")
       & "#interval" #> ar.interval
@@ -1142,7 +1142,7 @@ class EventLogDetailsGenerator(
     )
   }
 
-  private[this] def heartbeatDetails(hb: HeartbeatConfiguration):                                      NodeSeq = {
+  private def heartbeatDetails(hb: HeartbeatConfiguration):                                      NodeSeq = {
     (
       "#override" #> hb.overrides
       & "#interval" #> hb.heartbeatPeriod
@@ -1154,18 +1154,18 @@ class EventLogDetailsGenerator(
     )
   }
 
-  private[this] def displaySimpleDiff[T](
+  private def displaySimpleDiff[T](
       diff:    Option[SimpleDiff[T]],
       name:    String,
       default: String
   ): NodeSeq = displaySimpleDiff(diff, name).getOrElse(Text(default))
 
-  private[this] def displaySimpleDiff[T](
+  private def displaySimpleDiff[T](
       diff: Option[SimpleDiff[T]],
       name: String
   ): Option[NodeSeq] = diff.map(value => displayFormDiff(value, name))
 
-  private[this] def displayFormDiff[T](
+  private def displayFormDiff[T](
       diff: SimpleDiff[T],
       name: String
   )(implicit fun: T => String = (t: T) => t.toString): NodeSeq = {
@@ -1186,7 +1186,7 @@ class EventLogDetailsGenerator(
       )
     )
   }
-  private[this] def displaydirectiveInnerFormDiff(diff: SimpleDiff[SectionVal], eventId: Option[Int]): NodeSeq = {
+  private def displaydirectiveInnerFormDiff(diff: SimpleDiff[SectionVal], eventId: Option[Int]): NodeSeq = {
     eventId match {
       case None     => NodeSeq.Empty
       case Some(id) =>
@@ -1205,7 +1205,7 @@ class EventLogDetailsGenerator(
     }
   }
 
-  private[this] def displayExportArchiveDetails(gitArchiveId: GitArchiveId, rawData: NodeSeq) = {
+  private def displayExportArchiveDetails(gitArchiveId: GitArchiveId, rawData: NodeSeq) = {
     <div class="evloglmargin">
       <h4>Details of the new archive:</h4>
       <ul class="evlogviewpad">
@@ -1218,7 +1218,7 @@ class EventLogDetailsGenerator(
     </div>
   }
 
-  private[this] def displayImportArchiveDetails(gitCommitId: GitCommitId, rawData: NodeSeq) = {
+  private def displayImportArchiveDetails(gitCommitId: GitCommitId, rawData: NodeSeq) = {
     <div class="evloglmargin">
       <h4>Details of the restored archive:</h4>
       <ul class="evlogviewpad">
@@ -1228,7 +1228,7 @@ class EventLogDetailsGenerator(
     </div>
   }
 
-  private[this] def nodeGroupDetails(nodes: Set[NodeId]): NodeSeq = {
+  private def nodeGroupDetails(nodes: Set[NodeId]): NodeSeq = {
     val res = nodes.toSeq match {
       case Seq() => NodeSeq.Empty
       case t     =>
@@ -1242,7 +1242,7 @@ class EventLogDetailsGenerator(
 
   }
 
-  private[this] def ruleDetails(xml: NodeSeq, rule: Rule, groupLib: FullNodeGroupCategory, rootRuleCategory: RuleCategory) = {
+  private def ruleDetails(xml: NodeSeq, rule: Rule, groupLib: FullNodeGroupCategory, rootRuleCategory: RuleCategory) = {
     (
       "#ruleID" #> rule.id.serialize &
       "#ruleName" #> rule.name &
@@ -1256,7 +1256,7 @@ class EventLogDetailsGenerator(
     )(xml)
   }
 
-  private[this] def directiveDetails(xml: NodeSeq, ptName: TechniqueName, directive: Directive, sectionVal: SectionVal) = (
+  private def directiveDetails(xml: NodeSeq, ptName: TechniqueName, directive: Directive, sectionVal: SectionVal) = (
     "#directiveID" #> directive.id.serialize &
       "#directiveName" #> directive.name &
       "#ptVersion" #> directive.techniqueVersion.debugString &
@@ -1270,7 +1270,7 @@ class EventLogDetailsGenerator(
       "#longDescription" #> directive.longDescription
   )(xml)
 
-  private[this] def groupDetails(xml: NodeSeq, group: NodeGroup) = (
+  private def groupDetails(xml: NodeSeq, group: NodeGroup) = (
     "#groupID" #> group.id.withDefaultRev.serialize &
       "#groupName" #> group.name &
       "#shortDescription" #> group.description &
@@ -1294,20 +1294,20 @@ class EventLogDetailsGenerator(
       "#isSystem" #> group.isSystem
   )(xml)
 
-  private[this] def techniqueDetails(xml: NodeSeq, technique: ActiveTechnique) = (
+  private def techniqueDetails(xml: NodeSeq, technique: ActiveTechnique) = (
     "#techniqueID" #> technique.id.value &
       "#techniqueName" #> technique.techniqueName.value &
       "#isEnabled" #> technique.isEnabled &
       "#isSystem" #> technique.isSystem
   )(xml)
 
-  private[this] def globalParameterDetails(xml: NodeSeq, globalParameter: GlobalParameter) = (
+  private def globalParameterDetails(xml: NodeSeq, globalParameter: GlobalParameter) = (
     "#name" #> globalParameter.name &
       "#value" #> globalParameter.valueAsString &
       "#description" #> globalParameter.description
   )(xml)
 
-  private[this] def apiAccountDetails(xml: NodeSeq, apiAccount: ApiAccount) = (
+  private def apiAccountDetails(xml: NodeSeq, apiAccount: ApiAccount) = (
     "#id" #> apiAccount.id.value &
       "#name" #> apiAccount.name.value &
       "#token" #> apiAccount.token.value &
@@ -1317,20 +1317,20 @@ class EventLogDetailsGenerator(
       "#tokenGenerationDate" #> DateFormaterService.getDisplayDate(apiAccount.tokenGenerationDate)
   )(xml)
 
-  private[this] def mapSimpleDiffT[T](opt: Option[SimpleDiff[T]], t: T => String) = opt.map { diff =>
+  private def mapSimpleDiffT[T](opt: Option[SimpleDiff[T]], t: T => String) = opt.map { diff =>
     ".diffOldValue *" #> t(diff.oldValue) &
     ".diffNewValue *" #> t(diff.newValue)
   }
 
-  private[this] def mapSimpleDiff[T](opt: Option[SimpleDiff[T]]) = mapSimpleDiffT(opt, (x: T) => x.toString)
+  private def mapSimpleDiff[T](opt: Option[SimpleDiff[T]]) = mapSimpleDiffT(opt, (x: T) => x.toString)
 
-  private[this] def mapSimpleDiff[T](opt: Option[SimpleDiff[T]], id: DirectiveId) = opt.map { diff =>
+  private def mapSimpleDiff[T](opt: Option[SimpleDiff[T]], id: DirectiveId) = opt.map { diff =>
     ".diffOldValue *" #> diff.oldValue.toString &
     ".diffNewValue *" #> diff.newValue.toString &
     "#directiveID" #> id.serialize
   }
 
-  private[this] def mapComplexDiff[T](opt: Option[SimpleDiff[T]])(display: T => NodeSeq) = {
+  private def mapComplexDiff[T](opt: Option[SimpleDiff[T]])(display: T => NodeSeq) = {
     opt match {
       case None       => NodeSeq.Empty
       case Some(diff) =>
@@ -1349,7 +1349,7 @@ class EventLogDetailsGenerator(
   /*
    * Special diff for json: use a json diff tool.
    */
-  private[this] def jsonDiff(diff: Option[SimpleDiff[JValue]]): NodeSeq = {
+  private def jsonDiff(diff: Option[SimpleDiff[JValue]]): NodeSeq = {
     val s = Random.nextInt(100000)
 
     def stringify(jValue: JValue): String = {
@@ -1380,7 +1380,7 @@ class EventLogDetailsGenerator(
   /*
    * Special diff for tags as a list of key-value pair using a simple line diff against "key=value" tag format
    */
-  private[this] def tagsDiff(opt: Option[SimpleDiff[Tags]]) = {
+  private def tagsDiff(opt: Option[SimpleDiff[Tags]]) = {
     def tagsToLines(tags: Tags): String = {
       tags.tags.toList.sortBy(_.name.value).map(t => s" ${t.name.value}=${t.value.value} ").mkString("\n")
     }
@@ -1392,7 +1392,7 @@ class EventLogDetailsGenerator(
   /*
    * Special diff for node properties using a json diff tool.
    */
-  private[this] def nodePropertiesDiff(opt: Option[SimpleDiff[List[NodeProperty]]]): NodeSeq = {
+  private def nodePropertiesDiff(opt: Option[SimpleDiff[List[NodeProperty]]]): NodeSeq = {
     def toJson(props: List[NodeProperty]): JObject = {
       props.toDataJson
     }
@@ -1400,7 +1400,7 @@ class EventLogDetailsGenerator(
     jsonDiff(opt.map(diff => SimpleDiff(toJson(diff.oldValue), toJson(diff.newValue))))
   }
 
-  private[this] def promotedNodeDetails(id: NodeId, name: String) = (
+  private def promotedNodeDetails(id: NodeId, name: String) = (
     "#nodeID" #> id.value &
       "#nodeName" #> name
   )(
@@ -1409,7 +1409,7 @@ class EventLogDetailsGenerator(
       <li><b>Hostname: </b><value id="nodeName"/></li>
     </ul>
   )
-  private[this] def nodeDetails(details: InventoryLogDetails)     = (
+  private def nodeDetails(details: InventoryLogDetails)     = (
     "#nodeID" #> details.nodeId.value &
       "#nodeName" #> details.hostname &
       "#os" #> details.fullOsName &
@@ -1423,12 +1423,12 @@ class EventLogDetailsGenerator(
     </ul>
   )
 
-  private[this] def secretDetails(xml: NodeSeq, secret: Secret) = (
+  private def secretDetails(xml: NodeSeq, secret: Secret) = (
     "#name" #> secret.name &
       "#description" #> secret.description
   )(xml)
 
-  private[this] val crDetailsXML = {
+  private val crDetailsXML = {
     <div>
       <h4>Rule overview:</h4>
       <ul class="evlogviewpad">
@@ -1445,7 +1445,7 @@ class EventLogDetailsGenerator(
     </div>
   }
 
-  private[this] val piDetailsXML = {
+  private val piDetailsXML = {
     <div>
       <h4>Directive overview:</h4>
       <ul class="evlogviewpad">
@@ -1462,7 +1462,7 @@ class EventLogDetailsGenerator(
     </div>
   }
 
-  private[this] val groupDetailsXML = {
+  private val groupDetailsXML = {
     <div>
       <h4>Group overview:</h4>
       <ul class="evlogviewpad">
@@ -1478,7 +1478,7 @@ class EventLogDetailsGenerator(
     </div>
   }
 
-  private[this] val techniqueDetailsXML = {
+  private val techniqueDetailsXML = {
     <div>
       <h4>Technique overview:</h4>
       <ul class="evlogviewpad">
@@ -1490,7 +1490,7 @@ class EventLogDetailsGenerator(
     </div>
   }
 
-  private[this] val globalParamDetailsXML = {
+  private val globalParamDetailsXML = {
     <div>
       <h4>Global Parameter overview:</h4>
       <ul class="evlogviewpad">
@@ -1502,7 +1502,7 @@ class EventLogDetailsGenerator(
     </div>
   }
 
-  private[this] val apiAccountDetailsXML = {
+  private val apiAccountDetailsXML = {
     <div>
       <h4>API account overview:</h4>
       <ul class="evlogviewpad">
@@ -1520,7 +1520,7 @@ class EventLogDetailsGenerator(
     </div>
   }
 
-  private[this] val apiAccountModDetailsXML = {
+  private val apiAccountModDetailsXML = {
     <xml:group>
       {liModDetailsXML("name", "Name")}
       {liModDetailsXML("token", "Token")}
@@ -1533,7 +1533,7 @@ class EventLogDetailsGenerator(
     </xml:group>
   }
 
-  private[this] def liModDetailsXML(id: String, name: String) = (
+  private def liModDetailsXML(id: String, name: String) = (
     <div id={id}>
       <b>{name} changed:</b>
       <ul class="evlogviewpad">
@@ -1543,7 +1543,7 @@ class EventLogDetailsGenerator(
     </div>
   )
 
-  private[this] def liModDirectiveDetailsXML(id: String, name: String) = (
+  private def liModDirectiveDetailsXML(id: String, name: String) = (
     <div id={id}>
       <b>{name} changed:</b>
       <ul class="evlogviewpad">
@@ -1552,7 +1552,7 @@ class EventLogDetailsGenerator(
     </div>
   )
 
-  private[this] val groupModDetailsXML = {
+  private val groupModDetailsXML = {
     <xml:group>
       {liModDetailsXML("name", "Name")}
       {liModDetailsXML("shortDescription", "Description")}
@@ -1564,7 +1564,7 @@ class EventLogDetailsGenerator(
     </xml:group>
   }
 
-  private[this] val crModDetailsXML = {
+  private val crModDetailsXML = {
     <xml:group>
       {liModDetailsXML("name", "Name")}
       {liModDetailsXML("category", "Category")}
@@ -1577,7 +1577,7 @@ class EventLogDetailsGenerator(
     </xml:group>
   }
 
-  private[this] val piModDirectiveDetailsXML = {
+  private val piModDirectiveDetailsXML = {
     <xml:group>
       {liModDetailsXML("name", "Name")}
       {liModDetailsXML("shortDescription", "Description")}
@@ -1592,7 +1592,7 @@ class EventLogDetailsGenerator(
     </xml:group>
   }
 
-  private[this] val globalParamModDetailsXML = {
+  private val globalParamModDetailsXML = {
     <xml:group>
       {liModDetailsXML("name", "Name")}
       {liModDetailsXML("value", "Value")}
@@ -1601,7 +1601,7 @@ class EventLogDetailsGenerator(
     </xml:group>
   }
 
-  private[this] val secretXML = {
+  private val secretXML = {
     <div>
       <h4>Secret overview:</h4>
       <ul class="evlogviewpad">
@@ -1611,7 +1611,7 @@ class EventLogDetailsGenerator(
     </div>
   }
 
-  private[this] val secretModDetailsXML = {
+  private val secretModDetailsXML = {
     <xml:group>
       {liModDetailsXML("name", "Name")}
       {liModDetailsXML("value", "Value")}
@@ -1619,7 +1619,7 @@ class EventLogDetailsGenerator(
     </xml:group>
   }
 
-  private[this] def displayRollbackDetails(rollbackInfo: RollbackInfo, id: Int) = {
+  private def displayRollbackDetails(rollbackInfo: RollbackInfo, id: Int) = {
     val rollbackedEvents = rollbackInfo.rollbacked
     <div class="evloglmargin">
       <div style="width:50%; float:left;">
@@ -1727,7 +1727,7 @@ class EventLogDetailsGenerator(
         """))
   }
 
-  private[this] def authorizedNetworksXML() = (
+  private def authorizedNetworksXML() = (
     <div>
       <b>Networks authorized on policy server were updated:</b>
       <table class="eventLogUpdatePolicy">

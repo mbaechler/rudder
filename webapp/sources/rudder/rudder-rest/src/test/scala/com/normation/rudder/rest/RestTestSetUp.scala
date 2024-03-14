@@ -1051,7 +1051,7 @@ class RestTest(liftRules: LiftRules) {
     }
   }
 
-  private[this] def mockRequest(path: String, method: String) = {
+  private def mockRequest(path: String, method: String) = {
     val mockReq = new MockHttpServletRequest("http://localhost:8080")
 
     val (p, queryString) = {
@@ -1074,7 +1074,7 @@ class RestTest(liftRules: LiftRules) {
   def POST(path:   String): MockHttpServletRequest = mockRequest(path, "POST")
   def DELETE(path: String): MockHttpServletRequest = mockRequest(path, "DELETE")
 
-  private[this] def mockJsonRequest(path: String, method: String, data: JValue) = {
+  private def mockJsonRequest(path: String, method: String, data: JValue) = {
     val mockReq = mockRequest(path, method)
     mockReq.body = data
     mockReq
