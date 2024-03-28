@@ -709,7 +709,6 @@ trait NodeCriterionKeyValueMatcher[A] extends NodeCriterionMatcher {
           res    <- MatchHolderZio[A](DebugInfo(KVC.JsonSelect.id, Some(value)), extractor(n), matcher).matches
         } yield res
 
-      case c => MatchHolder[A](DebugInfo(s"unknown comparator: ${c}", Some(value)), Chunk(), _ => false).matches
     }
   }
 }
