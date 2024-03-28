@@ -226,7 +226,7 @@ class DiffDisplayer(linkUtil: LinkUtil) extends Loggable {
       newCategory:  Option[RuleCategoryId]
   ): Elem = {
 
-    def getCategoryFullName(category: RuleCategoryId)                = {
+    def getCategoryFullName(category: RuleCategoryId) = {
       ruleCategoryService.shortFqdn(rootCategory, category) match {
         case Full(fqdn) => fqdn
         case eb: EmptyBox =>
@@ -234,7 +234,7 @@ class DiffDisplayer(linkUtil: LinkUtil) extends Loggable {
           category.value
       }
     }
-    implicit def displayRuleCategory(ruleCategoryId: RuleCategoryId) = {
+    implicit def displayRuleCategory(ruleCategoryId: RuleCategoryId): Elem = {
       <span>{getCategoryFullName(ruleCategoryId)}</span>
     }
 
