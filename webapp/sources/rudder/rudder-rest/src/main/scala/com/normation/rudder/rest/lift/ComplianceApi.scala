@@ -1284,8 +1284,8 @@ class ComplianceAPIService(
               allRuleInfos,
               level,
               isGlobalCompliance = false
-          )).map(
-            (id, _)
+            )).map(
+              (id, _)
             )
         }
     } yield {
