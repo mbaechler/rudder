@@ -80,6 +80,7 @@ import com.normation.rudder.rule.category.RuleCategoryId
 import com.normation.rudder.services.queries.*
 import com.unboundid.ldap.sdk.DN
 import org.joda.time.DateTime
+import scala.annotation.nowarn
 import zio.*
 import zio.json.*
 import zio.syntax.*
@@ -930,7 +931,8 @@ class LDAPEntityMapper(
     implicit val formats = net.liftweb.json.DefaultFormats
     for {
       json <- parseOpt(s).toRight(s"The following string can not be parsed as a JSON object for API ACL: ${s}")
-      jacl <- (json.extractOpt[JsonApiAcl]).toRight(s"Can not extract API ACL object from json: ${s}")
+      // avoid Compiler synthesis of Manifest and OptManifest is deprecated
+      jacl <- (json.extractOpt[JsonApiAcl]).toRight(s"Can not extract API ACL object from json: ${s}"): @nowarn("cat=deprecation")
       acl  <- jacl.acl.traverse {
                 case JsonApiAuthz(path, actions) =>
                   for {
