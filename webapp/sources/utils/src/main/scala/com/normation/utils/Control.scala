@@ -97,7 +97,7 @@ object Control {
   def pipeline[T, U](seq: Seq[T], init: U)(call: (T, U) => Box[U]): Box[U] = {
     seq.foldLeft(Full(init): Box[U]) { (currentValue, nextProcessor) =>
       currentValue match {
-        case x: EmptyBox => return x // interrupt pipeline early
+        case x: EmptyBox => x // interrupt pipeline early // FIXME
         case Full(value) => call(nextProcessor, value)
       }
     }

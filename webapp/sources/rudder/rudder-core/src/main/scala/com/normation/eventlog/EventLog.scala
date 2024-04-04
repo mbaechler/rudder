@@ -24,7 +24,7 @@ import com.normation.utils.StringUuidGeneratorImpl
 import org.joda.time.DateTime
 import scala.xml.*
 
-final case class EventActor(name: String) extends AnyVal
+final case class EventActor(name: String) // FIXME: put back AnyVal after fixing json codec
 
 /*
  * Some data to hold common information about an event, and that will likely be used
