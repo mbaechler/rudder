@@ -155,7 +155,7 @@ class CreateCloneGroupPopup(
               query,
               isDynamic,
               srvList,
-              true
+              _isEnabled = true
             )
 
             woNodeGroupRepository

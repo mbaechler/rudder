@@ -469,7 +469,7 @@ class ComplianceApi(
       (for {
         level     <- restExtractor.extractComplianceLevel(req.params)
         precision <- restExtractor.extractPercentPrecision(req.params)
-        node      <- complianceService.getNodeCompliance(NodeId(nodeId), false)
+        node      <- complianceService.getNodeCompliance(NodeId(nodeId), onlySystems = false)
       } yield {
         if (version.value <= 6) {
           node.toJsonV6
@@ -506,7 +506,7 @@ class ComplianceApi(
       (for {
         level     <- restExtractor.extractComplianceLevel(req.params)
         precision <- restExtractor.extractPercentPrecision(req.params)
-        node      <- complianceService.getNodeCompliance(NodeId(nodeId), true)
+        node      <- complianceService.getNodeCompliance(NodeId(nodeId), onlySystems = true)
       } yield {
         node.toJson(level.getOrElse(10), precision.getOrElse(CompliancePrecision.Level2))
       }) match {
@@ -1283,9 +1283,9 @@ class ComplianceAPIService(
               targetedRulesByGroup(id),
               allRuleInfos,
               level,
-              false
-            )).map(
-              (id, _)
+              isGlobalCompliance = false
+          )).map(
+            (id, _)
             )
         }
     } yield {
