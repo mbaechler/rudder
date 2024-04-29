@@ -8,6 +8,16 @@ import scala.xml.NodeSeq
 class Login extends DispatchSnippet with DefaultExtendableSnippet[Login] {
 
   val userListProvider = RudderConfig.rudderUserListProvider
+  private val script   = {
+    """window.setTimeout('location.reload()', 10000);
+      |$('.btn-clipboard').click(function(){
+      |  navigator.clipboard.writeText("rudder server create-user -u " ).then(function(){
+      |    $('.btn-clipboard').attr("title","Copied to clipboard!");
+      |    $('.btn-cmd-user .fa-clipboard').attr('class', 'fas fa-check') ;
+      |  }, function() {})
+      |} );""".stripMargin
+  }
+
   def mainDispatch: Map[String, NodeSeq => NodeSeq] = Map(
     "display" -> { (authForm: NodeSeq) =>
       if (userListProvider.authConfig.users.isEmpty) {
@@ -36,13 +46,7 @@ class Login extends DispatchSnippet with DefaultExtendableSnippet[Login] {
               </div>
               <script type="text/javascript">
                 // <![CDATA[
-                window.setTimeout('location.reload()', 10000);
-                $('.btn-clipboard').click(function(){
-                  navigator.clipboard.writeText("rudder server create-user -u " ).then(function(){
-                    $('.btn-clipboard').attr("title","Copied to clipboard!");
-                    $('.btn-cmd-user .fa-clipboard').attr('class', 'fas fa-check') ;
-                  }, function() {})
-                } );
+                {script}
                 // ]]>
               </script>
             </div>
