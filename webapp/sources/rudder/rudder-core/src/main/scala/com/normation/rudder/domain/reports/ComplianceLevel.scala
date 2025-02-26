@@ -618,7 +618,7 @@ object ComplianceSerializable {
   )
 
   implicit val codecComplianceSerializable:     JsonCodec[ComplianceSerializable]                      = DeriveJsonCodec.gen
-  implicit val transformComplianceSerializable: Transformer[ComplianceSerializable, CompliancePercent] = {
+  /*implicit val transformComplianceSerializable: Transformer[ComplianceSerializable, CompliancePercent] = {
     Transformer
       .define[ComplianceSerializable, CompliancePercent]
       .withFieldRenamed(_.applying, _.pending)
@@ -631,7 +631,7 @@ object ComplianceSerializable {
       .withFieldRenamed(_.unexpectedMissingComponent, _.missing)
       .withFieldRenamed(_.noReport, _.noAnswer)
       .buildTransformer
-  }
+  }*/
 }
 
 final case class ComplianceLevelSerialisation(
