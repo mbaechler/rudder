@@ -271,7 +271,7 @@ class NodeGroupUnserialisationImpl(
                       ) ?~! ("Missing attribute 'isSystem' in entry type nodeGroup : " + entry)
       properties   <- traverse((group \ "properties" \ "property").toList) {
                         // format: off
-                        case <property>{p @ _*}</property> =>
+                        /*case <property>{p @ _*}</property> =>
                         // format: on
                           val name = (p \\ "name").text.trim
                           if (name.trim.isEmpty) {
@@ -286,7 +286,7 @@ class NodeGroupUnserialisationImpl(
                                 (p \\ "provider").headOption.map(p => PropertyProvider(p.text.trim))
                               )
                               .toBox
-                          }
+                          }*/ //FIXME
                         case xml                           => Failure(s"Found unexpected xml under <properties> tag: ${xml}")
                       }
     } yield {
@@ -856,10 +856,12 @@ class ApiAccountUnserialisationImpl extends ApiAccountUnserialisation {
                           case Some(Text(text)) if text == ApiAuthorizationKind.RW.name =>
                             Full(ApiAuthorization.RW)
                           // format: off
-                          case Some(<acl>{xml @ _*}</acl>) if (xml.nonEmpty) =>
+                          /*case Some(<acl>{xml @ _*}</acl>) if (xml.nonEmpty) =>
                           // format: on
                             unserAcl(xml.head)
                           // all other case: serialization pb => None
+                          
+                           */ // FIXME
                           case _                                                        => Full(ApiAuthorization.None)
                         }
       accountType     = (apiAccount \ "kind").headOption.map(_.text) match {
