@@ -119,8 +119,7 @@ object Serialisation {
   implicit val jsonUserFormDataDecoder:       JsonDecoder[JsonUserFormData]       = DeriveJsonDecoder.gen[JsonUserFormData]
   implicit val jsonRoleAuthorizationsDecoder: JsonDecoder[JsonRoleAuthorizations] = DeriveJsonDecoder.gen[JsonRoleAuthorizations]
 
-  implicit val jsonRightsEncoder:           JsonEncoder[JsonRights]           =
-    JsonEncoder[List[String]].contramap(_.authorizationTypes.toList.sorted)
+  implicit val jsonRightsEncoder:           JsonEncoder[JsonRights]           = JsonEncoder[List[String]].contramap(_.authorizationTypes.toList.sorted)
   implicit val jsonRolesEncoder:            JsonEncoder[JsonRoles]            = JsonEncoder[Set[String]].contramap(_.roles)
   implicit val jsonProviderInfoEncoder:     JsonEncoder[JsonProviderInfo]     = DeriveJsonEncoder.gen[JsonProviderInfo]
   implicit val jsonUserEncoder:             JsonEncoder[JsonUser]             = DeriveJsonEncoder.gen[JsonUser]
@@ -152,7 +151,7 @@ final case class JsonAuthConfig(
 
 final case class JsonProviderProperty(
     @jsonField("roleListOverride") providerRoleExtension: ProviderRoleExtension
-) extends AnyVal
+)
 object JsonProviderProperty {
   implicit val transformer: Transformer[ProviderRoleExtension, JsonProviderProperty] =
     Transformer.derive[ProviderRoleExtension, JsonProviderProperty]
@@ -412,7 +411,7 @@ object JsonInternalUserData {
 
 final case class JsonAddedUser(
     addedUser: JsonAddedUserData
-) extends AnyVal
+)
 object JsonAddedUser        {
   implicit val transformer: Transformer[JsonUserFormData, JsonAddedUser] = (u: JsonUserFormData) =>
     JsonAddedUser(u.transformInto[JsonAddedUserData])
@@ -420,7 +419,7 @@ object JsonAddedUser        {
 
 final case class JsonUpdatedUser(
     updatedUser: JsonInternalUserData
-) extends AnyVal
+)
 object JsonUpdatedUser      {
   implicit val transformer: Transformer[User, JsonUpdatedUser] = (u: User) =>
     JsonUpdatedUser(u.transformInto[JsonInternalUserData])
@@ -428,7 +427,7 @@ object JsonUpdatedUser      {
 
 final case class JsonUpdatedUserInfo(
     updatedUser: UpdateUserInfo
-) extends AnyVal
+)
 object JsonUpdatedUserInfo  {
   implicit val transformer: Transformer[UpdateUserInfo, JsonUpdatedUserInfo] =
     JsonUpdatedUserInfo(_)
@@ -440,7 +439,7 @@ final case class JsonUsername(
 
 final case class JsonDeletedUser(
     deletedUser: JsonUsername
-) extends AnyVal
+)
 object JsonDeletedUser      {
   implicit val usernameTransformer: Transformer[String, JsonUsername]    = JsonUsername(_)
   implicit val transformer:         Transformer[String, JsonDeletedUser] = (s: String) => JsonDeletedUser(s.transformInto[JsonUsername])
@@ -469,7 +468,7 @@ object JsonUserFormData {
 
 final case class JsonCoverage(
     coverage: JsonRoleCoverage
-) extends AnyVal
+)
 object JsonCoverage     {
   implicit val transformer: Transformer[(Set[Role], Set[Custom]), JsonCoverage] = (x: (Set[Role], Set[Custom])) =>
     x.transformInto[JsonRoleCoverage].transformInto[JsonCoverage]
