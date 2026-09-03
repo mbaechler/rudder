@@ -122,6 +122,13 @@ along with Rudder.  If not, see <http://www.gnu.org/licenses/>.
     </dependency>
 
     <dependency>
+      <groupId>com.dimafeng</groupId>
+      <artifactId>testcontainers-scala-postgresql_${scala-binary-version}</artifactId>
+      <version>0.44.1</version>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
       <groupId>com.normation</groupId>
       <artifactId>utils</artifactId>
       <version>${rudder-version}</version>

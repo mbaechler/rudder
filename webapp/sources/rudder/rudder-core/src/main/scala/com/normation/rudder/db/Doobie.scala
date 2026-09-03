@@ -60,12 +60,14 @@ import doobie.util.log.LogEvent
 import doobie.util.log.ProcessingFailure
 import doobie.util.transactor
 import io.scalaland.chimney.syntax.*
+
 import java.sql.SQLXML
 import javax.sql.DataSource
 import net.liftweb.common.*
 import org.joda.time.DateTime
 import org.joda.time.DateTimeZone
 import org.postgresql.util.PGobject
+
 import scala.xml.Elem
 import scala.xml.XML
 import zio.*
